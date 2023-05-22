@@ -11,14 +11,14 @@ datasource db {
 
 model Entry {
   id        String          @id
-  mtime   Int
+  mtime     BigInt
   title     String?
   wordCount Int
   asset     String?
   tags      TagsOnEntries[]
   event     Event?
   links     Link[]          @relation("source")
-  backlinks Link[]          @relation("target")
+  // backlinks Link[]          @relation("target")
 }
 
 model Tag {
@@ -27,11 +27,12 @@ model Tag {
 }
 
 model TagsOnEntries {
-  id      Int    @id @default(autoincrement())
   tag     Tag    @relation(fields: [tagId], references: [id])
   tagId   String
   entry   Entry  @relation(fields: [entryId], references: [id])
   entryId String
+
+  @@id([tagId, entryId])
 }
 
 model Event {
@@ -44,11 +45,11 @@ model Event {
 }
 
 model Link {
-  id          Int     @id @default(autoincrement())
-  rank        Int
-  source      Entry?  @relation(fields: [sourceId], references: [id], name: "source")
-  sourceId    String?
-  target      Entry?  @relation(fields: [targetId], references: [id], name: "target")
-  targetId    String?
-  context     String
+  id       Int    @id @default(autoincrement())
+  source   Entry  @relation(fields: [sourceId], references: [id], name: "source")
+  sourceId String
+  // target   Entry? @relation(fields: [targetId], references: [id], name: "target")
+  targetId String
+  context  String
+  rank     Int
 }

@@ -138,7 +138,7 @@ export async function analyzeMD(fileEntry: FileEntry, raw: string) {
   const result = (await processor.process(content)).result as AnalyzeResult;
   const { title, wordCount } = result;
   const links = result.links.map((link: any, rank: any) => ({
-    sourceId: fileEntry.id,
+    // sourceId: fileEntry.id,
     targetId: link.target,
     rank,
     context: link.context,

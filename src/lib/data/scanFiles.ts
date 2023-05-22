@@ -8,13 +8,13 @@ import { analyzeMD } from "./parseMD";
 export interface Data {
   entry: Entry;
   tags: string[];
-  links: Omit<Link, "id">[];
+  links: Omit<Link, "id" | "sourceId">[];
   event: Omit<Event, "id" | "entryId"> | null;
 }
 
 export interface FileEntry {
   id: string;
-  mtime: number;
+  mtime: bigint;
 }
 
 const defaultEntry = {
@@ -35,18 +35,39 @@ export function mergeDefaults<T extends { entry: Partial<Entry> }>(data: T) {
 }
 
 async function update(data: Data) {
-  await prisma.entry.create({
-    data: {
-      ...data.entry,
-      ...(data.event ? [{ create: data.event }] : []),
-      links: { create: data.links },
-      tags: {
-        create: data.tags.map((tag) => ({
-          tagId: tag,
-        })),
-      },
+  const op = {
+    ...data.entry,
+    event: data.event ? { create: data.event } : undefined,
+    links: { create: data.links },
+    tags: {
+      create: data.tags.map((tag) => ({
+        tag: {
+          connectOrCreate: {
+            where: {
+              id: tag,
+            },
+            create: {
+              id: tag,
+            },
+          },
+        },
+      })),
     },
-  });
+  };
+  await prisma.$transaction([
+    prisma.event.deleteMany({ where: { entryId: data.entry.id } }),
+    prisma.link.deleteMany({ where: { sourceId: data.entry.id } }),
+    prisma.tagsOnEntries.deleteMany({
+      where: { entryId: data.entry.id },
+    }),
+    prisma.entry.upsert({
+      where: {
+        id: data.entry.id,
+      },
+      create: op,
+      update: op,
+    }),
+  ]);
 }
 
 async function remove(id: string) {
@@ -57,17 +78,19 @@ async function remove(id: string) {
 
 async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const fullPath = path.join(notebookDir, id);
-  const mtime = Math.floor((await fs.stat(fullPath)).mtimeMs);
+  const mtime = BigInt(Math.floor((await fs.stat(fullPath)).mtimeMs));
   if (entry?.mtime === mtime) return 0;
   const raw = await fs.readFile(fullPath, "utf8");
+  let data: Awaited<ReturnType<typeof analyzeMD>> | undefined;
   try {
-    const data = await analyzeMD({ id, mtime }, raw);
-    console.log("updating", id);
-    await update(data);
+    data = await analyzeMD({ id, mtime }, raw);
   } catch (err) {
-    await remove(id);
+    if (entry) await remove(id);
     console.error(`error in file ${id}:`, err);
   }
+  console.log("updating", id);
+  if (!data) throw new Error("faulty logic");
+  await update(data);
   return 1;
 }
 
@@ -90,6 +113,7 @@ export async function scanFiles(notebookDir: string) {
     const ext = path.extname(id);
     if (ext !== ".md") continue;
     const entry = noteIndex.get(id);
+    if (entry) noteIndex.delete(id);
     updates.push(scanFile(notebookDir, id, entry));
   }
   for (const entry of noteIndex.values()) {

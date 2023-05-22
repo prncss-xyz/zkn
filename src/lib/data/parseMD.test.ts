@@ -3,7 +3,7 @@ import { analyzeMD } from "./parseMD";
 
 const entry: FileEntry = {
   id: "",
-  mtime: 0,
+  mtime: BigInt(0),
 };
 
 describe("analyzeMD", () => {
@@ -31,7 +31,7 @@ test`
   });
   it("should parse links", async () => {
     const res = await analyzeMD(
-      { mtime: 1, id: "file.md" },
+      { mtime: BigInt(1), id: "file.md" },
       `---
 ---
 test

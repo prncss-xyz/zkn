@@ -12,8 +12,8 @@ describe("scanFiles", () => {
         "1.md": sampleFile(1),
         "2.md": sampleFile(2),
         "3.md": sampleFile(3),
-        "5.md": mock.file({ content: "!", mtime: new Date(1) }), // invalid file
-        "6.md": mock.file({ content: "!" }), // invalid file
+        "5.md": mock.file({ content: "---\n!!\n---\n", mtime: new Date(2) }), // invalid file
+        "6.md": mock.file({ content: "---\n!!\n---\n" }), // invalid file
       },
     });
   });
@@ -30,8 +30,10 @@ describe("scanFiles", () => {
     await scanFiles("./notes");
     expect(prisma.entry.create).toHaveBeenCalledWith(sampleUpdate(2));
     expect(prisma.entry.create).toHaveBeenCalledWith(sampleUpdate(3));
-    expect(prisma.entry.delete).toHaveBeenCalledWith(sampleDelete(4));
+    expect(prisma.entry.create).toHaveBeenCalledTimes(3);
     expect(prisma.entry.delete).toHaveBeenCalledWith(sampleDelete(5));
+    expect(prisma.entry.delete).toHaveBeenCalledWith(sampleDelete(4));
+    expect(prisma.entry.delete).toHaveBeenCalledTimes(2);
   });
 });
 

@@ -24,15 +24,17 @@ function transform() {
   };
 }
 
-export const baseProcessor = unified()
-  .use(remarkParse)
-  .use(transform)
-  .use(wikiLink)
-  .use(breaks)
-  .use(emoji)
-  .use(gfm)
-  .use(smartyPants)
-  .use(removeComments)
-  // @ts-ignore
-  .use(remarkRehype, { allowDangerousHtml: true })
-  .use(rehypeRaw);
+// we need to export this function instead of raw constant for processor to work both on client and server
+export function getProcessor() {
+  return unified()
+    .use(remarkParse)
+    .use(transform)
+    .use(wikiLink)
+    .use(breaks)
+    .use(emoji)
+    .use(gfm)
+    .use(smartyPants)
+    .use(removeComments)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw);
+}

@@ -1,4 +1,4 @@
-import { getEntries } from "@/lib/data/actions";
+import { entryFindMany } from "@/lib/data/actions";
 import { Box } from "./components/box";
 import Link from "next/link";
 import path from "path";
@@ -9,7 +9,8 @@ function stem(pathname: string) {
 }
 
 export default async function Page() {
-  const entries = (await getEntries()) as any[];
+  const entries = await entryFindMany();
+  // entries.sort((a, b) => b.mtime - a.mtime);
   return (
     <Box>
       {entries.map((entry) => (

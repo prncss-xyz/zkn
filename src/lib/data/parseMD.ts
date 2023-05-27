@@ -7,7 +7,7 @@ import { Element, Root } from "hast";
 import { FileEntry } from "./scanFiles";
 import matter from "gray-matter";
 import { analyzePreamble } from "./analyzePreamble";
-import { baseProcessor } from "../md";
+import { getProcessor } from "../md";
 
 interface RawLink {
   // TODO: source
@@ -93,15 +93,15 @@ function spit() {
   this.Compiler = analyse;
 }
 
-const processor = baseProcessor.use(spit);
+const processor = getProcessor().use(spit);
 
 export async function analyzeMD(fileEntry: FileEntry, raw: string) {
   const { data, content } = matter(raw);
   // in absence of preamble just pass fileEntry data
   const fromPreamble = analyzePreamble(fileEntry, data || {});
   const result = (await processor.process(content)).result as AnalyzeResult;
-  const { title, wordCount } = result;
-  const links = result.links.map((link: any, rank: any) => ({
+  const { title, wordCount, links: links_ } = result;
+  const links = links_.map((link: any, rank: any) => ({
     // sourceId: fileEntry.id,
     targetId: link.target,
     rank,

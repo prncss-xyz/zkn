@@ -82,15 +82,15 @@ async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const mtime = BigInt(Math.floor((await fs.stat(fullPath)).mtimeMs));
   if (entry?.mtime === mtime) return 0;
   const raw = await fs.readFile(fullPath, "utf8");
-  let data: Awaited<ReturnType<typeof analyzeMD>> | undefined;
+  let data: Awaited<ReturnType<typeof analyzeMD>>;
   try {
     data = await analyzeMD({ id, mtime }, raw);
   } catch (err) {
     if (entry) await remove(id);
-    console.error(`error in file ${id}:`, err);
+    console.error(`error in file "${id}":`, err);
+    return 0;
   }
   console.log("updating", id);
-  if (!data) throw new Error("faulty logic");
   await update(data);
   return 1;
 }
@@ -136,6 +136,8 @@ export async function watchFiles(notebookDir: string) {
   // TODO:
 }
 
-export async function setup() {
-  scanFiles(notebookDir);
+let done: Promise<void>;
+export function setup() {
+  done ??= scanFiles(notebookDir);
+  return done;
 }

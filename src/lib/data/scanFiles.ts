@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { getFiles } from "@/lib/files";
 import { analyzeMD } from "./parseMD";
+import { notebookDir } from "../notebookDir";
 
 export interface Data {
   entry: Entry;
@@ -133,4 +134,8 @@ export async function scanFiles(notebookDir: string) {
 
 export async function watchFiles(notebookDir: string) {
   // TODO:
+}
+
+export async function setup() {
+  scanFiles(notebookDir);
 }

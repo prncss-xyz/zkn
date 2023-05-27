@@ -3,10 +3,10 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["src/tests/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    include: ["src/tests/int/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     globals: true,
     threads: false,
-    setupFiles: ["src/tests/helpers/setup.ts"],
+    setupFiles: ["src/tests/int/helpers/setup.ts"],
   },
   resolve: {
     alias: {

@@ -47,7 +47,7 @@ test`
         "entry": {
           "asset": null,
           "id": "file.md",
-          "mtime": 1,
+          "mtime": 1n,
           "title": null,
           "wordCount": 6,
         },
@@ -56,13 +56,11 @@ test`
           {
             "context": "<div class=\\"backlink\\">pre<a class=\\"internal\\" href=\\"link.md\\"></a>post</div>",
             "rank": 0,
-            "sourceId": "file.md",
             "targetId": "link.md",
           },
           {
             "context": "<div class=\\"backlink\\">PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST</div>",
             "rank": 1,
-            "sourceId": "file.md",
             "targetId": "LINK.md",
           },
         ],

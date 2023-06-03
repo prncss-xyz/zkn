@@ -7,7 +7,7 @@ import { Element, Root } from "hast";
 import { FileEntry } from "./scanFiles";
 import matter from "gray-matter";
 import { analyzePreamble } from "./analyzePreamble";
-import { getProcessor } from "../md";
+import { getProcessor } from "./processMD";
 
 interface RawLink {
   // TODO: source
@@ -52,15 +52,7 @@ function analyse(tree: Root): AnalyzeResult {
             ancestor.type == "element" &&
             (["p", "li", "dt", "dd"].includes(ancestor.tagName) || i === 1)
           ) {
-            const elem: Element = {
-              type: "element",
-              tagName: "div",
-              properties: {
-                className: ["backlink"],
-              },
-              children: ancestor.children,
-            };
-            const context = toHtml(elem);
+            const context = toHtml(ancestor.children);
             links.push({
               context,
               // TODO: source

@@ -94,15 +94,13 @@ describe("db", () => {
           rank: 0,
           sourceId: "1.md",
           targetId: "file2.md",
-          context:
-            '<div class="backlink"><a class="internal" href="file2.md"></a></div>',
+          context: '<a class="internal" href="file2.md"></a>',
         },
         {
           rank: 1,
           sourceId: "1.md",
           targetId: "file3.md",
-          context:
-            '<div class="backlink"><a class="internal" href="file3.md"></a></div>',
+          context: '<a class="internal" href="file3.md"></a>',
         },
       ],
     });

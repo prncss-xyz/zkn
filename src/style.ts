@@ -1,4 +1,4 @@
-export const space = [];
+export const space = [10];
 
 export const sizes = {
   "100%": "100%",
@@ -11,6 +11,7 @@ export const fontSizes = [];
 export const colors = {
   text: "black",
   background: "white",
+  pink: "pink",
 };
 
 export const fontWeights = {};

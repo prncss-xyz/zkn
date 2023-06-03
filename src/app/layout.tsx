@@ -9,11 +9,12 @@ export const metadata = {
   description: "zkn",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // await setup();
   return (
     <html lang="en">
       <body className={clsx(inter.className, theme)}>

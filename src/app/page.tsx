@@ -1,25 +1,27 @@
-import { entryFindMany } from "@/lib/data/actions";
+import prisma from "@/lib/data/prisma";
 import { Box } from "./components/box";
 import Link from "next/link";
-import path from "path";
-
-function stem(pathname: string) {
-  const ext = path.extname(pathname);
-  return path.basename(pathname, ext);
-}
+import { setup } from "@/lib/data/scanFiles";
 
 export default async function Page() {
-  const entries = await entryFindMany();
+  await setup();
+  const entries = await prisma.entry.findMany({
+    select: { id: true, title: true },
+  });
+
   // entries.sort((a, b) => b.mtime - a.mtime);
   return (
-    <Box>
-      {entries.map((entry) => (
-        <Box key={entry.id}>
-          <Link href={`note/${stem(entry.id)}`}>
-            {entry.title ? entry.title : <i>{entry.id}</i>}
-          </Link>
-        </Box>
-      ))}
-    </Box>
+    <>
+      <Box as="h1">Notes</Box>
+      <Box>
+        {entries.map((entry) => (
+          <Box key={entry.id}>
+            <Link href={`note/${entry.id}`}>
+              {entry.title ? entry.title : <i>{entry.id}</i>}
+            </Link>
+          </Box>
+        ))}
+      </Box>
+    </>
   );
 }

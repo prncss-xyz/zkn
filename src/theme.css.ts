@@ -16,15 +16,15 @@ globalStyle("body", {
   color: colors.text,
 });
 
-globalStyle("button, h1, h2, h3, h4, h5, h6, div, a", {
+globalStyle("button, h1, h2, h3, h4, h5, h6, div, ul, li", {
   all: "unset",
   display: "block",
   boxSizing: "border-box",
 });
 
-globalStyle("ul, li", {
+globalStyle("a", {
   all: "unset",
-  display: "block",
+  display: "inline",
   boxSizing: "border-box",
 });
 

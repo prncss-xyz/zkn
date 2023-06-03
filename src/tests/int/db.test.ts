@@ -80,7 +80,7 @@ describe("db", () => {
     });
     const eventDate = new Date("2022-10-10");
     expect(result).toMatchObject({
-      mtime: 1n,
+      mtime: 1,
       title: "title 1",
       asset: null,
       wordCount: 4,

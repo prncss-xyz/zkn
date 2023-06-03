@@ -6,7 +6,7 @@ import {
 
 const entry: FileEntry = {
   id: "",
-  mtime: BigInt(0),
+  mtime: 0,
 };
 
 describe("analyzeData", async () => {

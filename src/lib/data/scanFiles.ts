@@ -15,7 +15,7 @@ export interface Data {
 
 export interface FileEntry {
   id: string;
-  mtime: bigint;
+  mtime: number;
 }
 
 const defaultEntry = {
@@ -79,7 +79,7 @@ async function remove(id: string) {
 
 async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const fullPath = path.join(notebookDir, id);
-  const mtime = BigInt(Math.floor((await fs.stat(fullPath)).mtimeMs));
+  const mtime = Math.floor((await fs.stat(fullPath)).mtimeMs);
   if (entry?.mtime === mtime) return 0;
   const raw = await fs.readFile(fullPath, "utf8");
   let data: Awaited<ReturnType<typeof analyzeMD>>;

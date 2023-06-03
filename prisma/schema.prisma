@@ -11,7 +11,7 @@ datasource db {
 
 model Entry {
   id        String          @id
-  mtime     BigInt
+  mtime     Float
   title     String?
   wordCount Int
   asset     String?

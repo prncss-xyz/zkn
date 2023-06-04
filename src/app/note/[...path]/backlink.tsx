@@ -25,7 +25,6 @@ function transform() {
     const idToTitle = await getIdToTitle(links);
     visit(tree, "element", (node) => {
       if (node.tagName !== "a") return;
-      console.log(node);
       node.tagName = "span";
       const className_ = node?.properties?.className;
       if (

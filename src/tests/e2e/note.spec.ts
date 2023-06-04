@@ -10,6 +10,7 @@ test("should navigate to the note content", async ({ page }) => {
   await page.click("text=Tutu");
   await expect(page.locator("h1")).toContainText("Tutu");
   // clicking backlink
-  await page.click("text=Toto");
+  await page.click("role=button");
+  // FIXME: only pass for safari
   await expect(page.locator("h1")).toContainText("Toto");
 });

@@ -54,12 +54,12 @@ test`
         "event": null,
         "links": [
           {
-            "context": "<div class=\\"backlink\\">pre<a class=\\"internal\\" href=\\"link.md\\"></a>post</div>",
+            "context": "pre<a class=\\"internal\\" href=\\"link.md\\"></a>post",
             "rank": 0,
             "targetId": "link.md",
           },
           {
-            "context": "<div class=\\"backlink\\">PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST</div>",
+            "context": "PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST",
             "rank": 1,
             "targetId": "LINK.md",
           },

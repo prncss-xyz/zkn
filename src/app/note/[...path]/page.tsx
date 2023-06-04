@@ -5,9 +5,9 @@ import Link from "next/link";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
-import { setup } from "@/lib/data/scanFiles";
 import { extname } from "path";
 import { Backlink } from "./backlink";
+import { setup } from "@/lib/data/scanFiles";
 
 // This is used while rendering markdown contents. It intecepts internal links to render them as `Link` elements
 function MDLink({

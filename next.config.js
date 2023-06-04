@@ -7,7 +7,6 @@ const nextConfig = {
     // vanilla-extract still needs it
     appDir: true,
     serverActions: true,
-    instrumentationHook: true,
   },
   reactStrictMode: true,
   output: "standalone",

@@ -3,10 +3,9 @@ import mock from "mock-fs";
 import prisma from "./__mocks__/prisma";
 import { scanFiles } from "./scanFiles";
 
-vi.mock("./prisma");
-
 describe("scanFiles", () => {
   beforeEach(() => {
+    vi.mock("./prisma");
     mock({
       notes: {
         "1.md": sampleFile(1),
@@ -20,7 +19,7 @@ describe("scanFiles", () => {
   afterEach(() => {
     mock.restore();
   });
-  it("description", async () => {
+  it("should sync files info", async () => {
     prisma.entry.findMany.mockResolvedValue([
       sampleEntry(1, 1),
       sampleEntry(2, 1),
@@ -28,9 +27,9 @@ describe("scanFiles", () => {
       sampleEntry(5, 1),
     ]);
     await scanFiles("./notes");
-    expect(prisma.entry.create).toHaveBeenCalledWith(sampleUpdate(2));
-    expect(prisma.entry.create).toHaveBeenCalledWith(sampleUpdate(3));
-    expect(prisma.entry.create).toHaveBeenCalledTimes(3);
+    expect(prisma.entry.upsert).toHaveBeenCalledWith(sampleUpdate(2));
+    expect(prisma.entry.upsert).toHaveBeenCalledWith(sampleUpdate(3));
+    expect(prisma.entry.upsert).toHaveBeenCalledTimes(3);
     expect(prisma.entry.delete).toHaveBeenCalledWith(sampleDelete(5));
     expect(prisma.entry.delete).toHaveBeenCalledWith(sampleDelete(4));
     expect(prisma.entry.delete).toHaveBeenCalledTimes(2);
@@ -49,19 +48,25 @@ function sampleEntry(i: number, mtime: number) {
 }
 
 function sampleUpdate(i: number) {
+  const id = i + ".md";
+  const op = {
+    asset: null,
+    id,
+    links: {
+      create: [],
+    },
+    mtime: i,
+    tags: {
+      create: [],
+    },
+    title: "title " + i,
+    wordCount: 2,
+  };
   return {
-    data: {
-      asset: null,
-      id: i + ".md",
-      links: {
-        create: [],
-      },
-      mtime: i,
-      tags: {
-        create: [],
-      },
-      title: "title " + i,
-      wordCount: 2,
+    create: op,
+    update: op,
+    where: {
+      id,
     },
   };
 }

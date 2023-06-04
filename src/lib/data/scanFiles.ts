@@ -1,7 +1,7 @@
 import { Entry, Link, Event } from "@prisma/client";
 import prisma from "./prisma";
-import fs from "node:fs/promises";
-import path from "node:path";
+import { mkdir, readFile, stat, watch } from "node:fs/promises";
+import path, { extname } from "node:path";
 import { getFiles } from "@/lib/files";
 import { analyzeMD } from "./parseMD";
 import { notebookDir } from "../notebookDir";
@@ -79,9 +79,15 @@ async function remove(id: string) {
 
 async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const fullPath = path.join(notebookDir, id);
-  const mtime = Math.floor((await fs.stat(fullPath)).mtimeMs);
+  let mtime: number;
+  try {
+    mtime = (await stat(fullPath)).mtimeMs;
+  } catch (err) {
+    remove(id);
+    return 0;
+  }
   if (entry?.mtime === mtime) return 0;
-  const raw = await fs.readFile(fullPath, "utf8");
+  const raw = await readFile(fullPath, "utf8");
   let data: Awaited<ReturnType<typeof analyzeMD>>;
   try {
     data = await analyzeMD({ id, mtime }, raw);
@@ -102,7 +108,7 @@ export async function scanFiles(notebookDir: string) {
       mtime: true,
     },
   });
-  await fs.mkdir(notebookDir, { recursive: true });
+  await mkdir(notebookDir, { recursive: true });
   const startTime = Date.now();
   const noteIndex = new Map<string, FileEntry>();
   for (const entry of entries) {
@@ -132,8 +138,23 @@ export async function scanFiles(notebookDir: string) {
   console.log(`in ${endTime - startTime} ms`);
 }
 
+// recursively watch files from notebook dir;
+// debouncing events
 export async function watchFiles(notebookDir: string) {
-  // TODO:
+  let oldFilename: string = "";
+  let handle: NodeJS.Timeout | null = null;
+  const watcher = watch(notebookDir, { persistent: false, recursive: true });
+  for await (const event of watcher) {
+    const { filename } = event;
+    if (!filename || extname(filename) !== ".md") continue;
+    if (handle && filename === oldFilename) {
+      clearTimeout(handle);
+    }
+    handle = setTimeout(() => {
+      scanFile(notebookDir, filename);
+    }, 300);
+    oldFilename = filename;
+  }
 }
 
 let done: Promise<void>;

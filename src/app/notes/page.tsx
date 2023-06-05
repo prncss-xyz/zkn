@@ -1,5 +1,5 @@
 import prisma from "@/lib/data/prisma";
-import { Box } from "./components/box";
+import { Box } from "@/app/components/box";
 import Link from "next/link";
 import { setup } from "@/lib/data/scanFiles";
 

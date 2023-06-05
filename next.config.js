@@ -10,9 +10,17 @@ const nextConfig = {
   },
   reactStrictMode: true,
   output: "standalone",
-
   images: {
     minimumCacheTTL: 60, // 1 minute
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/notes",
+        permanent: false,
+      },
+    ];
   },
 };
 

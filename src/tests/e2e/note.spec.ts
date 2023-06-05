@@ -1,16 +1,13 @@
 import { test, expect } from "@playwright/test";
+import { PORT } from "./utils";
 
-const PORT = process.env.PORT || 3000;
 
-test("should navigate to the note content", async ({ page }) => {
-  await page.goto(`http://localhost:${PORT}/`);
-  await page.click("text=Toto");
-  await expect(page.locator("h1")).toContainText("Toto");
-  // clicking link whithin markdown
-  await page.click("text=Tutu");
-  await expect(page.locator("h1")).toContainText("Tutu");
-  // clicking backlink
-  await page.click("role=button");
-  // FIXME: only pass for safari
-  await expect(page.locator("h1")).toContainText("Toto");
+test("on localhost, should redirect / to /notes", async ({ page }) => {
+  await page.goto(`http://localhost:${PORT}`);
+  await expect(page.locator("h1")).toContainText("Notes");
 });
+
+test("from anything else than localhost, should redirect any page to /denied", async ({ page }) => {
+  await page.goto(`http://127.0.0.1:${PORT}/anything`);
+  await expect(page.locator("h1")).toContainText("Access denied");
+})

@@ -14,6 +14,7 @@ export const ButtonLink = forwardRef<
     <Box
       ref={ref}
       as="button"
+      role="button"
       {...extra}
       className={className}
       onClick={() => router.push(href)}

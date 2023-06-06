@@ -50,7 +50,7 @@ export async function Backlink({
 }: {
   backlink: Awaited<ReturnType<typeof getBacklinks>>[0];
 }) {
-  const { title, status } = await getTitle(backlink.sourceId);
+  const { title } = await getTitle(backlink.sourceId);
   const { result } = await unified()
     .use(rehypeParse, { fragment: true })
     .use(transform)

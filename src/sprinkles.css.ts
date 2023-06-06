@@ -26,12 +26,9 @@ const unconditionalProperties = defineProperties({
     height: sizes,
     fontWeight: fontWeights,
     fontSize: fontSizes,
-    display: ["inline", "flex"],
-    flexDirection: ["column", "row"],
     justifyContent: ["flex-start", "space-between", "flex-end", "center"],
     flexShrink: [0],
     textAlign: ["center"],
-    alignItems: ["center"],
     borderStyle: {
       top: "solid none none none",
     },
@@ -39,7 +36,6 @@ const unconditionalProperties = defineProperties({
     paddingBottom: space,
     paddingLeft: space,
     paddingRight: space,
-    gap: space,
   },
   shorthands: {
     p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
@@ -64,6 +60,10 @@ const responsiveProperties = defineProperties({
     marginLeft: space,
     marginRight: space,
     borderRadius: borderRadii,
+    flexDirection: ["column", "row"],
+    alignItems: ["center", "flex-end", "flex-start"],
+    display: ["inline", "flex", "block", "none"],
+    gap: space,
   },
   shorthands: {
     m: ["marginTop", "marginBottom", "marginLeft", "marginRight"],

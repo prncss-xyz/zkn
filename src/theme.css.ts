@@ -23,15 +23,23 @@ globalStyle("body", {
   color: vars.colors.text,
 });
 
-globalStyle("button, h1, h2, h3, h4, h5, h6, div, ul, li", {
+globalStyle("button, h1, h2, h3, h4, h5, h6, div", {
   all: "unset",
   display: "block",
+  boxSizing: "border-box",
+});
+
+globalStyle("button", {
+  all: "unset",
+  display: "block",
+  cursor: "pointer",
   boxSizing: "border-box",
 });
 
 globalStyle("a", {
   all: "unset",
   display: "inline",
+  cursor: "pointer",
   boxSizing: "border-box",
 });
 

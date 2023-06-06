@@ -6,6 +6,10 @@ asset: a.epub
 
 toto
 
+- a
+- b
+    - c
+
 tata [[b]] tata
 
 twitwi

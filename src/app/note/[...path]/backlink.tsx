@@ -6,7 +6,8 @@ import { visit } from "unist-util-visit";
 import { Root } from "hast";
 import { getBacklinks, getIdToTitle, getTitle } from "@/lib/data/actions";
 import { Box } from "@/app/components/box";
-import { ButtonLink } from "@/app/components/buttonLink";
+import Link from "next/link";
+import { sprinkles } from "@/sprinkles.css";
 
 function transform() {
   return async function (tree: Root) {
@@ -59,11 +60,14 @@ export async function Backlink({
     })
     .process(backlink.context);
   return (
-    <ButtonLink href={`/note/${backlink.sourceId}`}>
-      <Box as="h2" className={status}>
+    <Box display="flex" flexDirection="column" gap={5}>
+      <Link
+        href={`/note/${backlink.sourceId}`}
+        className={sprinkles({ color: "link", fontWeight: "bold" })}
+      >
         {title}
-      </Box>
+      </Link>
       <Box>{result}</Box>
-    </ButtonLink>
+    </Box>
   );
 }

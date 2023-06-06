@@ -12,15 +12,33 @@ export default async function Page() {
   // entries.sort((a, b) => b.mtime - a.mtime);
   return (
     <>
-      <Box as="h1">Notes</Box>
-      <Box>
-        {entries.map((entry) => (
-          <Box key={entry.id}>
-            <Link href={`note/${entry.id}`}>
-              {entry.title ? entry.title : <i>{entry.id}</i>}
-            </Link>
-          </Box>
-        ))}
+      <Box as="h1" fontWeight="bold" p={5}>
+        Notes
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={10}
+        backgroundColor="gray200"
+        borderRadius={{ s: 0, md: 5 }}
+      >
+        <Box display="flex" flexDirection="column" gap={5}>
+          {entries.map((entry) => (
+            <Box
+              key={entry.id}
+              color="link"
+              fontWeight="bold"
+              p={5}
+              borderStyle="top"
+              borderWidth={1}
+              borderColor="background"
+            >
+              <Link href={`note/${entry.id}`}>
+                {entry.title ? entry.title : <i>{entry.id}</i>}
+              </Link>
+            </Box>
+          ))}
+        </Box>
       </Box>
     </>
   );

@@ -1,5 +1,12 @@
 import { createSprinkles, defineProperties } from "@vanilla-extract/sprinkles";
-import { sizes, space, borderWidths, fontWeights, fontSizes } from "./style";
+import {
+  sizes,
+  space,
+  borderWidths,
+  fontWeights,
+  fontSizes,
+  borderRadii,
+} from "./style";
 
 import { vars } from "./theme.css";
 const { colors } = vars;
@@ -25,15 +32,13 @@ const unconditionalProperties = defineProperties({
     flexShrink: [0],
     textAlign: ["center"],
     alignItems: ["center"],
-    borderStyle: {},
+    borderStyle: {
+      top: "solid none none none",
+    },
     paddingTop: space,
     paddingBottom: space,
     paddingLeft: space,
     paddingRight: space,
-    marginTop: space,
-    marginBottom: space,
-    marginLeft: space,
-    marginRight: space,
     gap: space,
   },
   shorthands: {
@@ -44,6 +49,23 @@ const unconditionalProperties = defineProperties({
     pl: ["paddingLeft"],
     px: ["paddingLeft", "paddingRight"],
     py: ["paddingTop", "paddingBottom"],
+  },
+});
+
+const responsiveProperties = defineProperties({
+  conditions: {
+    s: {},
+    md: { "@media": "screen and (min-width: 700px)" },
+  },
+  defaultCondition: "s",
+  properties: {
+    marginTop: space,
+    marginBottom: space,
+    marginLeft: space,
+    marginRight: space,
+    borderRadius: borderRadii,
+  },
+  shorthands: {
     m: ["marginTop", "marginBottom", "marginLeft", "marginRight"],
     mt: ["marginTop"],
     mb: ["marginBottom"],
@@ -52,16 +74,6 @@ const unconditionalProperties = defineProperties({
     mx: ["marginLeft", "marginRight"],
     my: ["marginTop", "marginBottom"],
   },
-});
-
-const responsiveProperties = defineProperties({
-  conditions: {
-    s: {},
-    md: { "@media": "screen and (min-width: 880px)" },
-  },
-  defaultCondition: "s",
-  properties: {},
-  shorthands: {},
 });
 
 export const sprinkles = createSprinkles(

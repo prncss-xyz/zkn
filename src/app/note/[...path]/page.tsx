@@ -8,6 +8,7 @@ import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
 import { extname } from "path";
 import { Backlink } from "./backlink";
 import { setup } from "@/lib/data/scanFiles";
+import { markdown } from "./page.css";
 
 // This is used while rendering markdown contents. It intecepts internal links to render them as `Link` elements
 function MDLink({
@@ -100,24 +101,46 @@ export default async function Page({
     );
   const { entry, idToTitle, content, backlinks } = res;
   return (
-    <Box>
-      {/* @ts-ignore */}
-      <FromMD content={content} idToTitle={idToTitle} />
-      <Box>
+    <Box display="flex" flexDirection="column" gap={10}>
+      <Box
+        backgroundColor="gray100"
+        p={5}
+        borderRadius={{ s: 0, md: 5 }}
+        className={markdown}
+      >
+        {/* @ts-ignore */}
+        <FromMD content={content} idToTitle={idToTitle} />
+      </Box>
+      <Box backgroundColor="gray200" p={5} borderRadius={{ s: 0, md: 5 }}>
         <b>wordcount: </b>
         {entry.wordCount}
       </Box>
       {backlinks.length > 0 && (
-        <Box>
-          <Box as="h2">Backlnks</Box>
-          {backlinks.map((backlink) => {
-            return (
-              <Box key={backlink.sourceId + backlink.rank}>
-                {/* @ts-ignore */}
-                <Backlink backlink={backlink} />
-              </Box>
-            );
-          })}
+        <Box
+          backgroundColor="gray200"
+          borderRadius={{ s: 0, md: 5 }}
+          display="flex"
+          flexDirection="column"
+        >
+          <Box as="h2" fontWeight="bold" p={5}>
+            Backlnks
+          </Box>
+          <Box display="flex" flexDirection="column">
+            {backlinks.map((backlink) => {
+              return (
+                <Box
+                  key={backlink.sourceId + backlink.rank}
+                  borderStyle="top"
+                  borderColor="background"
+                  borderWidth={1}
+                  p={5}
+                >
+                  {/* @ts-ignore */}
+                  <Backlink backlink={backlink} />
+                </Box>
+              );
+            })}
+          </Box>
         </Box>
       )}
     </Box>

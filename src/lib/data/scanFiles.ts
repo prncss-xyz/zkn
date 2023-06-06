@@ -157,8 +157,14 @@ export async function watchFiles(notebookDir: string) {
   }
 }
 
+async function setup_() {
+  await scanFiles(notebookDir);
+  // lauch but do not wait
+  watchFiles(notebookDir);
+}
+
 let done: Promise<void>;
 export function setup() {
-  done ??= scanFiles(notebookDir);
+  done ??= setup_();
   return done;
 }

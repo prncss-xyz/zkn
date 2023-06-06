@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { delai, PORT } from "./utils";
+import { PORT } from "./utils";
 
 test("should navigate to the note content", async ({ page }) => {
   await page.goto(`http://localhost:${PORT}/notes`);
@@ -9,7 +9,6 @@ test("should navigate to the note content", async ({ page }) => {
   await page.click("text=Tutu");
   await expect(page.locator("h1")).toContainText("Tutu");
   // clicking backlink
-  await delai(300);
-  await page.click("role=button");
+  await page.getByRole("link").and(page.getByText("Toto")).click();
   await expect(page.locator("h1")).toContainText("Toto");
 });

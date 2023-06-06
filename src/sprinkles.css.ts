@@ -1,12 +1,8 @@
 import { createSprinkles, defineProperties } from "@vanilla-extract/sprinkles";
-import {
-  sizes,
-  space,
-  borderWidths,
-  colors,
-  fontWeights,
-  fontSizes,
-} from "./style";
+import { sizes, space, borderWidths, fontWeights, fontSizes } from "./style";
+
+import { vars } from "./theme.css";
+const { colors } = vars;
 
 // following [stitches](https://stitches.dev/docs/tokens) conventions for property-token relationships
 const unconditionalProperties = defineProperties({

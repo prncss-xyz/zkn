@@ -8,6 +8,7 @@ import { getBacklinks, getIdToTitle, getTitle } from "@/lib/data/actions";
 import { Box } from "@/app/components/box";
 import Link from "next/link";
 import { sprinkles } from "@/sprinkles.css";
+import { backlink as backlinkClass } from "./backlink.css";
 
 function transform() {
   return async function (tree: Root) {
@@ -67,7 +68,7 @@ export async function Backlink({
       >
         {title}
       </Link>
-      <Box>{result}</Box>
+      <Box className={backlinkClass}> {result}</Box>
     </Box>
   );
 }

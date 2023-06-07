@@ -38,10 +38,12 @@ const unconditionalProperties = defineProperties({
 
 const responsiveProperties = defineProperties({
   conditions: {
-    s: {},
+    xs: {},
+    // not in use yet
+    s: { "@media": "screen and (min-width: 0px)" },
     md: { "@media": "screen and (min-width: 700px)" },
   },
-  defaultCondition: "s",
+  defaultCondition: "xs",
   properties: {
     paddingTop: space,
     paddingBottom: space,

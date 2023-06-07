@@ -9,6 +9,7 @@ import { sprinkles } from "@/sprinkles.css";
 import { hideLinks, overlayLayout } from "./menuBar.css";
 import { Box } from "../components/box";
 import { screenOverlay } from "../components/screenOverlay.css";
+import { sizes } from "@/style";
 
 export function MenuLink({
   children,
@@ -42,11 +43,11 @@ export function MenuBar({ children }: { children: ReactNode }) {
       <Dialog.Root>
         {/* this needs to be inside Dialog.Root because Nav of current page is a Dialog.Close component */}
         <Box
-          display={{ s: "none", md: "flex" }}
+          display={{ xs: "none", s: "flex" }}
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          pl={{ s: 5, md: 0 }}
+          pl={{ xs: 5, md: 0 }}
         >
           <Box
             display="flex"
@@ -58,7 +59,7 @@ export function MenuBar({ children }: { children: ReactNode }) {
           </Box>
         </Box>
       </Dialog.Root>
-      <Box display={{ s: "block", md: "none" }}>
+      <Box display={{ xs: "block", s: "none" }}>
         {/* the key prop ensures state will be reset on navigation, closing the dialog */}
         <Dialog.Root key={pathname}>
           <Dialog.Trigger asChild>
@@ -67,7 +68,7 @@ export function MenuBar({ children }: { children: ReactNode }) {
               flexDirection="row"
               justifyContent="space-between"
               alignItems="center"
-              pl={{ s: 5, md: 0 }}
+              px={{ xs: 5, md: 0 }}
             >
               <Box
                 display="flex"
@@ -78,7 +79,9 @@ export function MenuBar({ children }: { children: ReactNode }) {
               >
                 {children}
               </Box>
-              <AiOutlineMenu size={25} />
+              <Box as="button" height="menuIcon">
+                <AiOutlineMenu size={sizes.menuIcon} />
+              </Box>
             </Box>
           </Dialog.Trigger>
           <Dialog.Content>

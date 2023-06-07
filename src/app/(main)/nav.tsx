@@ -5,6 +5,7 @@ export function Nav() {
     <MenuBar>
       <MenuLink href="/notes">Notes</MenuLink>
       <MenuLink href="/kanban">Kanban</MenuLink>
+      <MenuLink href="/journal">Journal</MenuLink>
     </MenuBar>
   );
 }

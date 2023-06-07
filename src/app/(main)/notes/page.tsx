@@ -15,10 +15,10 @@ export default async function Page() {
       display="flex"
       flexDirection="column"
       gap={10}
-      backgroundColor="gray200"
-      borderRadius={{ s: 0, md: 5 }}
+      backgroundColor="foreground2"
+      borderRadius={{ xs: 0, md: 5 }}
     >
-      <Box display="flex" flexDirection="column" gap={5}>
+      <Box display="flex" flexDirection="column">
         {entries.map((entry) => (
           <Box
             key={entry.id}
@@ -28,6 +28,9 @@ export default async function Page() {
             borderStyle="top"
             borderWidth={1}
             borderColor="background"
+            // this makes the whole width of the box clickable
+            display="flex"
+            flexDirection="column"
           >
             <Link href={`note/${entry.id}`}>
               {entry.title ? entry.title : <i>{entry.id}</i>}

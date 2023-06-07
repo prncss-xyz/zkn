@@ -103,27 +103,27 @@ export default async function Page({
   return (
     <Box display="flex" flexDirection="column" gap={10}>
       <Box
-        backgroundColor="gray100"
+        backgroundColor="foreground1"
         p={5}
-        borderRadius={{ s: 0, md: 5 }}
+        borderRadius={{ xs: 0, md: 5 }}
         className={markdown}
       >
         {/* @ts-ignore */}
         <FromMD content={content} idToTitle={idToTitle} />
       </Box>
-      <Box backgroundColor="gray200" p={5} borderRadius={{ s: 0, md: 5 }}>
+      <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
         <b>wordcount: </b>
         {entry.wordCount}
       </Box>
       {backlinks.length > 0 && (
         <Box
-          backgroundColor="gray200"
-          borderRadius={{ s: 0, md: 5 }}
+          backgroundColor="foreground2"
+          borderRadius={{ xs: 0, md: 5 }}
           display="flex"
           flexDirection="column"
         >
           <Box as="h2" fontWeight="bold" p={5}>
-            Backlnks
+            Backlinks
           </Box>
           <Box display="flex" flexDirection="column">
             {backlinks.map((backlink) => {

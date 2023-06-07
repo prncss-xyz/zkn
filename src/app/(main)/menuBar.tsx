@@ -38,28 +38,11 @@ export function MenuLink({
 export function MenuBar({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
-    // the key prop ensures state will be reset on navigation, closing the dialog
-    <Dialog.Root key={pathname}>
-      {/* this needs to be inside Dialog.Root because Nav of current page is a Dialog.Close component */}
-      <Box
-        display={{ s: "none", md: "flex" }}
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        pl={{ s: 5, md: 0 }}
-      >
+    <>
+      <Dialog.Root>
+        {/* this needs to be inside Dialog.Root because Nav of current page is a Dialog.Close component */}
         <Box
-          display="flex"
-          gap={40}
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
-          {children}
-        </Box>
-      </Box>
-      <Dialog.Trigger asChild>
-        <Box
-          display={{ s: "flex", md: "none" }}
+          display={{ s: "none", md: "flex" }}
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
@@ -70,50 +53,73 @@ export function MenuBar({ children }: { children: ReactNode }) {
             gap={40}
             flexDirection="row"
             justifyContent="flex-start"
-            className={hideLinks}
           >
             {children}
           </Box>
-          <AiOutlineMenu size={25} />
         </Box>
-      </Dialog.Trigger>
-      <Dialog.Content>
-        <Box className={screenOverlay}>
-          <Box p={5} width="100%" height="100%">
-            <Box className={overlayLayout}>
+      </Dialog.Root>
+      <Box display={{ s: "block", md: "none" }}>
+        {/* the key prop ensures state will be reset on navigation, closing the dialog */}
+        <Dialog.Root key={pathname}>
+          <Dialog.Trigger asChild>
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+              pl={{ s: 5, md: 0 }}
+            >
               <Box
                 display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                width="100%"
-                height="100%"
+                gap={40}
+                flexDirection="row"
+                justifyContent="flex-start"
+                className={hideLinks}
               >
-                <Box
-                  display="flex"
-                  gap={40}
-                  flexDirection="column"
-                  alignItems="center"
-                  width="100%"
-                >
-                  {children}
+                {children}
+              </Box>
+              <AiOutlineMenu size={25} />
+            </Box>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Box className={screenOverlay}>
+              <Box p={5} width="100%" height="100%">
+                <Box className={overlayLayout}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="100%"
+                    height="100%"
+                  >
+                    <Box
+                      display="flex"
+                      gap={40}
+                      flexDirection="column"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      {children}
+                    </Box>
+                  </Box>
+                  <Dialog.Close asChild>
+                    <Box
+                      as="button"
+                      width="100%"
+                      display="flex"
+                      flexDirection="row"
+                      justifyContent="flex-end"
+                    >
+                      <AiOutlineClose size={25} />
+                    </Box>
+                  </Dialog.Close>
                 </Box>
               </Box>
-              <Dialog.Close asChild>
-                <Box
-                  as="button"
-                  width="100%"
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="flex-end"
-                >
-                  <AiOutlineClose size={25} />
-                </Box>
-              </Dialog.Close>
             </Box>
-          </Box>
-        </Box>
-      </Dialog.Content>
-    </Dialog.Root>
+          </Dialog.Content>
+        </Dialog.Root>
+      </Box>
+    </>
   );
 }

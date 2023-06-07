@@ -4,7 +4,7 @@ import { PORT } from "./utils";
 
 test("on localhost, should redirect / to /notes", async ({ page }) => {
   await page.goto(`http://localhost:${PORT}`);
-  await expect(page.locator("h1")).toContainText("Notes");
+  await expect(page.locator("role=button")).toContainText("Notes");
 });
 
 test("from anything else than localhost, should redirect any page to /denied", async ({ page }) => {

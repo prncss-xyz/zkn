@@ -9,5 +9,4 @@ export const screenOverlay = style({
   width: "100vw",
   maxWidth: "100%",
   height: "100vh",
-  zIndex: 10,
 });

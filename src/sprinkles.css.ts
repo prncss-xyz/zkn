@@ -32,20 +32,8 @@ const unconditionalProperties = defineProperties({
     borderStyle: {
       top: "solid none none none",
     },
-    paddingTop: space,
-    paddingBottom: space,
-    paddingLeft: space,
-    paddingRight: space,
   },
-  shorthands: {
-    p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
-    pb: ["paddingBottom"],
-    pt: ["paddingTop"],
-    pr: ["paddingRight"],
-    pl: ["paddingLeft"],
-    px: ["paddingLeft", "paddingRight"],
-    py: ["paddingTop", "paddingBottom"],
-  },
+  shorthands: {},
 });
 
 const responsiveProperties = defineProperties({
@@ -55,6 +43,10 @@ const responsiveProperties = defineProperties({
   },
   defaultCondition: "s",
   properties: {
+    paddingTop: space,
+    paddingBottom: space,
+    paddingLeft: space,
+    paddingRight: space,
     marginTop: space,
     marginBottom: space,
     marginLeft: space,
@@ -66,6 +58,13 @@ const responsiveProperties = defineProperties({
     gap: space,
   },
   shorthands: {
+    p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
+    pb: ["paddingBottom"],
+    pt: ["paddingTop"],
+    pr: ["paddingRight"],
+    pl: ["paddingLeft"],
+    px: ["paddingLeft", "paddingRight"],
+    py: ["paddingTop", "paddingBottom"],
     m: ["marginTop", "marginBottom", "marginLeft", "marginRight"],
     mt: ["marginTop"],
     mb: ["marginBottom"],

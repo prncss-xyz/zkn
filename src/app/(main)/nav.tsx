@@ -1,4 +1,4 @@
-import { MenuBar, MenuLink } from "./MenuBar";
+import { MenuBar, MenuLink } from "./menuBar";
 
 export function Nav() {
   return (

@@ -1,6 +1,6 @@
 import { Entry, Link, Event } from "@prisma/client";
 import prisma from "./prisma";
-import { mkdir, readFile, stat, watch } from "node:fs/promises";
+import { readFile, stat, watch } from "node:fs/promises";
 import path, { extname } from "node:path";
 import { getFiles } from "@/lib/files";
 import { analyzeMD } from "./parseMD";
@@ -19,7 +19,7 @@ export interface FileEntry {
 }
 
 const defaultEntry = {
-  asset: null,
+  status: null,
   title: null,
   wordCount: 0,
 };
@@ -108,7 +108,6 @@ export async function scanFiles(notebookDir: string) {
       mtime: true,
     },
   });
-  await mkdir(notebookDir, { recursive: true });
   const startTime = Date.now();
   const noteIndex = new Map<string, FileEntry>();
   for (const entry of entries) {

@@ -1,5 +1,8 @@
 ---
-asset: a.epub
+status: pending
+tags:
+  - tagA
+  - tagB
 ---
 
 # Toto
@@ -8,7 +11,7 @@ toto
 
 - a
 - b
-    - c
+  - c
 
 tata [[b]] tata
 

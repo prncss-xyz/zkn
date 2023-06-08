@@ -14,11 +14,10 @@ model Entry {
   mtime     Float
   title     String?
   wordCount Int
-  asset     String?
   tags      TagsOnEntries[]
   event     Event?
   links     Link[]          @relation("source")
-  // backlinks Link[]          @relation("target")
+  status    String?
 }
 
 model Tag {
@@ -48,7 +47,6 @@ model Link {
   id       Int    @id @default(autoincrement())
   source   Entry  @relation(fields: [sourceId], references: [id], name: "source")
   sourceId String
-  // target   Entry? @relation(fields: [targetId], references: [id], name: "target")
   targetId String
   context  String
   rank     Int

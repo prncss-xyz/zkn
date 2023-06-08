@@ -2,7 +2,7 @@ import { Box } from "@/app/components/box";
 import prisma from "@/lib/data/prisma";
 import { getProcessor } from "@/lib/data/processMD";
 import Link from "next/link";
-import { createElement, Fragment, ReactNode } from "react";
+import { Children, createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
 import { extname } from "path";
@@ -54,7 +54,14 @@ async function FromMD({
 async function getEntry(id: string) {
   const entry = await prisma.entry.findUnique({
     where: { id },
-    select: { id: true, wordCount: true, links: true },
+    select: {
+      id: true,
+      wordCount: true,
+      links: true,
+      status: true,
+      tags: true,
+      mtime: true,
+    },
   });
   if (!entry) return null;
   const idToTitle = await getIdToTitle(
@@ -77,6 +84,62 @@ async function getNote(id: string) {
     content,
     backlinks,
   };
+}
+
+interface IMetaData {
+  wordCount: number;
+  status: string | null;
+  tags: { tagId: string }[];
+  mtime: number;
+}
+
+function MetaDataEntry({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <Box p={5} display="flex" flexDirection="row">
+      <Box width="labelWidth">{label}</Box>
+      {children}
+    </Box>
+  );
+}
+
+function MetaData({ ...entry }: IMetaData) {
+  const created = new Date(entry.mtime).toLocaleDateString();
+  return (
+    <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
+      {entry.status && (
+        <MetaDataEntry label="status">
+          <Box color="link">{entry.status}</Box>
+        </MetaDataEntry>
+      )}
+      <MetaDataEntry label="created">
+        <Box color="link">{created}</Box>
+      </MetaDataEntry>
+      {entry.tags.length > 0 && (
+        <MetaDataEntry label="tags">
+          <Box display="flex" flexDirection="row" gap={10}>
+            {entry.tags.map((tag) => (
+              <Box
+                px={5}
+                borderRadius={3}
+                backgroundColor="foreground1"
+                color="link"
+                key={tag.tagId}
+              >
+                {tag.tagId}
+              </Box>
+            ))}
+          </Box>
+        </MetaDataEntry>
+      )}
+      <MetaDataEntry label="word count">{entry.wordCount}</MetaDataEntry>
+    </Box>
+  );
 }
 
 export default async function Page({
@@ -111,10 +174,7 @@ export default async function Page({
         {/* @ts-ignore */}
         <FromMD content={content} idToTitle={idToTitle} />
       </Box>
-      <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
-        <b>wordcount: </b>
-        {entry.wordCount}
-      </Box>
+      <MetaData {...entry} />
       {backlinks.length > 0 && (
         <Box
           backgroundColor="foreground2"

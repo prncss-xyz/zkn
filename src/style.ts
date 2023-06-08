@@ -2,6 +2,7 @@ export const space = [0, 5, 10, 20, 40];
 
 export const sizes = {
   screenMaxWidth: "min(100%, 1000px)",
+  labelWidth: 120,
   "100%": "100%",
   "100vh": "100vh",
   "100vw": "100vw",
@@ -10,7 +11,7 @@ export const sizes = {
 
 export const fontSizes = [];
 
-export const borderRadii = [0, 5];
+export const borderRadii = [0, 3, 5];
 
 export const fontWeights = { bold: "bold" };
 

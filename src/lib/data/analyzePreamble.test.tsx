@@ -21,7 +21,7 @@ describe("analyzeData", async () => {
       mergeDefaults(
         analyzePreamble(entry, {
           title: "chaise",
-          asset: "fesses",
+          status: "fesses",
           tags: ["a", "b"],
         })
       )
@@ -29,7 +29,7 @@ describe("analyzeData", async () => {
       mergeDefaults({
         entry: {
           ...entry,
-          asset: "fesses",
+          status: "fesses",
         },
         tags: ["a", "b"],
       })

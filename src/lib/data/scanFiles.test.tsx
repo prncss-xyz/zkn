@@ -50,7 +50,7 @@ function sampleEntry(i: number, mtime: number) {
 function sampleUpdate(i: number) {
   const id = i + ".md";
   const op = {
-    asset: null,
+    status: null,
     id,
     links: {
       create: [],

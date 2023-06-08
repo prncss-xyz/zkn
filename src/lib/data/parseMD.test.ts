@@ -45,9 +45,9 @@ test`
     expect(res).toMatchInlineSnapshot(`
       {
         "entry": {
-          "asset": null,
           "id": "file.md",
           "mtime": 1,
+          "status": null,
           "title": null,
           "wordCount": 6,
         },

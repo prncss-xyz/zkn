@@ -24,7 +24,6 @@ interface AnalyzeResult {
   wordCount: number;
 }
 
-// TODO: assets
 function analyse(tree: Root): AnalyzeResult {
   const links: RawLink[] = [];
   let title: string | null = null;

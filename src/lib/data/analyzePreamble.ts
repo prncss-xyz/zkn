@@ -36,7 +36,7 @@ function toArray(raw: unknown) {
 }
 
 const dataSchema = z.object({
-  asset: z.preprocess(toNull, z.string().nullable()),
+  status: z.preprocess(toNull, z.string().nullable()),
   tags: z.preprocess(toArray, z.array(z.string()).default([])),
   event,
 });
@@ -44,7 +44,7 @@ const dataSchema = z.object({
 export function analyzePreamble(fileEntry: FileEntry, raw: unknown) {
   const data = dataSchema.parse(raw);
   return {
-    entry: { ...fileEntry, asset: data.asset },
+    entry: { ...fileEntry, status: data.status },
     event: data.event,
     tags: data.tags,
   };

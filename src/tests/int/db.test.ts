@@ -56,7 +56,7 @@ describe("db", () => {
     const result = await prisma.entry.findUnique({
       where: { id: "1.md" },
       select: {
-        asset: true,
+        status: true,
         mtime: true,
         title: true,
         wordCount: true,
@@ -82,7 +82,7 @@ describe("db", () => {
     expect(result).toMatchObject({
       mtime: 1,
       title: "title 1",
-      asset: null,
+      status: null,
       wordCount: 4,
       event: {
         day: false,

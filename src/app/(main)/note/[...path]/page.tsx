@@ -2,7 +2,7 @@ import { Box } from "@/app/components/box";
 import prisma from "@/lib/data/prisma";
 import { getProcessor } from "@/lib/data/processMD";
 import Link from "next/link";
-import { Children, createElement, Fragment, ReactNode } from "react";
+import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
 import { extname } from "path";
@@ -56,11 +56,11 @@ async function getEntry(id: string) {
     where: { id },
     select: {
       id: true,
-      wordCount: true,
+      wordcount: true,
       links: true,
-      status: true,
       tags: true,
       mtime: true,
+      event: true,
     },
   });
   if (!entry) return null;
@@ -86,11 +86,35 @@ async function getNote(id: string) {
   };
 }
 
+interface IEvent {
+  start: Date;
+  end: Date | null;
+  day: boolean;
+}
+
 interface IMetaData {
-  wordCount: number;
-  status: string | null;
+  id: string;
+  wordcount: number;
   tags: { tagId: string }[];
   mtime: number;
+  event: IEvent | null;
+}
+
+function Event({ event }: { event: IEvent }) {
+  const start = event.day
+    ? event.start.toLocaleDateString()
+    : event.start.toLocaleString();
+  if (!event.end) {
+    return <>{start}</>;
+  }
+  const end = event.day
+    ? event.end.toLocaleDateString()
+    : event.end.toLocaleString();
+  return (
+    <>
+      {start} &mdash; {end}
+    </>
+  );
 }
 
 function MetaDataEntry({
@@ -101,7 +125,7 @@ function MetaDataEntry({
   children: ReactNode;
 }) {
   return (
-    <Box p={5} display="flex" flexDirection="row">
+    <Box p={5} display="flex" flexDirection="row" alignItems="center">
       <Box width="labelWidth">{label}</Box>
       {children}
     </Box>
@@ -109,17 +133,17 @@ function MetaDataEntry({
 }
 
 function MetaData({ ...entry }: IMetaData) {
-  const created = new Date(entry.mtime).toLocaleDateString();
+  const modified = new Date(entry.mtime).toLocaleDateString();
   return (
     <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
-      {entry.status && (
-        <MetaDataEntry label="status">
-          <Box color="link">{entry.status}</Box>
+      <MetaDataEntry label="modified">
+        <Box>{modified}</Box>
+      </MetaDataEntry>
+      {entry.event && (
+        <MetaDataEntry label="event">
+          <Event event={entry.event} />
         </MetaDataEntry>
       )}
-      <MetaDataEntry label="created">
-        <Box color="link">{created}</Box>
-      </MetaDataEntry>
       {entry.tags.length > 0 && (
         <MetaDataEntry label="tags">
           <Box display="flex" flexDirection="row" gap={10}>
@@ -128,7 +152,6 @@ function MetaData({ ...entry }: IMetaData) {
                 px={5}
                 borderRadius={3}
                 backgroundColor="foreground1"
-                color="link"
                 key={tag.tagId}
               >
                 {tag.tagId}
@@ -137,7 +160,10 @@ function MetaData({ ...entry }: IMetaData) {
           </Box>
         </MetaDataEntry>
       )}
-      <MetaDataEntry label="word count">{entry.wordCount}</MetaDataEntry>
+      <MetaDataEntry label="filename">
+        <Box as="code">{entry.id}</Box>
+      </MetaDataEntry>
+      <MetaDataEntry label="wordcount">{entry.wordcount}</MetaDataEntry>
     </Box>
   );
 }

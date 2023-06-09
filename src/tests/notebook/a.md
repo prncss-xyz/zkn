@@ -1,8 +1,9 @@
 ---
-status: pending
 tags:
   - tagA
   - tagB
+  - w/pending
+event: 2020-10-12
 ---
 
 # Toto
@@ -15,4 +16,4 @@ toto
 
 tata [[b]] tata
 
-twitwi
+twitwij

@@ -24,7 +24,7 @@ export default async function RootLayout({
           display="flex"
           justifyContent="center"
         >
-          <Box width="screenMaxWidth">{children}</Box>
+          {children}
         </Box>
       </body>
     </html>

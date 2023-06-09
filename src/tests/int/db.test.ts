@@ -21,7 +21,8 @@ const file2 = `---
 tags:
   - b
   - c
-event: 2022-10-11
+event: 
+  start: 2020-10-11T11:30
 ---
 
 # title 2
@@ -56,10 +57,9 @@ describe("db", () => {
     const result = await prisma.entry.findUnique({
       where: { id: "1.md" },
       select: {
-        status: true,
         mtime: true,
         title: true,
-        wordCount: true,
+        wordcount: true,
         event: {
           select: {
             day: true,
@@ -82,12 +82,11 @@ describe("db", () => {
     expect(result).toMatchObject({
       mtime: 1,
       title: "title 1",
-      status: null,
-      wordCount: 4,
+      wordcount: 4,
       event: {
         day: false,
         start: eventDate,
-        end: eventDate,
+        end: null,
       },
       links: [
         {
@@ -113,13 +112,13 @@ describe("db", () => {
       where: { id: "1.md" },
       select: { title: true, tags: true, event: true },
     });
-    const eventDate2 = new Date("2022-10-11");
+    const eventDate2 = new Date("2020-10-11T11:30");
     expect(result2).toMatchObject({
       title: "title 2",
       event: {
         day: false,
         start: eventDate2,
-        end: eventDate2,
+        end: null,
       },
     });
     const tags2 = result2?.tags.map((tag) => tag.tagId).sort();

@@ -50,7 +50,6 @@ function sampleEntry(i: number, mtime: number) {
 function sampleUpdate(i: number) {
   const id = i + ".md";
   const op = {
-    status: null,
     id,
     links: {
       create: [],
@@ -60,7 +59,7 @@ function sampleUpdate(i: number) {
       create: [],
     },
     title: "title " + i,
-    wordCount: 2,
+    wordcount: 2,
   };
   return {
     create: op,

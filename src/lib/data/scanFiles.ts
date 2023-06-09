@@ -19,9 +19,8 @@ export interface FileEntry {
 }
 
 const defaultEntry = {
-  status: null,
   title: null,
-  wordCount: 0,
+  wordcount: 0,
 };
 
 const defaultData = {

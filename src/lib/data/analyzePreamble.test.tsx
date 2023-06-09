@@ -21,7 +21,6 @@ describe("analyzeData", async () => {
       mergeDefaults(
         analyzePreamble(entry, {
           title: "chaise",
-          status: "fesses",
           tags: ["a", "b"],
         })
       )
@@ -29,7 +28,6 @@ describe("analyzeData", async () => {
       mergeDefaults({
         entry: {
           ...entry,
-          status: "fesses",
         },
         tags: ["a", "b"],
       })
@@ -82,7 +80,7 @@ describe("analyzeData", async () => {
         entry,
         event: {
           start: new Date("2020-10-10"),
-          end: new Date("2020-10-10"),
+          end: null,
           day: false,
         },
       })

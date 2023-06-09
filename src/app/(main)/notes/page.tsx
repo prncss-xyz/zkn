@@ -6,7 +6,9 @@ import { setup } from "@/lib/data/scanFiles";
 export default async function Page() {
   await setup();
   const entries = await prisma.entry.findMany({
-    select: { id: true, title: true },
+    select: { id: true, title: true, mtime: true },
+    orderBy: { id: "asc" },
+    // take: 100,
   });
 
   // entries.sort((a, b) => b.mtime - a.mtime);

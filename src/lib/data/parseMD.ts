@@ -10,7 +10,6 @@ import { analyzePreamble } from "./analyzePreamble";
 import { getProcessor } from "./processMD";
 
 interface RawLink {
-  // TODO: source
   context: string;
   target: string;
   position: Element["position"];
@@ -21,7 +20,7 @@ interface AnalyzeResult {
   title: string | null;
   links: RawLink[];
   rawText: string;
-  wordCount: number;
+  wordcount: number;
 }
 
 function analyse(tree: Root): AnalyzeResult {
@@ -54,7 +53,6 @@ function analyse(tree: Root): AnalyzeResult {
             const context = toHtml(ancestor.children);
             links.push({
               context,
-              // TODO: source
               target,
               position,
               title,
@@ -75,8 +73,8 @@ function analyse(tree: Root): AnalyzeResult {
   );
   const rawText = toText(tree);
   // wiki link titles arbitrarily count as one word
-  const wordCount = wordsCount(rawText) + links.length;
-  return { title, links, rawText, wordCount };
+  const wordcount = wordsCount(rawText) + links.length;
+  return { title, links, rawText, wordcount };
 }
 
 function spit() {
@@ -91,7 +89,7 @@ export async function analyzeMD(fileEntry: FileEntry, raw: string) {
   // in absence of preamble just pass fileEntry data
   const fromPreamble = analyzePreamble(fileEntry, data || {});
   const result = (await processor.process(content)).result as AnalyzeResult;
-  const { title, wordCount, links: links_ } = result;
+  const { title, wordcount, links: links_ } = result;
   const links = links_.map((link: any, rank: any) => ({
     // sourceId: fileEntry.id,
     targetId: link.target,
@@ -100,7 +98,7 @@ export async function analyzeMD(fileEntry: FileEntry, raw: string) {
   }));
   return {
     ...fromPreamble,
-    entry: { ...fromPreamble.entry, title, wordCount },
+    entry: { ...fromPreamble.entry, title, wordcount },
     links,
   };
 }

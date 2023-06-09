@@ -1,5 +1,3 @@
-// TODO: delete propagation
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,11 +11,10 @@ model Entry {
   id        String          @id
   mtime     Float
   title     String?
-  wordCount Int
+  wordcount Int
   tags      TagsOnEntries[]
   event     Event?
   links     Link[]          @relation("source")
-  status    String?
 }
 
 model Tag {
@@ -35,11 +32,11 @@ model TagsOnEntries {
 }
 
 model Event {
-  id      Int      @id @default(autoincrement())
-  entry   Entry    @relation(fields: [entryId], references: [id])
-  entryId String   @unique
+  id      Int       @id @default(autoincrement())
+  entry   Entry     @relation(fields: [entryId], references: [id])
+  entryId String    @unique
   start   DateTime
-  end     DateTime
+  end     DateTime?
   day     Boolean
 }
 

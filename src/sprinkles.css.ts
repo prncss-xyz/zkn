@@ -26,7 +26,9 @@ const unconditionalProperties = defineProperties({
     height: sizes,
     fontWeight: fontWeights,
     fontSize: fontSizes,
+    flexWrap: ["wrap"],
     justifyContent: ["flex-start", "space-between", "flex-end", "center"],
+    overflowX: ["scroll"],
     flexShrink: [0],
     textAlign: ["center"],
     borderStyle: {
@@ -55,9 +57,10 @@ const responsiveProperties = defineProperties({
     marginRight: space,
     borderRadius: borderRadii,
     flexDirection: ["column", "row"],
-    alignItems: ["center", "flex-end", "flex-start"],
+    alignItems: ["center", "flex-end", "flex-start", "baseline"],
     display: ["inline", "flex", "block", "none"],
     gap: space,
+    rowGap: space,
   },
   shorthands: {
     p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],

@@ -1,0 +1,12 @@
+kanban:
+  workflow:
+    - w/backlog
+    - w/doing
+    - w/pending
+    - w/completed
+    - w/abandonned
+  lifecycle:
+    - l/research
+    - l/acquire
+    - l/backlog
+    - l/dispose

@@ -23,7 +23,7 @@ test`
         entry: {
           ...entry,
           title: "titre",
-          wordCount: 2,
+          wordcount: 2,
         },
         tags: ["a"],
       })
@@ -47,9 +47,8 @@ test`
         "entry": {
           "id": "file.md",
           "mtime": 1,
-          "status": null,
           "title": null,
-          "wordCount": 6,
+          "wordcount": 6,
         },
         "event": null,
         "links": [

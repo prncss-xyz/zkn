@@ -1,33 +1,37 @@
 import { z } from "zod";
 import { FileEntry } from "./scanFiles";
 
-// TODO: status (task)
-// const status = data.status?.at(-1)?.name;
+function isDay(raw: any) {
+  if (!(raw instanceof Date)) return false;
+  if (raw.getHours() !== 0) return false;
+  if (raw.getMinutes() !== 0) return false;
+  if (raw.getSeconds() !== 0) return false;
+  if (raw.getMilliseconds() !== 0) return false;
+  return true;
+}
 
 const event = z.preprocess(
   function (raw: any) {
-    if (raw instanceof Date) {
-      return { start: raw, end: raw };
-    }
-    if (raw && typeof raw === "object") {
-      raw.end ??= raw?.start;
-    }
     if (!raw) return null;
+    if (typeof raw === "string" || raw instanceof Date) {
+      raw = { start: raw };
+    }
+    // sometimes YAML parser return dates, sometimes strings that can be converted to dates
+    if (typeof raw.start === "string") raw.start = new Date(raw.start);
+    if (typeof raw.end === "string") raw.end = new Date(raw.end);
+    // TODO: test
+    raw.day ??= isDay(raw.start) && (!raw.end || isDay(raw.end));
+    if (!raw.end || raw.end === raw.start) raw.end = null;
     return raw;
   },
   z.nullable(
     z.object({
       start: z.date(),
-      end: z.date(),
-      day: z.boolean().default(false),
+      end: z.nullable(z.date()),
+      day: z.boolean(),
     })
   )
 );
-
-function toNull(raw: unknown) {
-  if (typeof raw === "undefined") return null;
-  return raw;
-}
 
 function toArray(raw: unknown) {
   if (raw == undefined) return [];
@@ -36,7 +40,6 @@ function toArray(raw: unknown) {
 }
 
 const dataSchema = z.object({
-  status: z.preprocess(toNull, z.string().nullable()),
   tags: z.preprocess(toArray, z.array(z.string()).default([])),
   event,
 });
@@ -44,7 +47,7 @@ const dataSchema = z.object({
 export function analyzePreamble(fileEntry: FileEntry, raw: unknown) {
   const data = dataSchema.parse(raw);
   return {
-    entry: { ...fileEntry, status: data.status },
+    entry: { ...fileEntry },
     event: data.event,
     tags: data.tags,
   };

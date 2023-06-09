@@ -3,5 +3,9 @@ import { setup } from "@/lib/data/scanFiles";
 
 export default async function Page() {
   await setup();
-  return <Box fontWeight="bold">TODO</Box>;
+  return (
+    <Box px={{ xs: 5, md: 0 }} fontWeight="bold">
+      TODO
+    </Box>
+  );
 }

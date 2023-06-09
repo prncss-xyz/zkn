@@ -7,11 +7,16 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <Box display="flex" flexDirection="column" gap={10}>
-      <Nav />
-      {/* hr element do not align perfectly with other components */}
-      <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />
-      <Box as="main">{children}</Box>
-    </Box>
+    <>
+      <Box
+        width="screenMaxWidth"
+        display="flex"
+        flexDirection="column"
+        gap={20}
+      >
+        <Nav />
+        <Box as="main">{children}</Box>
+      </Box>
+    </>
   );
 }

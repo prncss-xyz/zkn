@@ -10,6 +10,21 @@ import { Backlink } from "./backlink";
 import { setup } from "@/lib/data/scanFiles";
 import { markdown } from "./page.css";
 
+function IdPath({ id }: { id: string }) {
+  const segments = id.split("/").slice(0, -1);
+  if (!segments.length) return null;
+  return (
+    <Box display="flex" flexDirection="row" gap={10}>
+      {segments.map((segment, i) => (
+        <>
+          <Box key={i}><code>{segment}</code></Box>
+          {i < segments.length - 1 && <Box>/</Box>}
+        </>
+      ))}
+    </Box>
+  );
+}
+
 // This is used while rendering markdown contents. It intecepts internal links to render them as `Link` elements
 function MDLink({
   href,
@@ -191,6 +206,7 @@ export default async function Page({
   const { entry, idToTitle, content, backlinks } = res;
   return (
     <Box display="flex" flexDirection="column" gap={10}>
+      <IdPath id={entry.id} />
       <Box
         backgroundColor="foreground1"
         p={5}

@@ -34,7 +34,7 @@ export const Link = forwardRef<
       shallow={shallow}
       locale={locale}
       ref={ref}
-      className={clsx(className, sprinkles(extra))}
+      className={clsx(sprinkles(extra), className)}
     >
       {children}
     </Link_>

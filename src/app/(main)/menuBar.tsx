@@ -26,14 +26,7 @@ export function MenuLink({
         {children}
       </Dialog.Close>
     );
-  return (
-    <Link
-      href={href}
-      className={sprinkles({ color: "link", fontWeight: "bold" })}
-    >
-      {children}
-    </Link>
-  );
+  return <Link href={href}>{children}</Link>;
 }
 
 export function MenuBar({ children }: { children: ReactNode }) {

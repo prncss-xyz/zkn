@@ -40,6 +40,8 @@ globalStyle("a", {
   all: "unset",
   display: "inline",
   cursor: "pointer",
+  color: vars.colors.link,
+  fontWeight: "bold",
   boxSizing: "border-box",
 });
 

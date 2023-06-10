@@ -5,22 +5,29 @@ import Link from "next/link";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
-import { extname } from "path";
+import { basename, extname } from "node:path";
 import { Backlink } from "./backlink";
 import { setup } from "@/lib/data/scanFiles";
 import { markdown } from "./page.css";
+import { sprinkles } from "@/sprinkles.css";
 
 function IdPath({ id }: { id: string }) {
   const segments = id.split("/").slice(0, -1);
-  if (!segments.length) return null;
   return (
-    <Box display="flex" flexDirection="row" gap={10}>
+    <Box display="flex" flexDirection="row" alignItems="center" gap={10}>
       {segments.map((segment, i) => (
         <>
-          <Box key={i}><code>{segment}</code></Box>
-          {i < segments.length - 1 && <Box>/</Box>}
+          <Link
+            key={i}
+            className={sprinkles({ fontFamily: "monospace" })}
+            href={`/notes?dir=${segments.slice(0, i + 1).join("/")}`}
+          >
+            {segment}
+          </Link>
+          <Box>/</Box>
         </>
       ))}
+      <Box fontFamily="monospace">{basename(id)}</Box>
     </Box>
   );
 }
@@ -149,6 +156,7 @@ function MetaDataEntry({
 
 function MetaData({ ...entry }: IMetaData) {
   const modified = new Date(entry.mtime).toLocaleDateString();
+  const tags = entry.tags.map((tag) => tag.tagId).sort();
   return (
     <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
       <MetaDataEntry label="modified">
@@ -162,22 +170,22 @@ function MetaData({ ...entry }: IMetaData) {
       {entry.tags.length > 0 && (
         <MetaDataEntry label="tags">
           <Box display="flex" flexDirection="row" gap={10}>
-            {entry.tags.map((tag) => (
-              <Box
-                px={5}
-                borderRadius={3}
-                backgroundColor="foreground1"
-                key={tag.tagId}
+            {tags.map((tag) => (
+              <Link
+                key={tag}
+                className={sprinkles({
+                  px: 5,
+                  borderRadius: 3,
+                  backgroundColor: "foreground1",
+                })}
+                href={`/notes?tags=${tag}`}
               >
-                {tag.tagId}
-              </Box>
+                {tag}
+              </Link>
             ))}
           </Box>
         </MetaDataEntry>
       )}
-      <MetaDataEntry label="filename">
-        <Box as="code">{entry.id}</Box>
-      </MetaDataEntry>
       <MetaDataEntry label="wordcount">{entry.wordcount}</MetaDataEntry>
     </Box>
   );

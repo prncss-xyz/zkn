@@ -3,6 +3,7 @@ tags:
   - tagA
   - tagB
   - w/pending
+  - wa
 event: 2020-10-12
 ---
 

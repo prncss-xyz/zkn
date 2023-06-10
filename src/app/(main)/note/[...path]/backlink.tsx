@@ -7,7 +7,6 @@ import { Root } from "hast";
 import { getBacklinks, getIdToTitle, getTitle } from "@/lib/data/actions";
 import { Box } from "@/app/components/box";
 import Link from "next/link";
-import { sprinkles } from "@/sprinkles.css";
 import { backlink as backlinkClass } from "./backlink.css";
 
 function transform() {
@@ -62,12 +61,7 @@ export async function Backlink({
     .process(backlink.context);
   return (
     <Box display="flex" flexDirection="column" gap={5}>
-      <Link
-        href={`/note/${backlink.sourceId}`}
-        className={sprinkles({ color: "link", fontWeight: "bold" })}
-      >
-        {title}
-      </Link>
+      <Link href={`/note/${backlink.sourceId}`}>{title}</Link>
       <Box className={backlinkClass}> {result}</Box>
     </Box>
   );

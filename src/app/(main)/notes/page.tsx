@@ -1,32 +1,22 @@
-import prisma from "@/lib/data/prisma";
 import { Box } from "@/app/components/box";
 import Link from "next/link";
 import { setup } from "@/lib/data/scanFiles";
 import { group } from "moderndash";
-import { dirname } from "node:path";
+import { basename, dirname } from "node:path";
+import prisma from "@/lib/data/prisma";
+import {
+  IEntriesFromSearch,
+  whereFromSearch,
+} from "@/app/utils/whereFromSearch";
+import { titleSorter } from "@/app/utils/titleSorter";
 
 interface IEntry {
   id: string;
   title: string | null;
 }
 
-function cmp(a: any, b: any) {
-  if (a < b) return -1;
-  if (a > b) return 1;
-  return 0;
-}
-
-function sortByTitle(a: IEntry, b: IEntry) {
-  if (!a.title && !b.title) {
-    return cmp(a.id, b.id);
-  }
-  if (!a.title) return -1;
-  if (!b.title) return 1;
-  return cmp(a.title, b.title);
-}
-
 function Notes({ entries }: { entries: IEntry[] }) {
-  entries.sort(sortByTitle);
+  entries.sort(titleSorter);
   return (
     <Box
       display="flex"
@@ -37,8 +27,6 @@ function Notes({ entries }: { entries: IEntry[] }) {
       {entries.map((entry) => (
         <Box
           key={entry.id}
-          color="link"
-          fontWeight="bold"
           p={5}
           borderStyle="top"
           borderWidth={1}
@@ -48,7 +36,7 @@ function Notes({ entries }: { entries: IEntry[] }) {
           flexDirection="column"
         >
           <Link href={`note/${entry.id}`}>
-            {entry.title ? entry.title : <i>{entry.id}</i>}
+            {entry.title ? entry.title : <code>{basename(entry.id)}</code>}
           </Link>
         </Box>
       ))}
@@ -56,20 +44,24 @@ function Notes({ entries }: { entries: IEntry[] }) {
   );
 }
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: IEntriesFromSearch;
+}) {
   await setup();
   const entries = await prisma.entry.findMany({
     select: { id: true, title: true, mtime: true },
+    where: whereFromSearch(searchParams),
     orderBy: { id: "asc" },
   });
+
   const grouped = group(entries, (entry) => dirname(entry.id));
   return (
     <Box display="flex" flexDirection="column" gap={20}>
       {Object.entries(grouped).map(([p, entries]) => (
         <Box display="flex" flexDirection="column" gap={5} key={p}>
-          <Box>
-            <code>{p || "."}</code>
-          </Box>
+          <Box fontFamily="monospace">{p || "."}</Box>
           <Notes entries={entries} />
         </Box>
       ))}

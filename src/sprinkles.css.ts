@@ -25,6 +25,7 @@ const unconditionalProperties = defineProperties({
     width: sizes,
     height: sizes,
     fontWeight: fontWeights,
+    fontFamily: ["monospace"],
     fontSize: fontSizes,
     flexWrap: ["wrap"],
     justifyContent: ["flex-start", "space-between", "flex-end", "center"],

@@ -3,10 +3,9 @@ import { getPrefixLen } from "@/app/utils/prefixLen";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
 import prisma from "@/lib/data/prisma";
 import { setup } from "@/lib/data/scanFiles";
-import Link from "next/link";
 import { Nav } from "../(main)/nav";
-import { sprinkles } from "@/sprinkles.css";
 import { IEntriesFromSearch, whereFromSearch } from "../utils/whereFromSearch";
+import { Link } from "../components/link";
 
 // wether to hide empty kanban columns
 const dense = true;
@@ -40,29 +39,26 @@ async function Column({
       gap={5}
     >
       <Link
-        className={sprinkles({
-          backgroundColor: "foreground2",
-          py: 5,
-          borderRadius: 5,
-          textAlign: "center",
-        })}
+        backgroundColor="foreground2"
+        py={5}
+        borderRadius={5}
+        textAlign="center"
         href={`/notes/?tags=${tagId}`}
       >
         {tagId.slice(prefixLen)}
       </Link>
       {entries.map((entry) => (
-        <Box
+        <Link
           key={entry.id}
+          href={`note/${entry.id}`}
           backgroundColor="foreground1"
           borderRadius={5}
           p={5}
           display="flex"
           flexDirection="column"
         >
-          <Link href={`note/${entry.id}`}>
-            {entry.title ? entry.title : <i>{entry.id}</i>}
-          </Link>
-        </Box>
+          {entry.title ? entry.title : <i>{entry.id}</i>}
+        </Link>
       ))}
     </Box>
   );
@@ -98,10 +94,11 @@ function WorkflowSelector({
         ) : (
           <Box key={workflow_} px={5}>
             <Link
-              href={{
-                pathname: "kanban",
-                query: { workflow: workflow_ },
-              }}
+              href={{ pathname: "" }}
+              // href={{
+              //   pathname: "kanban",
+              //   query: { workflow: workflow_ },
+              // }}
             >
               {workflow_}
             </Link>

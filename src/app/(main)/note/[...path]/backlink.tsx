@@ -6,8 +6,8 @@ import { visit } from "unist-util-visit";
 import { Root } from "hast";
 import { getBacklinks, getIdToTitle, getTitle } from "@/lib/data/actions";
 import { Box } from "@/app/components/box";
-import Link from "next/link";
 import { backlink as backlinkClass } from "./backlink.css";
+import { Link } from "@/app/components/link";
 
 function transform() {
   return async function (tree: Root) {

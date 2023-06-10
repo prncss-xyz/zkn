@@ -1,7 +1,6 @@
 import { Box } from "@/app/components/box";
 import prisma from "@/lib/data/prisma";
 import { getProcessor } from "@/lib/data/processMD";
-import Link from "next/link";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
@@ -10,6 +9,7 @@ import { Backlink } from "./backlink";
 import { setup } from "@/lib/data/scanFiles";
 import { markdown } from "./page.css";
 import { sprinkles } from "@/sprinkles.css";
+import { Link } from "@/app/components/link";
 
 function IdPath({ id }: { id: string }) {
   const segments = id.split("/").slice(0, -1);
@@ -18,8 +18,8 @@ function IdPath({ id }: { id: string }) {
       {segments.map((segment, i) => (
         <>
           <Link
+            fontFamily="monospace"
             key={i}
-            className={sprinkles({ fontFamily: "monospace" })}
             href={`/notes?dir=${segments.slice(0, i + 1).join("/")}`}
           >
             {segment}
@@ -172,12 +172,10 @@ function MetaData({ ...entry }: IMetaData) {
           <Box display="flex" flexDirection="row" gap={10}>
             {tags.map((tag) => (
               <Link
+                px={5}
+                borderRadius={3}
+                backgroundColor="foreground1"
                 key={tag}
-                className={sprinkles({
-                  px: 5,
-                  borderRadius: 3,
-                  backgroundColor: "foreground1",
-                })}
                 href={`/notes?tags=${tag}`}
               >
                 {tag}
@@ -206,9 +204,9 @@ export default async function Page({
         <Box>
           The node with filename <code>{id}</code> cannot be found.
         </Box>
-        <Box>
-          <Link href="/">Back</Link>
-        </Box>
+        <Link display="block" href="/">
+          Back
+        </Link>
       </>
     );
   const { entry, idToTitle, content, backlinks } = res;

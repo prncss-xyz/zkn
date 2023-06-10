@@ -4,12 +4,12 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import * as Dialog from "@radix-ui/react-dialog";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import Link from "next/link";
 import { sprinkles } from "@/sprinkles.css";
 import { hideLinks, overlayLayout } from "./menuBar.css";
 import { Box } from "../components/box";
 import { screenOverlay } from "../components/screenOverlay.css";
 import { sizes } from "@/style";
+import { Link } from "../components/link";
 
 export function MenuLink({
   children,

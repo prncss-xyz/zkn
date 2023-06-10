@@ -1,5 +1,4 @@
 import { Box } from "@/app/components/box";
-import Link from "next/link";
 import { setup } from "@/lib/data/scanFiles";
 import { group } from "moderndash";
 import { basename, dirname } from "node:path";
@@ -9,6 +8,7 @@ import {
   whereFromSearch,
 } from "@/app/utils/whereFromSearch";
 import { titleSorter } from "@/app/utils/titleSorter";
+import { Link } from "@/app/components/link";
 
 interface IEntry {
   id: string;
@@ -25,7 +25,7 @@ function Notes({ entries }: { entries: IEntry[] }) {
       borderRadius={{ xs: 0, md: 5 }}
     >
       {entries.map((entry) => (
-        <Box
+        <Link
           key={entry.id}
           p={5}
           borderStyle="top"
@@ -34,11 +34,10 @@ function Notes({ entries }: { entries: IEntry[] }) {
           // this makes the whole width of the box clickable
           display="flex"
           flexDirection="column"
+          href={`note/${entry.id}`}
         >
-          <Link href={`note/${entry.id}`}>
-            {entry.title ? entry.title : <code>{basename(entry.id)}</code>}
-          </Link>
-        </Box>
+          {entry.title ? entry.title : <code>{basename(entry.id)}</code>}
+        </Link>
       ))}
     </Box>
   );

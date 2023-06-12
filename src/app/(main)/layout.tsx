@@ -14,7 +14,7 @@ export default async function Layout({
         flexDirection="column"
         gap={20}
       >
-        <Nav />
+        {/* <Nav /> */}
         <Box as="main">{children}</Box>
       </Box>
     </>

@@ -59,7 +59,7 @@ const responsiveProperties = defineProperties({
     borderRadius: borderRadii,
     flexDirection: ["column", "row"],
     alignItems: ["center", "flex-end", "flex-start", "baseline"],
-    display: ["inline", "flex", "block", "none"],
+    display: ["inline", "flex", "block", "inline-block", "none"],
     gap: space,
     rowGap: space,
   },

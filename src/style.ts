@@ -25,8 +25,10 @@ export const borderWidths = [1];
 
 export const _light = {
   text: "hsl(0, 0%, 30%)",
+  disabled: "hsl(0, 0%, 10%)",
   link: "hsl(260, 80%, 63%)",
   foreground1: "hsl(150, 10%, 80%)",
+  active: "hsl(40, 60%, 50%)",
   foreground2: "hsl(150, 10%, 70%)",
   background: "hsl(150, 10%, 50%)",
 };
@@ -34,8 +36,10 @@ export const _light = {
 export const _dark = {
   ..._light,
   text: "hsl(0, 0%, 65%)",
+  disabled: "hsl(0, 0%, 35%)",
   link: "hsl(260, 80%, 60%)",
   foreground1: "hsl(150, 10%, 25%)",
+  active: "hsl(40, 50%, 40%)",
   foreground2: "hsl(150, 10%, 17%)",
   background: "hsl(150, 10%, 10%)",
 };

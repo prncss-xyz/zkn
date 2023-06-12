@@ -4,15 +4,14 @@ import { getProcessor } from "@/lib/data/processMD";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
-import { basename, extname } from "node:path";
+import { basename, extname, sep } from "node:path";
 import { Backlink } from "./backlink";
 import { setup } from "@/lib/data/scanFiles";
 import { markdown } from "./page.css";
-import { sprinkles } from "@/sprinkles.css";
 import { Link } from "@/app/components/link";
 
 function IdPath({ id }: { id: string }) {
-  const segments = id.split("/").slice(0, -1);
+  const segments = id.split(sep).slice(0, -1);
   return (
     <Box display="flex" flexDirection="row" alignItems="center" gap={10}>
       {segments.map((segment, i) => (
@@ -20,11 +19,11 @@ function IdPath({ id }: { id: string }) {
           <Link
             fontFamily="monospace"
             key={i}
-            href={`/notes?dir=${segments.slice(0, i + 1).join("/")}`}
+            href={`/notes?dir=${segments.slice(0, i + 1).join(sep)}`}
           >
             {segment}
           </Link>
-          <Box>/</Box>
+          <Box>{sep}</Box>
         </>
       ))}
       <Box fontFamily="monospace">{basename(id)}</Box>

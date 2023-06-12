@@ -3,33 +3,35 @@ import { getPrefixLen } from "@/app/utils/prefixLen";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
 import prisma from "@/lib/data/prisma";
 import { setup } from "@/lib/data/scanFiles";
-import { Nav } from "../(main)/nav";
-import { IEntriesFromSearch, whereFromSearch } from "../utils/whereFromSearch";
 import { Link } from "../components/link";
+import { Navigator } from "../components/navigator";
+import { sep } from "node:path";
+import { ISearch, searchToQuery } from "../components/search";
+import { searchToWhere } from "../components/where";
 
 // wether to hide empty kanban columns
 const dense = true;
 
+interface IEntry {
+  id: string;
+  title: string | null;
+  mtime: number;
+  tags: { tagId: string }[];
+}
+
 async function Column({
   tag: tagId,
   prefixLen,
-  searchParams,
+  entries,
 }: {
   tag: string;
   prefixLen: number;
-  searchParams: IEntriesFromSearch;
+  entries: IEntry[];
 }) {
-  const searchTag = searchParams.tags ? `${searchParams.tags} ${tagId}` : tagId;
-  searchParams = {
-    ...searchParams,
-    tags: searchTag,
-  };
-  const entries = await prisma.entry.findMany({
-    select: { id: true, title: true, mtime: true },
-    where: whereFromSearch(searchParams),
-    orderBy: { mtime: "asc" },
-  });
-  if (dense && entries.length === 0) return null;
+  const entries_ = entries.filter((entry) =>
+    entry.tags.some(({ tagId: tagId_ }) => tagId_ === tagId)
+  );
+  if (dense && entries_.length === 0) return null;
   return (
     <Box
       flexShrink={0}
@@ -47,7 +49,7 @@ async function Column({
       >
         {tagId.slice(prefixLen)}
       </Link>
-      {entries.map((entry) => (
+      {entries_.map((entry) => (
         <Link
           key={entry.id}
           href={`note/${entry.id}`}
@@ -64,59 +66,14 @@ async function Column({
   );
 }
 
-function WorkflowSelector({
-  workflow,
-  workflows,
-}: {
-  workflow: string;
-  workflows: string[];
-}) {
-  if (workflows.length === 0) return null;
-  return (
-    <Box
-      px={{ s: 5, md: 0 }}
-      width="screenMaxWidth"
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-    >
-      {workflows.map((workflow_) =>
-        workflow_ === workflow ? (
-          <Box
-            key={workflow_}
-            fontWeight="bold"
-            px={5}
-            borderRadius={3}
-            backgroundColor="foreground1"
-          >
-            {workflow_}
-          </Box>
-        ) : (
-          <Box key={workflow_} px={5}>
-            <Link
-              href={{ pathname: "" }}
-              // href={{
-              //   pathname: "kanban",
-              //   query: { workflow: workflow_ },
-              // }}
-            >
-              {workflow_}
-            </Link>
-          </Box>
-        )
-      )}
-    </Box>
-  );
-}
-
 async function Kanban({
   workflow,
   tags,
-  searchParams,
+  entries,
 }: {
   workflow: string;
   tags: string[];
-  searchParams: IEntriesFromSearch;
+  entries: IEntry[];
 }) {
   if (!workflow)
     return (
@@ -148,8 +105,8 @@ async function Kanban({
         <Column
           key={tag}
           tag={tag}
+          entries={entries}
           prefixLen={getPrefixLen(tags)}
-          searchParams={searchParams}
         />
       ))}
     </Box>
@@ -159,9 +116,7 @@ async function Kanban({
 export default async function Layout({
   searchParams,
 }: {
-  searchParams: {
-    workflow?: string;
-  } & IEntriesFromSearch;
+  searchParams: ISearch;
 }) {
   await setup();
   const config = await getNotebookConfig();
@@ -169,6 +124,19 @@ export default async function Layout({
   const workflows = Object.keys(kanban);
   const workflow = searchParams.workflow ?? workflows[0] ?? "";
   const tags = kanban[workflow] ?? [];
+  const query = searchToQuery(searchParams);
+  // no need of/cannot use useCallback since it is a server component
+  const where = { ...searchToWhere(query) };
+  const entries = await prisma.entry.findMany({
+    select: {
+      id: true,
+      title: true,
+      mtime: true,
+      tags: { select: { tagId: true } },
+    },
+    where,
+    orderBy: { mtime: "asc" },
+  });
   return (
     <Box
       display="flex"
@@ -183,11 +151,15 @@ export default async function Layout({
         flexDirection="column"
         gap={20}
       >
-        <Nav />
-        <WorkflowSelector workflow={workflow} workflows={workflows} />
+        <Navigator
+          hrefObj={{ pathname: "/kanban", query }}
+          entries={entries}
+          config={config}
+          sep={sep}
+        />
       </Box>
       {/* @ts-ignore */}
-      <Kanban workflow={workflow} tags={tags} searchParams={searchParams} />
+      <Kanban workflow={workflow} tags={tags} entries={entries} />
     </Box>
   );
 }

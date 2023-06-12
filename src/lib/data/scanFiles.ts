@@ -80,7 +80,7 @@ async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const fullPath = path.join(notebookDir, id);
   let mtime: number;
   try {
-    mtime = (await stat(fullPath)).mtimeMs;
+    mtime = Math.floor((await stat(fullPath)).mtimeMs);
   } catch (err) {
     remove(id);
     return 0;

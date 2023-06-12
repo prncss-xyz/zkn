@@ -194,7 +194,7 @@ export default async function Page({
   params: { path: string[] };
 }) {
   await setup();
-  let id = path.join("/");
+  let id = path.map((p) => decodeURI(p)).join("/");
   if (!extname(id)) id += ".md";
   const res = await getNote(id);
   if (!res)

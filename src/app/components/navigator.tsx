@@ -1,11 +1,10 @@
 import { toggle } from "../utils/arrays";
-import { dirname } from "../utils/dirname";
-import { upDirs } from "../utils/upDirs";
 import { Box, BoxProps } from "./box";
 import { Link } from "./link";
 import { ReactNode } from "react";
 import { IHref, IQuery, ISearch } from "./search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
+import { headDir, upDirs } from "../utils/path";
 
 function isEmpty(o: object) {
   for (const _ in o) {
@@ -27,16 +26,6 @@ export function queryToSearch(query: IQuery) {
   return search;
 }
 
-export function queryURL(pathname: string, query: IQuery) {
-  const search: ISearch = {};
-  if (query.dir) search.dir = query.dir;
-  if (query.tags.length) search.tags = query.tags.join(" ");
-  if (pathname === "kanban" && query.kanban) search.kanban = query.kanban;
-  let searchString = new URLSearchParams(search).toString();
-  if (searchString) searchString = "?" + searchString;
-  return `${pathname}${searchString}`;
-}
-
 export function hrefURL({ pathname, query }: IHref) {
   const search: ISearch = {};
   if (query.dir) search.dir = query.dir;
@@ -53,7 +42,7 @@ interface IHrefDelta {
 }
 
 // using `??` makes it possible to erease a value by setting to ""
-function update(href: IHref, delta: IHrefDelta) {
+export function update(href: IHref, delta: IHrefDelta) {
   return {
     pathname: delta.pathname ?? href.pathname,
     query: {
@@ -64,18 +53,16 @@ function update(href: IHref, delta: IHrefDelta) {
   };
 }
 
-function NavLink({
+export function NavLink({
   hrefObj,
   delta,
-  active: active_,
   disabled,
   children,
   ...extra
 }: {
   hrefObj: IHref;
   delta: IHrefDelta;
-  active: boolean;
-  disabled: boolean;
+  disabled?: boolean;
   children: ReactNode;
 } & Omit<BoxProps, "href">) {
   const newHref = hrefURL(update(hrefObj, delta));
@@ -124,7 +111,6 @@ function KanbanSelector({
           key={label}
           hrefObj={hrefObj}
           delta={{ pathname: "/kanban", query: { kanban: label } }}
-          active={hrefObj.query.kanban === label}
           disabled={!enabledKanbans.includes(label)}
         >
           {label}
@@ -149,6 +135,7 @@ export function Navigator({
   const dirSet = new Set<string>();
   const kanbanSet = new Set<string>();
   const { query } = hrefObj;
+  const position = query.dir.length + 1;
   entries: for (const entry of entries) {
     const queryKanban = query.kanban; // this is for type inference
     if (
@@ -171,8 +158,8 @@ export function Navigator({
         }
       }
     }
-    const dir = dirname(sep, entry.id);
-    if (dir !== query.dir) dirSet.add(dir);
+    const dir = headDir(sep, entry.id, position);
+    if (dir) dirSet.add(dir);
   }
   const enabledTags = [...tagSet].sort();
   const enabledDirs = [...dirSet].sort();
@@ -185,8 +172,6 @@ export function Navigator({
           <NavLink
             hrefObj={hrefObj}
             delta={{ pathname: "/notes" }}
-            active={hrefObj.pathname === "/notes"}
-            disabled={false}
           >
             Notes
           </NavLink>
@@ -198,7 +183,6 @@ export function Navigator({
           <NavLink
             hrefObj={hrefObj}
             delta={{ query: { dir: "", tags: [] } }}
-            active={!someFilters}
             disabled={!someFilters}
           >
             Clear filters
@@ -222,8 +206,6 @@ export function Navigator({
                 key={dir}
                 hrefObj={hrefObj}
                 delta={{ query: { dir } }}
-                active={hrefObj.query.dir === dir}
-                disabled={false}
                 fontFamily="monospace"
               >
                 {dir || "."}
@@ -237,11 +219,9 @@ export function Navigator({
                 key={dir}
                 hrefObj={hrefObj}
                 delta={{ query: { dir } }}
-                active={hrefObj.query.dir === dir}
-                disabled={false}
                 fontFamily="monospace"
               >
-                {dir || "."}
+                {dir}
               </NavLink>
             ))}
           </Box>

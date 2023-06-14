@@ -1,7 +1,7 @@
 kanban:
   workflow:
     - w/backlog
-    - w/doing
+    - w/active
     - w/pending
     - w/completed
     - w/abandonned

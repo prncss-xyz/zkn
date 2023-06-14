@@ -1,4 +1,4 @@
-import { upDirs, dirname, headDir } from "./path";
+import { upDirs, dirname } from "./path";
 
 describe("upDirs", () => {
   it("should return the list of upper directories", () => {
@@ -14,13 +14,5 @@ describe("dirname", () => {
     expect(dirname("/", "/toto")).toBe("");
     expect(dirname("/", "a/toto")).toBe("a");
     expect(dirname("/", "a/b/toto")).toBe("a/b");
-  });
-});
-
-describe("headDir", () => {
-  it("should return first level dir of path (after position) if it exists", () => {
-    expect(headDir("/", "a/b/c")).toBe("a");
-    expect(headDir("/", "a/b/c", 2)).toBe("b");
-    expect(headDir("/", "a")).toBe(null);
   });
 });

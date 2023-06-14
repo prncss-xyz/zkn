@@ -12,9 +12,3 @@ export function dirname(sep: string, filepath: string) {
   if (index === -1) return "";
   return filepath.slice(0, index);
 }
-
-export function headDir(sep: string, filepath: string, position?: number) {
-  const index = filepath.indexOf(sep, position);
-  if (index === -1) return null;
-  return filepath.slice(0, index);
-}

@@ -30,6 +30,7 @@ const unconditionalProperties = defineProperties({
     flexWrap: ["wrap"],
     justifyContent: ["flex-start", "space-between", "flex-end", "center"],
     overflowX: ["scroll"],
+    overflowY: ["scroll"],
     flexShrink: [0],
     textAlign: ["center"],
     borderStyle: {

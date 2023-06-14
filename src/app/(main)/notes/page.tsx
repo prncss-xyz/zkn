@@ -1,15 +1,14 @@
 import { Box } from "@/app/components/box";
 import { setup } from "@/lib/data/scanFiles";
-import { group } from "moderndash";
 import { basename, sep } from "node:path";
 import prisma from "@/lib/data/prisma";
 import { titleSorter } from "@/app/utils/titleSorter";
 import { Link } from "@/app/components/link";
-import { NavLink, Navigator } from "@/app/components/navigator";
+import { Navigator } from "@/app/components/navigator";
 import { ISearch, searchToQuery } from "@/app/components/search";
 import { searchToWhere } from "@/app/components/where";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
-import { dirname } from "@/app/utils/path";
+import { maxH } from "../components/maxH.css";
 
 interface IEntry {
   id: string;
@@ -62,31 +61,19 @@ export default async function Page({
     where,
     orderBy: { id: "asc" },
   });
-  const grouped = group(entries, (entry) => dirname(sep, entry.id));
   const config = await getNotebookConfig();
   const hrefObj = { pathname: "/notes", query };
   return (
-    <Box display="flex" flexDirection="column" gap={20}>
+    <Box display="flex" flexDirection="column" gap={20} className={maxH}>
       <Navigator
         hrefObj={hrefObj}
         entries={entries}
         config={config}
         sep={sep}
       />
-      <Box display="flex" flexDirection="column" gap={20}>
-        {Object.entries(grouped).map(([p, entries]) => (
-          <Box display="flex" flexDirection="column" gap={5} key={p}>
-            <NavLink
-              hrefObj={hrefObj}
-              delta={{ query: { dir: p } }}
-              fontFamily="monospace"
-              px={{ xs: 5, md: 0 }}
-            >
-              {p || "."}
-            </NavLink>
-            <Notes entries={entries} />
-          </Box>
-        ))}
+
+      <Box overflowY="scroll">
+        <Notes entries={entries} />
       </Box>
     </Box>
   );

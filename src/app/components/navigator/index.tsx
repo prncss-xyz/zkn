@@ -1,10 +1,10 @@
-import { toggle } from "../utils/arrays";
-import { Box, BoxProps } from "./box";
-import { Link } from "./link";
+import { toggle } from "../../utils/arrays";
+import { Box, BoxProps } from "../box";
+import { Link } from "../link";
 import { ReactNode } from "react";
-import { IHref, IQuery, ISearch } from "./search";
+import { IHref, IQuery, ISearch } from "../../utils/search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
-import { headDir, upDirs } from "../utils/path";
+import { dirname, upDirs } from "../../utils/path";
 
 function isEmpty(o: object) {
   for (const _ in o) {
@@ -56,20 +56,18 @@ export function update(href: IHref, delta: IHrefDelta) {
 export function NavLink({
   hrefObj,
   delta,
-  disabled,
   children,
   ...extra
 }: {
   hrefObj: IHref;
   delta: IHrefDelta;
-  disabled?: boolean;
   children: ReactNode;
 } & Omit<BoxProps, "href">) {
   const newHref = hrefURL(update(hrefObj, delta));
   const active = hrefURL(hrefObj) === newHref;
-  if (active || disabled)
+  if (active)
     return (
-      <Box fontWeight="bold" color={active ? "active" : "disabled"} {...extra}>
+      <Box fontWeight="bold" color={"active"} {...extra}>
         {children}
       </Box>
     );
@@ -111,13 +109,49 @@ function KanbanSelector({
           key={label}
           hrefObj={hrefObj}
           delta={{ pathname: "/kanban", query: { kanban: label } }}
-          disabled={!enabledKanbans.includes(label)}
         >
           {label}
         </NavLink>
       ))}
     </Box>
   );
+}
+
+export function processNotes(
+  queryKanban: string,
+  entries: IEntry[],
+  config: INotebookConfig,
+  sep: string
+) {
+  const tagSet = new Set<string>();
+  const dirSet = new Set<string>();
+  const kanbanSet = new Set<string>();
+  entries: for (const entry of entries) {
+    if (
+      queryKanban &&
+      !entry.tags.some(({ tagId }) =>
+        config.kanban[queryKanban].includes(tagId)
+      )
+    ) {
+      continue entries;
+    }
+    for (const tag of entry.tags) {
+      tagSet.add(tag.tagId);
+      for (const [label, tags] of Object.entries(config.kanban)) {
+        if (kanbanSet.has(label)) continue;
+        if (tags.includes(tag.tagId)) {
+          kanbanSet.add(label);
+        }
+      }
+    }
+    for (const dir of upDirs(sep, dirname(sep, entry.id))) {
+      dirSet.add(dir);
+    }
+  }
+  const enabledTags = Array.from(tagSet).sort();
+  const enabledDirs = Array.from(dirSet).sort();
+  const enabledKanbans = Array.from(kanbanSet).sort();
+  return [enabledTags, enabledDirs, enabledKanbans] as const;
 }
 
 export function Navigator({
@@ -131,48 +165,23 @@ export function Navigator({
   config: INotebookConfig;
   sep: string;
 }) {
-  const tagSet = new Set<string>();
-  const dirSet = new Set<string>();
-  const kanbanSet = new Set<string>();
-  const { query } = hrefObj;
-  const position = query.dir.length + 1;
-  entries: for (const entry of entries) {
-    const queryKanban = query.kanban; // this is for type inference
-    if (
-      queryKanban &&
-      hrefObj.pathname === "/kanban" &&
-      query.kanban &&
-      !entry.tags.some(({ tagId }) =>
-        config.kanban[queryKanban].includes(tagId)
-      )
-    ) {
-      continue entries;
-    }
-    for (const tag of entry.tags) {
-      tagSet.add(tag.tagId);
-      for (const [label, tags] of Object.entries(config.kanban)) {
-        // if (label === query.kanban) continue;
-        if (kanbanSet.has(label)) continue;
-        if (tags.includes(tag.tagId)) {
-          kanbanSet.add(label);
-        }
-      }
-    }
-    const dir = headDir(sep, entry.id, position);
-    if (dir) dirSet.add(dir);
-  }
-  const enabledTags = [...tagSet].sort();
-  const enabledDirs = [...dirSet].sort();
-  const enabledKanbans = [...kanbanSet].sort();
-  const someFilters = query.dir || query.tags.length;
+  const queryKanban =
+    (hrefObj.pathname === "kanban" && hrefObj.query.kanban) || "";
+  const [enabledTags, enabledDirs, enabledKanbans] = processNotes(
+    queryKanban,
+    entries,
+    config,
+    sep
+  );
   return (
-    <Box px={{ s: 5, md: 0 }} width="screenMaxWidth">
+    <Box
+      px={{ s: 5, md: 0 }}
+      width="screenMaxWidth"
+      style={{ maxHeight: "30vh", overflowY: "scroll" }}
+    >
       <Box display="flex" flexDirection="column" gap={10}>
         <Box display="flex" flexDirection="column" gap={5}>
-          <NavLink
-            hrefObj={hrefObj}
-            delta={{ pathname: "/notes" }}
-          >
+          <NavLink hrefObj={hrefObj} delta={{ pathname: "/notes" }}>
             Notes
           </NavLink>
           {!isEmpty(config.kanban) && (
@@ -180,11 +189,7 @@ export function Navigator({
           )}
         </Box>
         <Box display="flex" flexDirection="column" gap={5}>
-          <NavLink
-            hrefObj={hrefObj}
-            delta={{ query: { dir: "", tags: [] } }}
-            disabled={!someFilters}
-          >
+          <NavLink hrefObj={hrefObj} delta={{ query: { dir: "", tags: [] } }}>
             Clear filters
           </NavLink>
           <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
@@ -201,19 +206,6 @@ export function Navigator({
             gap={10}
           >
             <Box fontWeight="bold">Dirs</Box>
-            {upDirs(sep, query.dir).map((dir) => (
-              <NavLink
-                key={dir}
-                hrefObj={hrefObj}
-                delta={{ query: { dir } }}
-                fontFamily="monospace"
-              >
-                {dir || "."}
-              </NavLink>
-            ))}
-            <Box fontFamily="monospace" color="foreground1">
-              |
-            </Box>
             {enabledDirs.map((dir) => (
               <NavLink
                 key={dir}
@@ -221,7 +213,7 @@ export function Navigator({
                 delta={{ query: { dir } }}
                 fontFamily="monospace"
               >
-                {dir}
+                {dir || "."}
               </NavLink>
             ))}
           </Box>

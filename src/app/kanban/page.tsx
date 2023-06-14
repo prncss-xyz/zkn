@@ -8,6 +8,7 @@ import { Navigator } from "../components/navigator";
 import { sep } from "node:path";
 import { ISearch, searchToQuery } from "../components/search";
 import { searchToWhere } from "../components/where";
+import { maxH } from "../(main)/components/maxH.css";
 
 // wether to hide empty kanban columns
 const dense = true;
@@ -144,6 +145,7 @@ export default async function Layout({
       alignItems="center"
       width="100%"
       gap={20}
+      className={maxH} 
     >
       <Box
         width="screenMaxWidth"

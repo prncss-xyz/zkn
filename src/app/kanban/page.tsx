@@ -6,8 +6,8 @@ import { setup } from "@/lib/data/scanFiles";
 import { Link } from "../components/link";
 import { Navigator } from "../components/navigator";
 import { sep } from "node:path";
-import { ISearch, searchToQuery } from "../components/search";
-import { searchToWhere } from "../components/where";
+import { ISearch, searchToQuery } from "../utils/search";
+import { searchToWhere } from "../server/where";
 import { maxH } from "../(main)/components/maxH.css";
 
 // wether to hide empty kanban columns

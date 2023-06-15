@@ -5,8 +5,8 @@ import prisma from "@/lib/data/prisma";
 import { titleSorter } from "@/app/utils/titleSorter";
 import { Link } from "@/app/components/link";
 import { Navigator } from "@/app/components/navigator";
-import { ISearch, searchToQuery } from "@/app/components/search";
-import { searchToWhere } from "@/app/components/where";
+import { ISearch, searchToQuery } from "@/app/utils/search";
+import { searchToWhere } from "@/app/server/where";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
 import { maxH } from "../components/maxH.css";
 

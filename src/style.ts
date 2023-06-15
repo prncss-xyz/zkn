@@ -4,6 +4,7 @@ export const sizes = {
   screenMaxWidth: "min(100%, 1000px)",
   kanbanWidth: 200,
   labelWidth: 120,
+  navInputWidth: 100,
   "100%": "100%",
   "100vh": "100vh",
   "100vw": "100vw",
@@ -16,7 +17,7 @@ export const borderRadii = [0, 3, 5];
 
 export const fontWeights = { bold: "bold" };
 
-export const borderWidths = [1];
+export const borderWidths = [0, 1];
 
 // this is used to set up theme vars; what is not defined in _dark defaults to values from _light
 // don't these values directly, use sprinkles or vars.colors from theme.css instead

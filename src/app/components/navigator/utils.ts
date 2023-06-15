@@ -1,37 +1,5 @@
-import { IHref, IQuery, ISearch } from "../../utils/search";
+import { IEntry } from "@/app/utils/search";
 import { dirname, upDirs } from "../../utils/path";
-
-export interface IEntry {
-  id: string;
-  tags: { tagId: string }[];
-}
-
-export function hrefURL({ pathname, query }: IHref) {
-  const search: ISearch = {};
-  if (query.dir) search.dir = query.dir;
-  if (query.tags.length) search.tags = query.tags.join(" ");
-  if (pathname === "/kanban" && query.kanban) search.kanban = query.kanban;
-  let searchString = new URLSearchParams(search).toString();
-  if (searchString) searchString = "?" + searchString;
-  return `${pathname}${searchString}`;
-}
-
-export interface IHrefDelta {
-  pathname?: string;
-  query?: Partial<IQuery>;
-}
-
-// using `??` makes it possible to erease a value by setting to ""
-export function update(href: IHref, delta: IHrefDelta) {
-  return {
-    pathname: delta.pathname ?? href.pathname,
-    query: {
-      dir: delta.query?.dir ?? href.query.dir,
-      tags: delta.query?.tags ?? href.query.tags,
-      kanban: delta.query?.kanban ?? href.query.kanban,
-    },
-  };
-}
 
 export function processNotes(
   queryKanban: string,

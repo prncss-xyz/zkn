@@ -17,8 +17,10 @@ interface IEntry {
 
 function Notes({ entries }: { entries: IEntry[] }) {
   entries.sort(titleSorter);
+
   return (
     <Box
+      overflowY="scroll"
       display="flex"
       flexDirection="column"
       backgroundColor="foreground2"
@@ -72,9 +74,7 @@ export default async function Page({
         sep={sep}
       />
 
-      <Box overflowY="scroll">
-        <Notes entries={entries} />
-      </Box>
+      <Notes entries={entries} />
     </Box>
   );
 }

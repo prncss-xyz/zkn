@@ -2,9 +2,10 @@ import { toggle } from "../../utils/arrays";
 import { Box, BoxProps } from "../box";
 import { Link } from "../link";
 import { ReactNode } from "react";
-import { IHref } from "../../utils/search";
+import { IEntry, IHref, IHrefDelta, hrefURL, update } from "../../utils/search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
-import { IEntry, IHrefDelta, hrefURL, processNotes, update } from "./utils";
+import { processNotes } from "./utils";
+import { InputNumberField } from "./input";
 
 function isEmpty(o: object) {
   for (const _ in o) {
@@ -140,6 +141,7 @@ export function Navigator({
               </NavLink>
             ))}
           </Box>
+          <InputNumberField field="wordcount" />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />
       </Box>

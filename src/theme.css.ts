@@ -23,7 +23,7 @@ globalStyle("body", {
   color: vars.colors.text,
 });
 
-globalStyle("button, h1, h2, h3, h4, h5, h6, div", {
+globalStyle("button, h1, h2, h3, h4, h5, h6, div, input", {
   all: "unset",
   display: "block",
   boxSizing: "border-box",

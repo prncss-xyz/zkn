@@ -1,10 +1,10 @@
 import { sep } from "node:path";
 import { IQuery } from "../utils/search";
 
-export function searchToWhere({ dir, tags }: IQuery) {
-  const idQuery = dir ? { startsWith: dir + sep } : undefined;
-  const tagsQuery = tags
-    ? tags.map((tagId) => ({
+export function searchToWhere(query: IQuery) {
+  const idQuery = query.dir ? { startsWith: query.dir + sep } : undefined;
+  const tagsQuery = query.tags
+    ? query.tags.map((tagId) => ({
         tags: {
           some: {
             tagId,
@@ -15,5 +15,9 @@ export function searchToWhere({ dir, tags }: IQuery) {
   return {
     id: idQuery,
     AND: tagsQuery,
+    wordcount: {
+      gte: query.wordcount.gte,
+      lte: query.wordcount.lte,
+    },
   };
 }

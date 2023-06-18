@@ -43,6 +43,9 @@ dependencies:
   js-yaml:
     specifier: ^4.1.0
     version: 4.1.0
+  moderndash:
+    specifier: ^3.6.2
+    version: 3.6.2
   next:
     specifier: 13.4.5
     version: 13.4.5(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -3472,6 +3475,10 @@ packages:
       space-separated-tokens: 2.0.2
     dev: false
 
+  /hotscript@1.0.12:
+    resolution: {integrity: sha512-ANWgLMEhhfmmUsAkmJR6eclnVMC7KrDAAtOxWYN7PclUr1N5P9irs3WVJvMT/NpUxOXluYXj5JgyBG0iuKW5+Q==}
+    dev: false
+
   /html-comment-regex@1.1.2:
     resolution: {integrity: sha512-P+M65QY2JQ5Y0G9KKdlDpo0zK+/OHptU5AaBwUfAIDJZk1MYf32Frm84EcOytfJE0t5JvkAnKlmjsXDnWzCJmQ==}
     dev: false
@@ -4565,6 +4572,13 @@ packages:
     resolution: {integrity: sha512-2dF2R6YMSZbpip1V1WHKGLNjr/k48uQClqMVb5H3MOvwc9qhYis3/IWbj02qIg/Y8MDXKFF4c5v0rxx2o6xTZw==}
     engines: {node: '>=12.0.0'}
     dev: true
+
+  /moderndash@3.6.2:
+    resolution: {integrity: sha512-R1l5gYSc4H/S8Re2mljC+Bt9d7a3kw6uNHIZbGabVcATqdvP0jaNRGWCbKkG7beAd0071woWDmYVRWPDaJe2ww==}
+    engines: {node: '>=16.15', npm: '>=8'}
+    dependencies:
+      hotscript: 1.0.12
+    dev: false
 
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}

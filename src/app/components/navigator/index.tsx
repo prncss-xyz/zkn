@@ -2,10 +2,17 @@ import { toggle } from "../../utils/arrays";
 import { Box, BoxProps } from "../box";
 import { Link } from "../link";
 import { ReactNode } from "react";
-import { IEntry, IHref, IHrefDelta, hrefURL, update } from "../../utils/search";
+import {
+  IEntry,
+  IHref,
+  IHrefDelta,
+  dest,
+  hrefURL,
+  query0,
+} from "../../utils/search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
 import { processNotes } from "./utils";
-import { InputNumberField } from "./input";
+import { InputDateField } from "./input";
 
 function isEmpty(o: object) {
   for (const _ in o) {
@@ -24,7 +31,7 @@ export function NavLink({
   delta: IHrefDelta;
   children: ReactNode;
 } & Omit<BoxProps, "href">) {
-  const newHref = hrefURL(update(hrefObj, delta));
+  const newHref = dest(hrefObj, delta);
   const active = hrefURL(hrefObj) === newHref;
   if (active)
     return (
@@ -42,7 +49,7 @@ export function NavLink({
 function ToggleTagLink({ hrefObj, tag }: { hrefObj: IHref; tag: string }) {
   const tags = hrefObj.query.tags;
   const active = tags.includes(tag);
-  const href = hrefURL(update(hrefObj, { query: { tags: toggle(tags, tag) } }));
+  const href = dest(hrefObj, { query: { tags: toggle(tags, tag) } });
   return (
     <Link
       px={5}
@@ -98,11 +105,7 @@ export function Navigator({
     entries
   );
   return (
-    <Box
-      px={{ s: 5, md: 0 }}
-      width="screenMaxWidth"
-      style={{ maxHeight: "30vh", overflowY: "scroll" }}
-    >
+    <Box px={{ s: 5, md: 0 }} width="screenMaxWidth">
       <Box display="flex" flexDirection="column" gap={10}>
         <Box display="flex" flexDirection="column" gap={5}>
           <NavLink hrefObj={hrefObj} delta={{ pathname: "/notes" }}>
@@ -113,7 +116,7 @@ export function Navigator({
           )}
         </Box>
         <Box display="flex" flexDirection="column" gap={5}>
-          <NavLink hrefObj={hrefObj} delta={{ query: { dir: "", tags: [] } }}>
+          <NavLink hrefObj={hrefObj} delta={{ query: query0 }}>
             Clear filters
           </NavLink>
           <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
@@ -141,7 +144,9 @@ export function Navigator({
               </NavLink>
             ))}
           </Box>
-          <InputNumberField field="wordcount" />
+          <InputDateField label="Wordcount" field="wordcount" />
+          <InputDateField label="Modified" field="mtime" date />
+          <InputDateField label="Event" field="event" date />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />
       </Box>

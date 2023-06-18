@@ -15,7 +15,7 @@ export interface Data {
 
 export interface FileEntry {
   id: string;
-  mtime: number;
+  mtime: Date;
 }
 
 const defaultEntry = {
@@ -76,16 +76,22 @@ async function remove(id: string) {
   });
 }
 
+function isSameDate(e: Date | undefined, d: Date) {
+  if (!e) return false;
+  return e.getTime() === d.getTime();
+}
+
 async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
   const fullPath = path.join(notebookDir, id);
-  let mtime: number;
+  let mtime: Date;
   try {
-    mtime = Math.floor((await stat(fullPath)).mtimeMs);
+    mtime = (await stat(fullPath)).mtime;
   } catch (err) {
     remove(id);
     return 0;
   }
-  if (entry?.mtime === mtime) return 0;
+  if (isSameDate(entry?.mtime, mtime)) return 0;
+  // if (entry && Math.abs(entry.mtime.getTime() - mtime) <= epsilon) return 0;
   const raw = await readFile(fullPath, "utf8");
   let data: Awaited<ReturnType<typeof analyzeMD>>;
   try {

@@ -9,7 +9,7 @@ datasource db {
 
 model Entry {
   id        String          @id
-  mtime     Float
+  mtime     DateTime
   title     String?
   wordcount Int
   tags      TagsOnEntries[]
@@ -36,8 +36,7 @@ model Event {
   entry   Entry     @relation(fields: [entryId], references: [id])
   entryId String    @unique
   start   DateTime
-  end     DateTime?
-  day     Boolean
+  end     DateTime
 }
 
 model Link {

@@ -20,7 +20,6 @@ function Notes({ entries }: { entries: IEntry[] }) {
 
   return (
     <Box
-      overflowY="scroll"
       display="flex"
       flexDirection="column"
       backgroundColor="foreground2"
@@ -66,7 +65,7 @@ export default async function Page({
   const config = await getNotebookConfig();
   const hrefObj = { pathname: "/notes", query };
   return (
-    <Box display="flex" flexDirection="column" gap={20} className={maxH}>
+    <Box display="flex" flexDirection="column" gap={20}>
       <Navigator
         hrefObj={hrefObj}
         entries={entries}

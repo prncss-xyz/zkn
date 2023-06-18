@@ -1,11 +1,4 @@
-import { IQuery, hrefURL, searchToQuery, update } from "./search";
-
-const query0: IQuery = {
-  tags: [],
-  dir: "",
-  kanban: "",
-  wordcount: {},
-};
+import { dest, hrefURL, query0, searchToQuery } from "./search";
 
 describe("searchToQuery", () => {
   it("skip ", () => {
@@ -51,7 +44,7 @@ describe("hrefURL", () => {
 describe("update", () => {
   it("should update query object", () => {
     expect(
-      update(
+      dest(
         {
           pathname: "/notes",
           query: { ...query0, tags: ["a"], dir: "tata", kanban: "p" },
@@ -61,14 +54,11 @@ describe("update", () => {
           query: { ...query0, tags: ["b"], dir: "toto", kanban: "q" },
         }
       )
-    ).toEqual({
-      pathname: "/kanban",
-      query: { ...query0, tags: ["b"], dir: "toto", kanban: "q" },
-    });
+    ).toEqual("/kanban?dir=toto&tags=b&kanban=q");
   });
   it("should use empty string to erease", () => {
     expect(
-      update(
+      dest(
         {
           pathname: "/notes",
           query: { ...query0, tags: ["a"], dir: "tata", kanban: "p" },
@@ -78,16 +68,13 @@ describe("update", () => {
           query: query0,
         }
       )
-    ).toEqual({
-      pathname: "",
-      query: query0,
-    });
+    ).toEqual("");
   });
   it("should use undefined to keep", () => {
     const query1 = {
-      pathname: "/notes",
+      pathname: "/kanban",
       query: { ...query0, tags: ["a"], dir: "tata", kanban: "p" },
     };
-    expect(update(query1, {})).toEqual(query1);
+    expect(dest(query1, {})).toEqual("/kanban?dir=tata&tags=a&kanban=p");
   });
 });

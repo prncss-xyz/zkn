@@ -1,12 +1,15 @@
+import { query0 } from "../utils/search";
 import { searchToWhere } from "./where";
 
 describe("searchToWhere", () => {
   it("it should create 'where' argument (prisma query) from seach object", () => {
-    expect(searchToWhere({ dir: "", tags: [] })).toEqual({
+    expect(searchToWhere(query0)).toEqual({
       id: undefined,
       AND: [],
+      wordcount: {},
+      mtime: {},
     });
-    expect(searchToWhere({ dir: "a", tags: ["p", "q"] })).toEqual({
+    expect(searchToWhere({ ...query0, dir: "a", tags: ["p", "q"] })).toEqual({
       id: { startsWith: "a/" },
       AND: [
         {
@@ -16,6 +19,8 @@ describe("searchToWhere", () => {
           tags: { some: { tagId: "q" } },
         },
       ],
+      wordcount: {},
+      mtime: {},
     });
   });
 });

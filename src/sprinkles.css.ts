@@ -9,7 +9,7 @@ import {
 } from "./style";
 
 import { vars } from "./theme.css";
-const { colors } = vars;
+export const { colors } = vars;
 
 // following [stitches](https://stitches.dev/docs/tokens) conventions for property-token relationships
 const unconditionalProperties = defineProperties({

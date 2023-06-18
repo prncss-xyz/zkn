@@ -4,7 +4,9 @@ export const sizes = {
   screenMaxWidth: "min(100%, 1000px)",
   kanbanWidth: 200,
   labelWidth: 120,
-  navInputWidth: 100,
+  navCheckboxWidth: 20,
+  navInputWidth: 160,
+  navLabelWidth: 100,
   "100%": "100%",
   "100vh": "100vh",
   "100vw": "100vw",
@@ -32,10 +34,10 @@ export const _light = {
   active: "hsl(40, 60%, 50%)",
   foreground2: "hsl(150, 10%, 70%)",
   background: "hsl(150, 10%, 50%)",
+  error: "hsl(315, 100%, 50%)",
 };
 
 export const _dark = {
-  ..._light,
   text: "hsl(0, 0%, 65%)",
   disabled: "hsl(0, 0%, 35%)",
   link: "hsl(260, 80%, 60%)",
@@ -43,4 +45,5 @@ export const _dark = {
   active: "hsl(40, 50%, 40%)",
   foreground2: "hsl(150, 10%, 17%)",
   background: "hsl(150, 10%, 10%)",
+  error: "hsl(315, 100%, 50%)",
 };

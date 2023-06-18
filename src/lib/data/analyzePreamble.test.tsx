@@ -1,12 +1,9 @@
 import { analyzePreamble } from "./analyzePreamble";
-import {
-  FileEntry,
-  mergeDefaults,
-} from "./scanFiles";
+import { FileEntry, mergeDefaults } from "./scanFiles";
 
 const entry: FileEntry = {
   id: "",
-  mtime: 0,
+  mtime: new Date(0),
 };
 
 describe("analyzeData", async () => {
@@ -45,13 +42,32 @@ describe("analyzeData", async () => {
     );
   });
 
-  it("should parse dates", async () => {
+  it("should parse date ranges", async () => {
     expect(
       mergeDefaults(
         analyzePreamble(entry, {
           event: {
             start: new Date("2020-10-10"),
             end: new Date("2020-10-11"),
+          },
+        })
+      )
+    ).toEqual(
+      mergeDefaults({
+        entry,
+        event: {
+          start: new Date("2020-10-10"),
+          end: new Date("2020-10-11"),
+        },
+      })
+    );
+  });
+  it("should parse fullday date ranges", async () => {
+    expect(
+      mergeDefaults(
+        analyzePreamble(entry, {
+          event: {
+            start: new Date("2020-10-10"),
             day: true,
           },
         })
@@ -62,26 +78,23 @@ describe("analyzeData", async () => {
         event: {
           start: new Date("2020-10-10"),
           end: new Date("2020-10-11"),
-          day: true,
         },
       })
     );
   });
-
   it("should convert simple date to range", async () => {
     expect(
       mergeDefaults(
         analyzePreamble(entry, {
-          event: new Date("2020-10-10"),
+          event: new Date("2020-10-10 00:00"),
         })
       )
     ).toEqual(
       mergeDefaults({
         entry,
         event: {
-          start: new Date("2020-10-10"),
-          end: null,
-          day: false,
+          start: new Date("2020-10-10 00:00"),
+          end: new Date("2020-10-10 01:00"),
         },
       })
     );
@@ -103,7 +116,6 @@ describe("analyzeData", async () => {
         event: {
           start: new Date("2020-10-10"),
           end: new Date("2020-10-11"),
-          day: false,
         },
       })
     );

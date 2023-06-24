@@ -11,8 +11,8 @@ import {
   query0,
 } from "../../utils/search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
-import { processNotes } from "./utils";
-import { InputDateField } from "./input";
+import { processNotes } from "./processNotes";
+import { InputScalars } from "./scalar";
 
 function isEmpty(o: object) {
   for (const _ in o) {
@@ -98,12 +98,8 @@ export function Navigator({
 }) {
   const queryKanban =
     (hrefObj.pathname === "kanban" && hrefObj.query.kanban) || "";
-  const [enabledDirs, enabledTags, enabledKanbans] = processNotes(
-    queryKanban,
-    config.kanban,
-    sep,
-    entries
-  );
+  const { enabledDirs, enabledTags, enabledKanbans, enabledScalars } =
+    processNotes(queryKanban, config.kanban, sep, entries);
   return (
     <Box px={{ s: 5, md: 0 }} width="screenMaxWidth">
       <Box display="flex" flexDirection="column" gap={10}>
@@ -144,9 +140,7 @@ export function Navigator({
               </NavLink>
             ))}
           </Box>
-          <InputDateField label="Wordcount" field="wordcount" />
-          <InputDateField label="Modified" field="mtime" date />
-          <InputDateField label="Event" field="event" date />
+          <InputScalars enabledScalars={enabledScalars} />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />
       </Box>

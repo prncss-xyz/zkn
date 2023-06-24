@@ -1,4 +1,4 @@
-import { processNotes } from "./utils";
+import { processNotes } from "./processNotes";
 
 describe("processNotes", () => {
   it("description", () => {

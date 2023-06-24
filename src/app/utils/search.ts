@@ -3,6 +3,10 @@ export type ISearch = { [key: string]: string };
 export interface IEntry {
   id: string;
   tags: { tagId: string }[];
+  event: {
+    start: Date;
+    end: Date;
+  } | null;
 }
 
 export interface IHref {

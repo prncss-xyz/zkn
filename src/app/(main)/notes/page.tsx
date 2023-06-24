@@ -8,7 +8,6 @@ import { Navigator } from "@/app/components/navigator";
 import { ISearch, searchToQuery } from "@/app/utils/search";
 import { searchToWhere } from "@/app/server/where";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
-import { maxH } from "../components/maxH.css";
 
 interface IEntry {
   id: string;
@@ -58,6 +57,7 @@ export default async function Page({
       title: true,
       mtime: true,
       tags: { select: { tagId: true } },
+      event: true,
     },
     where,
     orderBy: { id: "asc" },

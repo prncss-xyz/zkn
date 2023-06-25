@@ -6,7 +6,7 @@ import { titleSorter } from "@/app/utils/titleSorter";
 import { Link } from "@/app/components/link";
 import { Navigator } from "@/app/components/navigator";
 import { ISearch, searchToQuery } from "@/app/utils/search";
-import { searchToWhere } from "@/app/server/where";
+import { searchToOrderBy, searchToWhere } from "@/app/server/where";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
 
 interface IEntry {
@@ -51,6 +51,7 @@ export default async function Page({
   await setup();
   const query = searchToQuery(searchParams);
   const where = searchToWhere(query);
+  const orderBy = searchToOrderBy(query);
   const entries = await prisma.entry.findMany({
     select: {
       id: true,
@@ -60,7 +61,9 @@ export default async function Page({
       event: true,
     },
     where,
-    orderBy: { id: "asc" },
+    // orderBy: { id: "asc" },
+    // orderBy: { event: { start: "asc" } },
+    orderBy,
   });
   const config = await getNotebookConfig();
   const hrefObj = { pathname: "/notes", query };

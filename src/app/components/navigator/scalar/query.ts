@@ -3,17 +3,13 @@ import { IState, defaultSort, scalarOpts, scalars } from "./reducer";
 export function queryToParams(params: URLSearchParams, state: IState) {
   for (const scalar of scalars) {
     const scalarState = state.scalars[scalar];
-    if (scalarState.lge || scalarState.gte) params.delete(scalar);
+    if (scalarState.lte || scalarState.gte) params.delete(scalar);
     else if (scalarState.some) params.set(scalar, "some");
-    if (scalarState.some) {
-      if (scalarState.lge || scalarState.gte) params.delete(scalar);
-      if (scalarState.lge) params.set(scalar + "_lge", scalarState.lge);
-      if (scalarState.gte) params.set(scalar + "_gte", scalarState.gte);
-    } else {
-      params.delete(scalar + "_lge");
-      params.delete(scalar + "_gte");
-      params.delete(scalar);
-    }
+    else params.delete(scalar);
+    if (scalarState.lte) params.set(scalar + "_lte", scalarState.lte);
+    else params.delete(scalar + "_lte");
+    if (scalarState.gte) params.set(scalar + "_gte", scalarState.gte);
+    else params.delete(scalar + "_gte");
   }
   if (
     state.sort.scalar === defaultSort.scalar &&
@@ -47,15 +43,14 @@ export function paramsToQuery(params: URLSearchParams) {
       scalars.map((scalar) => [
         scalar,
         {
-          lge: params.get(scalar + "_lge") || "",
+          lte: params.get(scalar + "_lte") || "",
           gte: params.get(scalar + "_gte") || "",
           some:
-            !scalarOpts[scalar].always &&
+            (!scalarOpts[scalar].always && sort.scalar === scalar) ||
             !!(
-              params.get(scalar + "_lge") ||
+              params.get(scalar + "_lte") ||
               params.get(scalar + "_gte") ||
-              params.get(scalar) ||
-              sort.scalar === scalar
+              params.get(scalar)
             ),
         },
       ])

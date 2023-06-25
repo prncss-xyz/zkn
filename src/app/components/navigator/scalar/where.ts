@@ -11,19 +11,32 @@ function whereDate({ gte, lte }: { gte?: string; lte?: string }) {
   return { gte: condDate(gte), lte: condDate(lte) };
 }
 
-function whereDateRange({ gte, lte }: { gte?: string; lte?: string }) {
-  return {
-    start: gte
-      ? {
-          gte: new Date(gte),
-        }
-      : undefined,
-    end: lte
-      ? {
-          lte: new Date(lte),
-        }
-      : undefined,
-  };
+function whereDateRange({
+  gte,
+  lte,
+  some,
+}: {
+  gte?: string;
+  lte?: string;
+  some?: boolean;
+}) {
+  if (gte || lte)
+    return {
+      start: gte
+        ? {
+            gte: new Date(gte),
+          }
+        : undefined,
+      end: lte
+        ? {
+            lte: new Date(lte),
+          }
+        : undefined,
+    };
+  if (some)
+    return {
+      start: {},
+    };
 }
 
 export function whereScalars(query: IQuery) {

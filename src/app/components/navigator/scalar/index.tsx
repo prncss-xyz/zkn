@@ -106,7 +106,7 @@ function InputScalar({ scalar }: { scalar: string }) {
         className={checkbox}
       />
       <InputBound scalar={scalar} bound="gte" />
-      <InputBound scalar={scalar} bound="lge" />
+      <InputBound scalar={scalar} bound="lte" />
     </Box>
   );
 }

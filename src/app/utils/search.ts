@@ -35,6 +35,7 @@ export interface IQuery {
   wordcount: { lte: number; gte: number };
   mtime: { lte: string; gte: string };
   event: { lte: string; gte: string; some: boolean };
+  sort: { field: string; asc: boolean };
 }
 
 export const query0: IQuery = {
@@ -44,6 +45,7 @@ export const query0: IQuery = {
   wordcount: { gte: 0, lte: 0 },
   mtime: { gte: "", lte: "" },
   event: { gte: "", lte: "", some: false },
+  sort: { field: "mtime", asc: true },
 };
 
 export function hrefURL({ pathname, query }: IHref) {
@@ -81,7 +83,11 @@ export function searchToQuery(search: { [key: string]: string }): IQuery {
     gte: search.event_gte ?? "",
     some: !!search.event && !search.event_lte && !search.event_gte,
   };
-  return { dir, tags, kanban, wordcount, mtime, event };
+  const sort = {
+    field: "mtime",
+    asc: true,
+  };
+  return { dir, tags, kanban, wordcount, mtime, event, sort };
 }
 
 // using `??` makes it possible to erease a value by setting to ""

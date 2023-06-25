@@ -1,4 +1,4 @@
-export type Bound = "lge" | "gte";
+export type Bound = "lte" | "gte";
 const toNumDate = (str: string) => new Date(str).getTime();
 
 export const defaultSort = {
@@ -39,7 +39,7 @@ export interface IState {
   };
   scalars: {
     [scalar: string]: {
-      lge: string;
+      lte: string;
       gte: string;
       some: boolean;
     };
@@ -67,7 +67,7 @@ function toggleSome({ scalar }: IToggleSome, state: IState) {
       ...state.scalars,
       [scalar]: {
         some: !some,
-        lge: "",
+        lte: "",
         gte: "",
       },
     },
@@ -98,10 +98,10 @@ interface IPushBound {
   bound: Bound;
 }
 function pushBound({ scalar, bound }: IPushBound, state: IState) {
-  const erease: Bound = bound === "lge" ? "gte" : "lge";
+  const erease: Bound = bound === "lte" ? "gte" : "lte";
   const { toNum } = scalarOpts[scalar];
   const scalarState = state.scalars[scalar];
-  if (toNum(scalarState.gte) > toNum(scalarState.lge))
+  if (toNum(scalarState.gte) > toNum(scalarState.lte))
     return {
       ...state,
       scalars: {
@@ -125,7 +125,7 @@ function setBound({ scalar, bound, value }: ISetBound, state: IState) {
     ...state,
     scalars: {
       ...state.scalars,
-      [scalar]: { ...scalarState, some: !always, [bound]: value },
+      [scalar]: { ...scalarState, some: true, [bound]: value },
     },
   };
 }
@@ -144,6 +144,6 @@ export function reducer(state: IState, action: IAction) {
       return [toggleSort(action, state), true] as const;
     default:
       never(action);
-      throw action;
+      throw null;
   }
 }

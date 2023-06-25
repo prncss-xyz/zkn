@@ -47,7 +47,7 @@ const dateRange = z.preprocess(
   z.nullable(
     z.object({
       start: z.date(),
-      end: z.nullable(z.date()),
+      end: z.date(),
     })
   )
 );

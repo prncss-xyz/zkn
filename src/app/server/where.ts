@@ -19,3 +19,8 @@ export function searchToWhere(query: IQuery) {
     ...whereScalars(query),
   };
 }
+
+export function searchToOrderBy(query: IQuery) {
+  const [sort, dir] = query.;
+  return undefined;
+}

@@ -92,8 +92,8 @@ function InputScalar({ scalar }: { scalar: string }) {
         {label}
       </Box>
       <Box display="flex" flexDirection="row" gap={10}>
-        <SelectSort scalar={scalar} dir={true} />
-        <SelectSort scalar={scalar} dir={false} />
+        <SelectSort scalar={scalar} asc={true} />
+        <SelectSort scalar={scalar} asc={false} />
       </Box>
       <Box
         width="navCheckboxWidth"
@@ -149,9 +149,9 @@ function InputBound({ scalar, bound }: { scalar: string; bound: Bound }) {
   );
 }
 
-function SelectSort({ scalar, dir }: { scalar: string; dir: boolean }) {
+function SelectSort({ scalar, asc }: { scalar: string; asc: boolean }) {
   const [state, dispatch] = useRouteState();
-  const active = scalar === state.sort.scalar && dir === state.sort.dir;
+  const active = scalar === state.sort.scalar && asc === state.sort.asc;
   return (
     <Box
       as="button"
@@ -160,11 +160,11 @@ function SelectSort({ scalar, dir }: { scalar: string; dir: boolean }) {
         dispatch({
           type: "TOGGLE_SORT",
           scalar,
-          dir,
+          asc,
         })
       }
     >
-      {dir ? <TbChevronUp /> : <TbChevronDown />}
+      {asc ? <TbChevronUp /> : <TbChevronDown />}
     </Box>
   );
 }

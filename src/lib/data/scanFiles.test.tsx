@@ -44,7 +44,7 @@ function sampleFile(i: number) {
 }
 
 function sampleEntry(i: number, mtime: number) {
-  return { id: i + ".md", mtime } as any;
+  return { id: i + ".md", mtime: new Date(mtime) } as any;
 }
 
 function sampleUpdate(i: number) {
@@ -54,7 +54,8 @@ function sampleUpdate(i: number) {
     links: {
       create: [],
     },
-    mtime: i,
+    event: undefined,
+    mtime: new Date(i),
     tags: {
       create: [],
     },

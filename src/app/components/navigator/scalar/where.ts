@@ -1,4 +1,15 @@
-import { IQuery } from "@/app/utils/search";
+import { paramsToQuery } from "./query";
+
+function condNum(str?: string) {
+  if (!str) return undefined;
+  const num = Number(str);
+  if (isNaN(num)) return undefined;
+  return num;
+}
+
+function whereNum({ gte, lte }: { gte?: string; lte?: string }) {
+  return { gte: condNum(gte), lte: condNum(lte) };
+}
 
 function condDate(str?: string) {
   if (!str) return undefined;
@@ -39,13 +50,32 @@ function whereDateRange({
     };
 }
 
-export function whereScalars(query: IQuery) {
+export function where(params: URLSearchParams) {
+  const { scalars } = paramsToQuery(params);
   return {
-    wordcount: {
-      gte: query.wordcount.gte ? query.wordcount.gte : undefined,
-      lte: query.wordcount.lte ? query.wordcount.lte : undefined,
-    },
-    mtime: whereDate(query.mtime),
-    event: whereDateRange(query.event),
+    wordcount: whereNum(scalars.wordcount),
+    mtime: whereDate(scalars.mtime),
+    event: whereDateRange(scalars.event),
+  };
+}
+
+export function searchToOrderBy(params: URLSearchParams) {
+  const {
+    sort: { scalar, asc },
+  } = paramsToQuery(params);
+  if (scalar === "event" && asc === true)
+    return {
+      event: {
+        start: "asc" as const,
+      },
+    };
+  if (scalar === "event" && asc === false)
+    return {
+      event: {
+        end: "desc" as const,
+      },
+    };
+  return {
+    [scalar]: asc ? "asc" as const : "desc" as const,
   };
 }

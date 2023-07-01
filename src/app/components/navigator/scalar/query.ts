@@ -13,7 +13,7 @@ export function queryToParams(params: URLSearchParams, state: IState) {
   }
   if (
     state.sort.scalar === defaultSort.scalar &&
-    state.sort.dir === defaultSort.dir
+    state.sort.asc === defaultSort.asc
   )
     params.delete("sort");
   else params.set("sort", unparseSort(state.sort));
@@ -27,13 +27,13 @@ function parseSort(raw: string | null) {
   if (!raw) return defaultSort;
   const [scalar, dir] = raw.split("_");
   if (scalars.includes(scalar) && dirs.includes(dir))
-    return { scalar, dir: dir === "asc" };
+    return { scalar, asc: dir === "asc" };
   return defaultSort;
 }
 
-function unparseSort({ scalar, dir }: { scalar: string; dir: boolean }) {
-  if (scalar === defaultSort.scalar && dir === defaultSort.dir) return "";
-  return `${scalar}_${dir ? "asc" : "desc"}`;
+function unparseSort({ scalar, asc }: { scalar: string; asc: boolean }) {
+  if (scalar === defaultSort.scalar && asc === defaultSort.asc) return "";
+  return `${scalar}_${asc ? "asc" : "desc"}`;
 }
 
 export function paramsToQuery(params: URLSearchParams) {

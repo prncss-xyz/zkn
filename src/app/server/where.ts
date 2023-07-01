@@ -1,26 +1,13 @@
 import { sep } from "node:path";
-import { IQuery } from "../utils/search";
-import { whereScalars } from "../components/navigator/scalar/where";
 
-export function searchToWhere(query: IQuery) {
-  const idQuery = query.dir ? { startsWith: query.dir + sep } : undefined;
-  const tagsQuery = query.tags
-    ? query.tags.map((tagId) => ({
-        tags: {
-          some: {
-            tagId,
-          },
-        },
-      }))
-    : undefined;
+import * as Dir from "../components/navigator/dir/where";
+import * as Tag from "../components/navigator/tag/where";
+import * as Scalar from "../components/navigator/scalar/where";
+
+export function searchToWhere(params: URLSearchParams) {
   return {
-    id: idQuery,
-    AND: tagsQuery,
-    ...whereScalars(query),
+    ...Scalar.where(params),
+    ...Dir.where(params, sep),
+    ...Tag.where(params),
   };
-}
-
-export function searchToOrderBy(query: IQuery) {
-  const [sort, dir] = query.;
-  return undefined;
 }

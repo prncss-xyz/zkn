@@ -1,13 +1,11 @@
 import { Box } from "@/app/components/box";
 import { getPrefixLen } from "@/app/utils/prefixLen";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
-import prisma from "@/lib/data/prisma";
 import { setup } from "@/lib/data/scanFiles";
 import { Link } from "../components/link";
 import { Navigator } from "../components/navigator";
 import { sep } from "node:path";
-import { ISearch, searchToQuery } from "../utils/search";
-import { searchToWhere } from "../server/where";
+import { ISearch, getEntries } from "../utils/search";
 import { maxH } from "../(main)/components/maxH.css";
 
 // wether to hide empty kanban columns
@@ -125,19 +123,8 @@ export default async function Layout({
   const workflows = Object.keys(kanban);
   const workflow = searchParams.workflow ?? workflows[0] ?? "";
   const tags = kanban[workflow] ?? [];
-  const query = searchToQuery(searchParams);
-  // no need of/cannot use useCallback since it is a server component
-  const where = { ...searchToWhere(query) };
-  const entries = await prisma.entry.findMany({
-    select: {
-      id: true,
-      title: true,
-      mtime: true,
-      tags: { select: { tagId: true } },
-    },
-    where,
-    orderBy: { mtime: "asc" },
-  });
+  const params = new URLSearchParams(searchParams);
+  const entries = await getEntries(params);
   return (
     <Box
       display="flex"
@@ -145,7 +132,7 @@ export default async function Layout({
       alignItems="center"
       width="100%"
       gap={20}
-      className={maxH} 
+      className={maxH}
     >
       <Box
         width="screenMaxWidth"
@@ -153,12 +140,7 @@ export default async function Layout({
         flexDirection="column"
         gap={20}
       >
-        <Navigator
-          hrefObj={{ pathname: "/kanban", query }}
-          entries={entries}
-          config={config}
-          sep={sep}
-        />
+        <Navigator entries={entries} config={config} sep={sep} />
       </Box>
       {/* @ts-ignore */}
       <Kanban workflow={workflow} tags={tags} entries={entries} />

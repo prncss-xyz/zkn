@@ -1,145 +1,100 @@
-import { toggle } from "../../utils/arrays";
-import { Box, BoxProps } from "../box";
+"use client";
+
+import { Box } from "../box";
 import { Link } from "../link";
-import { ReactNode } from "react";
-import {
-  IEntry,
-  IHref,
-  IHrefDelta,
-  dest,
-  hrefURL,
-  query0,
-} from "../../utils/search";
+import { IEntry } from "../../utils/search";
 import { INotebookConfig } from "@/lib/data/notebookConfig";
 import { processNotes } from "./processNotes";
 import { InputScalars } from "./scalar";
+import { InputTags } from "./tag";
+import { InputDirs } from "./dir";
+import { usePathname, useSearchParams } from "next/navigation";
+import { sprinkles } from "@/sprinkles.css";
 
-function isEmpty(o: object) {
-  for (const _ in o) {
-    return false;
-  }
-  return true;
-}
-
-export function NavLink({
-  hrefObj,
-  delta,
-  children,
-  ...extra
-}: {
-  hrefObj: IHref;
-  delta: IHrefDelta;
-  children: ReactNode;
-} & Omit<BoxProps, "href">) {
-  const newHref = dest(hrefObj, delta);
-  const active = hrefURL(hrefObj) === newHref;
-  if (active)
-    return (
-      <Box fontWeight="bold" color={"active"} {...extra}>
-        {children}
-      </Box>
-    );
-  return (
-    <Link href={newHref} {...extra}>
-      {children}
-    </Link>
-  );
-}
-
-function ToggleTagLink({ hrefObj, tag }: { hrefObj: IHref; tag: string }) {
-  const tags = hrefObj.query.tags;
-  const active = tags.includes(tag);
-  const href = dest(hrefObj, { query: { tags: toggle(tags, tag) } });
+function Kanban({ kanban }: { kanban: string }) {
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams as any);
+  const active = params.get("kanban") === kanban;
+  params.set("kanban", kanban);
+  const query = params.toString();
   return (
     <Link
-      px={5}
-      borderRadius={3}
-      backgroundColor={active ? "active" : "foreground2"}
-      href={href}
+      className={sprinkles({ color: active ? "active" : "link" })}
+      href={{ pathname: "/kanban", query }}
     >
-      {tag}
+      {kanban}
     </Link>
   );
 }
 
-function KanbanSelector({
-  hrefObj,
-  enabledKanbans,
-}: {
-  hrefObj: IHref;
-  enabledKanbans: string[];
-}) {
+function KanbanSelector({ enabledKanbans }: { enabledKanbans: string[] }) {
   return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap" gap={5}>
-      <Box fontWeight="bold">Kanban</Box>
-      {enabledKanbans.map((label) => (
-        <NavLink
-          key={label}
-          hrefObj={hrefObj}
-          delta={{ pathname: "/kanban", query: { kanban: label } }}
-        >
-          {label}
-        </NavLink>
+    <>
+      {enabledKanbans.map((kanban) => (
+        <Kanban key={kanban} kanban={kanban} />
       ))}
-    </Box>
+    </>
   );
+}
+
+function Notes({}: {}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams as any);
+  params.delete("kanban");
+  const query = params.toString();
+  const active = pathname === "/notes";
+  return (
+    <Link
+      className={sprinkles({ color: active ? "active" : "link" })}
+      href={{ pathname: "/notes", query }}
+    >
+      Notes
+    </Link>
+  );
+}
+
+function Clear({}: {}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const active = searchParams.toString() === "";
+  return (
+    <Link
+      className={sprinkles({ color: active ? "active" : "link" })}
+      href={{ pathname }}
+    >
+      Clear filters
+    </Link>
+  );
+}
+
+function useKanban() {
+  const searchParams = useSearchParams();
+  return searchParams.get("kanban") || "";
 }
 
 export function Navigator({
-  hrefObj,
   entries,
   config,
   sep,
 }: {
-  hrefObj: IHref;
   entries: IEntry[];
   config: INotebookConfig;
   sep: string;
 }) {
-  const queryKanban =
-    (hrefObj.pathname === "kanban" && hrefObj.query.kanban) || "";
   const { enabledDirs, enabledTags, enabledKanbans, enabledScalars } =
-    processNotes(queryKanban, config.kanban, sep, entries);
+    processNotes(useKanban(), config.kanban, sep, entries);
   return (
     <Box px={{ s: 5, md: 0 }} width="screenMaxWidth">
       <Box display="flex" flexDirection="column" gap={10}>
-        <Box display="flex" flexDirection="column" gap={5}>
-          <NavLink hrefObj={hrefObj} delta={{ pathname: "/notes" }}>
-            Notes
-          </NavLink>
-          {!isEmpty(config.kanban) && (
-            <KanbanSelector hrefObj={hrefObj} enabledKanbans={enabledKanbans} />
-          )}
+        <Box display="flex" flexDirection="row" gap={10}>
+          <Notes />
+          <KanbanSelector enabledKanbans={enabledKanbans} />
         </Box>
         <Box display="flex" flexDirection="column" gap={5}>
-          <NavLink hrefObj={hrefObj} delta={{ query: query0 }}>
-            Clear filters
-          </NavLink>
-          <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-            <Box fontWeight="bold">Tags</Box>
-            {enabledTags.map((tag) => (
-              <ToggleTagLink key={tag} hrefObj={hrefObj} tag={tag} />
-            ))}
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            flexWrap="wrap"
-            alignItems="center"
-            gap={10}
-          >
-            <Box fontWeight="bold">Dirs</Box>
-            {enabledDirs.map((dir) => (
-              <NavLink
-                key={dir}
-                hrefObj={hrefObj}
-                delta={{ query: { dir } }}
-                fontFamily="monospace"
-              >
-                {dir || "."}
-              </NavLink>
-            ))}
-          </Box>
+          <Clear />
+          <InputTags enabledTags={enabledTags} />
+          <InputDirs enabledDirs={enabledDirs} />
           <InputScalars enabledScalars={enabledScalars} />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />

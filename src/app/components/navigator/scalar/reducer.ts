@@ -3,7 +3,7 @@ const toNumDate = (str: string) => new Date(str).getTime();
 
 export const defaultSort = {
   scalar: "mtime",
-  dir: true,
+  asc: true,
 };
 
 export const scalars = ["wordcount", "mtime", "event"];
@@ -35,7 +35,7 @@ export const scalarOpts: {
 export interface IState {
   sort: {
     scalar: string;
-    dir: boolean;
+    asc: boolean;
   };
   scalars: {
     [scalar: string]: {
@@ -77,17 +77,17 @@ function toggleSome({ scalar }: IToggleSome, state: IState) {
 interface IToggleSort {
   type: "TOGGLE_SORT";
   scalar: string;
-  dir: boolean;
+  asc: boolean;
 }
-function toggleSort({ scalar, dir }: IToggleSort, state: IState) {
-  if (state.sort.scalar === scalar && state.sort.dir === dir)
+function toggleSort({ scalar, asc }: IToggleSort, state: IState) {
+  if (state.sort.scalar === scalar && state.sort.asc === asc)
     return { ...state, sort: defaultSort };
   const { always } = scalarOpts[scalar];
   const scalarState = state.scalars[scalar];
-  if (always || scalarState.some) return { ...state, sort: { scalar, dir } };
+  if (always || scalarState.some) return { ...state, sort: { scalar, asc } };
   return {
     ...state,
-    sort: { scalar, dir },
+    sort: { scalar, asc },
     scalars: { ...state.scalars, [scalar]: { ...scalarState, some: true } },
   };
 }
@@ -97,6 +97,7 @@ interface IPushBound {
   scalar: string;
   bound: Bound;
 }
+
 function pushBound({ scalar, bound }: IPushBound, state: IState) {
   const erease: Bound = bound === "lte" ? "gte" : "lte";
   const { toNum } = scalarOpts[scalar];
@@ -120,7 +121,6 @@ interface ISetBound {
 }
 function setBound({ scalar, bound, value }: ISetBound, state: IState) {
   const scalarState = state.scalars[scalar];
-  const { always } = scalarOpts[scalar];
   return {
     ...state,
     scalars: {
@@ -132,16 +132,19 @@ function setBound({ scalar, bound, value }: ISetBound, state: IState) {
 
 function never(_: never) {}
 
-export function reducer(state: IState, action: IAction) {
+export function reducer(
+  state: IState,
+  action: IAction
+): readonly [IState, boolean] {
   switch (action.type) {
     case "TOGGLE_SOME":
-      return [toggleSome(action, state), true] as const;
+      return [toggleSome(action, state), true];
     case "PUSH_BOUND":
-      return [pushBound(action, state), true] as const;
+      return [pushBound(action, state), true];
     case "SET_BOUND":
-      return [setBound(action, state), false] as const;
+      return [setBound(action, state), false];
     case "TOGGLE_SORT":
-      return [toggleSort(action, state), true] as const;
+      return [toggleSort(action, state), true];
     default:
       never(action);
       throw null;

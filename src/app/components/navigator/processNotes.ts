@@ -1,6 +1,7 @@
 import { IEntry } from "@/app/utils/search";
-import { dirname, upDirs } from "../../utils/path";
-import { processScalar } from "./scalar/process";
+import { processScalars } from "./scalar/process";
+import { processTags } from "./tag/process";
+import { processDirs } from "./dir/process";
 
 export function processNotes(
   queryKanban: string,
@@ -8,9 +9,9 @@ export function processNotes(
   sep: string,
   entries: IEntry[]
 ) {
-  const tagSet = new Set<string>();
-  const dirSet = new Set<string>();
-  const [foldScalars, getEnabledScalars] = processScalar();
+  const [foldScalars, getEnabledScalars] = processScalars();
+  const [foldDirs, getEnabledDirs] = processDirs(sep);
+  const [foldTags, getEnabledTags] = processTags();
   for (const entry of entries) {
     if (
       queryKanban &&
@@ -19,16 +20,12 @@ export function processNotes(
       continue;
     }
     foldScalars(entry);
-    for (const tag of entry.tags) {
-      tagSet.add(tag.tagId);
-    }
-    for (const dir of upDirs(sep, dirname(sep, entry.id))) {
-      dirSet.add(dir);
-    }
+    foldTags(entry);
+    foldDirs(entry);
   }
-  const enabledTags = Array.from(tagSet).sort();
-  const enabledDirs = Array.from(dirSet).sort();
-  const enabledScalars = getEnabledScalars();
+  const enabledDirs = getEnabledDirs().sort();
+  const enabledTags = getEnabledTags().sort();
+  const enabledScalars = getEnabledScalars().sort();
 
   const kanbanSet = new Set<string>();
   for (const [label, tags] of Object.entries(kanbanConfig))

@@ -62,7 +62,6 @@ describe("db", () => {
         wordcount: true,
         event: {
           select: {
-            day: true,
             start: true,
             end: true,
           },
@@ -78,15 +77,16 @@ describe("db", () => {
         tags: true,
       },
     });
-    const eventDate = new Date("2022-10-10");
+    const start = new Date("2022-10-10");
+    const end = new Date("2022-10-10");
+    end.setHours(end.getHours() + 1);
     expect(result).toMatchObject({
-      mtime: 1,
+      mtime: new Date(1),
       title: "title 1",
       wordcount: 4,
       event: {
-        day: false,
-        start: eventDate,
-        end: null,
+        start,
+        end,
       },
       links: [
         {
@@ -112,13 +112,14 @@ describe("db", () => {
       where: { id: "1.md" },
       select: { title: true, tags: true, event: true },
     });
-    const eventDate2 = new Date("2020-10-11T11:30");
+    const eventDate2Start = new Date("2020-10-11T11:30");
+    const eventDate2End = new Date("2020-10-11T11:30");
+    eventDate2End.setHours(eventDate2End.getHours() + 1);
     expect(result2).toMatchObject({
       title: "title 2",
       event: {
-        day: false,
-        start: eventDate2,
-        end: null,
+        start: eventDate2Start,
+        end: eventDate2End,
       },
     });
     const tags2 = result2?.tags.map((tag) => tag.tagId).sort();

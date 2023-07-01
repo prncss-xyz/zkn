@@ -1,10 +1,12 @@
 import { IEntry } from "@/app/utils/search";
 
-export function processScalars() {
+export function processTags() {
   // these scalars exists on every data
-  const acc = new Set<string>(["mtime", "wordcount"]);
+  const acc = new Set<string>([]);
   function fold(entry: IEntry) {
-    if (entry.event) acc.add("event");
+    for (const tag of entry.tags) {
+      acc.add(tag.tagId);
+    }
   }
   function result() {
     return Array.from(acc);

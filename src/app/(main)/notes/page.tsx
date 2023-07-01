@@ -1,12 +1,9 @@
 import { Box } from "@/app/components/box";
 import { setup } from "@/lib/data/scanFiles";
 import { basename, sep } from "node:path";
-import prisma from "@/lib/data/prisma";
-import { titleSorter } from "@/app/utils/titleSorter";
 import { Link } from "@/app/components/link";
 import { Navigator } from "@/app/components/navigator";
-import { ISearch, searchToQuery } from "@/app/utils/search";
-import { searchToOrderBy, searchToWhere } from "@/app/server/where";
+import { ISearch, getEntries } from "@/app/utils/search";
 import { getNotebookConfig } from "@/lib/data/notebookConfig";
 
 interface IEntry {
@@ -15,8 +12,6 @@ interface IEntry {
 }
 
 function Notes({ entries }: { entries: IEntry[] }) {
-  entries.sort(titleSorter);
-
   return (
     <Box
       display="flex"
@@ -49,33 +44,12 @@ export default async function Page({
   searchParams: ISearch;
 }) {
   await setup();
-  const query = searchToQuery(searchParams);
-  const where = searchToWhere(query);
-  const orderBy = searchToOrderBy(query);
-  const entries = await prisma.entry.findMany({
-    select: {
-      id: true,
-      title: true,
-      mtime: true,
-      tags: { select: { tagId: true } },
-      event: true,
-    },
-    where,
-    // orderBy: { id: "asc" },
-    // orderBy: { event: { start: "asc" } },
-    orderBy,
-  });
+  const params = new URLSearchParams(searchParams);
+  const entries = await getEntries(params);
   const config = await getNotebookConfig();
-  const hrefObj = { pathname: "/notes", query };
   return (
     <Box display="flex" flexDirection="column" gap={20}>
-      <Navigator
-        hrefObj={hrefObj}
-        entries={entries}
-        config={config}
-        sep={sep}
-      />
-
+      <Navigator entries={entries} config={config} sep={sep} />
       <Notes entries={entries} />
     </Box>
   );

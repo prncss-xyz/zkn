@@ -109,28 +109,26 @@ async function getNote(id: string) {
 
 interface IEvent {
   start: Date;
-  end: Date | null;
-  day: boolean;
+  end: Date;
 }
 
 interface IMetaData {
   id: string;
   wordcount: number;
   tags: { tagId: string }[];
-  mtime: number;
+  mtime: Date;
   event: IEvent | null;
 }
 
 function Event({ event }: { event: IEvent }) {
-  const start = event.day
+  const day = true; // TODO:
+  const start = day
     ? event.start.toLocaleDateString()
     : event.start.toLocaleString();
-  if (!event.end) {
+  if (event.end === event.start) {
     return <>{start}</>;
   }
-  const end = event.day
-    ? event.end.toLocaleDateString()
-    : event.end.toLocaleString();
+  const end = day ? event.end.toLocaleDateString() : event.end.toLocaleString();
   return (
     <>
       {start} &mdash; {end}
@@ -154,7 +152,7 @@ function MetaDataEntry({
 }
 
 function MetaData({ ...entry }: IMetaData) {
-  const modified = new Date(entry.mtime).toLocaleDateString();
+  const modified = entry.mtime.toLocaleDateString();
   const tags = entry.tags.map((tag) => tag.tagId).sort();
   return (
     <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>

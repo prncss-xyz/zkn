@@ -9,11 +9,10 @@
     "lint": "npx tsc --noEmit; next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:int": "./scripts/run-integration.sh",
-    "test:int:ui": "./scripts/run-integration.sh --ui",
-    "test:e2e": "pnpm exec playwright test",
-    "test:e2e:ui": "pnpm exec playwright test --ui",
-    "test:ct": "playwright test -c playwright-ct.config.ts"
+    "test:int": "./scripts/run-int.sh",
+    "test:int:ui": "./scripts/run-int.sh --ui",
+    "test:e2e": "./scripts/run-e2e.sh",
+    "test:e2e:ui": "./scripts/run-e2e.sh --ui"
   },
   "dependencies": {
     "@prisma/client": "4.16.2",

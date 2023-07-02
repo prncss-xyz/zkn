@@ -9,4 +9,4 @@ if [ "$#" -eq "0" ]; then
 else
 	vitest -c ./vitest.config.integration.ts --ui
 fi
-rm "$DATABASE_URL"
+rm "$BASE"

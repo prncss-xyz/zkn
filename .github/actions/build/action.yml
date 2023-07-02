@@ -10,7 +10,7 @@ runs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        cache: 'pnpm'
+        cache: pnpm
     - name: Install dependencies
       shell: bash
       run: pnpm install

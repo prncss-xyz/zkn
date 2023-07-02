@@ -1,7 +1,7 @@
 "use server";
 
 import matter from "gray-matter";
-import path from "path";
+import path from "node:path/posix";
 import { notebookDir } from "../notebookDir";
 import fs from "node:fs/promises";
 import prisma from "../data/prisma";

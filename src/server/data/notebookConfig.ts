@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path/posix";
 import { notebookDir } from "../notebookDir";
 import { readFile } from "node:fs/promises";
 import { load } from "js-yaml";

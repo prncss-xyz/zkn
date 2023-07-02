@@ -8,6 +8,7 @@ import { Box } from "@/components/box";
 import { backlink as backlinkClass } from "./backlink.css";
 import { Link } from "@/components/link";
 import { getBacklinks, getIdToTitle, getTitle } from "@/server/actions";
+import { normalizePath } from "@/utils/path";
 
 function transform() {
   return async function (tree: Root) {
@@ -19,8 +20,14 @@ function transform() {
         className_ === "internal" ||
         (Array.isArray(className_) && className_.includes("internal"))
       ) {
-        const href = node.properties?.href;
-        if (typeof href === "string") links.push(href);
+        if (node.properties) {
+          const href = node.properties.href;
+          if (href && typeof href === "string") {
+            const normalized = normalizePath(href);
+            node.properties.href = normalized;
+            links.push(normalized);
+          }
+        }
       }
     });
     const idToTitle = await getIdToTitle(links);

@@ -6,11 +6,10 @@ import { IEntry } from "@/server/actions/search";
 export function processNotes(
   queryKanban: string,
   kanbanConfig: { [kanban: string]: string[] },
-  sep: string,
   entries: IEntry[]
 ) {
   const [foldScalars, getEnabledScalars] = processScalars();
-  const [foldDirs, getEnabledDirs] = processDirs(sep);
+  const [foldDirs, getEnabledDirs] = processDirs();
   const [foldTags, getEnabledTags] = processTags();
   for (const entry of entries) {
     if (

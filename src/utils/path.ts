@@ -1,4 +1,6 @@
-export function upDirs(sep: string, dir: string) {
+const sep = "/";
+
+export function upDirs(dir: string) {
   const res: string[] = [];
   if (!dir) return [""];
   const segments = dir.split(sep);
@@ -7,8 +9,12 @@ export function upDirs(sep: string, dir: string) {
   return res;
 }
 
-export function dirname(sep: string, filepath: string) {
+export function dirname(filepath: string) {
   const index = filepath.lastIndexOf(sep);
   if (index === -1) return "";
   return filepath.slice(0, index);
+}
+
+export function normalizePath(path: string) {
+  return path.replace(/\\/g, "/");
 }

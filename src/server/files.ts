@@ -1,6 +1,6 @@
 import { constants } from "node:fs";
 import fs from "node:fs/promises";
-import path from "node:path";
+import path from "node:path/posix";
 
 // recursively list files with path relative to basedir, skipping hidden (.*) files and dirs
 export async function* getFiles(

@@ -8,14 +8,14 @@ const entry0 = {
 
 describe("processNotes", () => {
   it("description", () => {
-    expect(processNotes("", {}, "/", [])).toEqual({
+    expect(processNotes("", {}, [])).toEqual({
       enabledDirs: [],
       enabledKanbans: [],
       enabledScalars: ["mtime", "wordcount"],
       enabledTags: [],
     });
     expect(
-      processNotes("v", { v: ["p", "z"], w: ["a"] }, "/", [
+      processNotes("v", { v: ["p", "z"], w: ["a"] }, [
         { ...entry0, id: "a/1.md", tags: [{ tagId: "p" }] },
         { ...entry0, id: "a/b/c/1.md", tags: [{ tagId: "p" }, { tagId: "q" }] },
         { ...entry0, id: "b/1.md", tags: [{ tagId: "p" }] },

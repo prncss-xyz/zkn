@@ -8,6 +8,7 @@ import { FileEntry } from "./scanFiles";
 import matter from "gray-matter";
 import { analyzePreamble } from "./analyzePreamble";
 import { getProcessor } from "./processMD";
+import { normalizePath } from "@/utils/path";
 
 interface RawLink {
   context: string;
@@ -92,7 +93,7 @@ export async function analyzeMD(fileEntry: FileEntry, raw: string) {
   const { title, wordcount, links: links_ } = result;
   const links = links_.map((link: any, rank: any) => ({
     // sourceId: fileEntry.id,
-    targetId: link.target,
+    targetId: normalizePath(link.target),
     rank,
     context: link.context,
   }));

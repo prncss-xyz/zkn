@@ -1,11 +1,11 @@
 import { IEntry } from "@/server/actions/search";
 import { dirname, upDirs } from "@/utils/path";
 
-export function processDirs(sep: string) {
+export function processDirs() {
   // these scalars exists on every data
   const acc = new Set<string>();
   function fold(entry: IEntry) {
-    for (const dir of upDirs(sep, dirname(sep, entry.id))) {
+    for (const dir of upDirs(dirname(entry.id))) {
       acc.add(dir);
     }
   }

@@ -1,10 +1,11 @@
 import { Entry, Link, Event } from "@prisma/client";
 import prisma from "./prisma";
 import { readFile, stat, watch } from "node:fs/promises";
-import path, { extname } from "node:path";
+import path, { extname } from "node:path/posix";
 import { analyzeMD } from "./parseMD";
 import { notebookDir } from "../notebookDir";
 import { getFiles } from "../files";
+import { normalizePath } from "@/utils/path";
 
 export interface Data {
   entry: Entry;
@@ -155,7 +156,7 @@ export async function watchFiles(notebookDir: string) {
       clearTimeout(handle);
     }
     handle = setTimeout(() => {
-      scanFile(notebookDir, filename);
+      scanFile(notebookDir, normalizePath(filename));
     }, 300);
     oldFilename = filename;
   }

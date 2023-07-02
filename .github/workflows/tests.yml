@@ -15,14 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/build
-      - name: Run unit tests
+      - name: Push db
+        run: pnpm prisma db push
+      - name: Run tests
         run: pnpm test
   integration-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/build
-      - name: Run unit tests
+      - name: Run tests
         run: pnpm test:int
   e2e-tests:
     runs-on: ubuntu-latest
@@ -31,5 +33,7 @@ jobs:
       - uses: ./.github/actions/build
       - name: Install playwright
         run: pnpm playwright install
-      - name: Run unit tests
+      - name: Push db
+        run: pnpm prisma db push
+      - name: Run tests
         run: pnpm test:e2e

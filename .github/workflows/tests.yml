@@ -26,5 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/build
+      - name: Install playwright
+        run: pnpm playwright install
       - name: Run unit tests
         run: pnpm test:e2e

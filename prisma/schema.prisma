@@ -23,25 +23,25 @@ model Tag {
 }
 
 model TagsOnEntries {
-  tag     Tag    @relation(fields: [tagId], references: [id])
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tagId   String
-  entry   Entry  @relation(fields: [entryId], references: [id])
+  entry   Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   entryId String
 
   @@id([tagId, entryId])
 }
 
 model Event {
-  id      Int       @id @default(autoincrement())
-  entry   Entry     @relation(fields: [entryId], references: [id])
-  entryId String    @unique
+  id      Int      @id @default(autoincrement())
+  entry   Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  entryId String   @unique
   start   DateTime
   end     DateTime
 }
 
 model Link {
   id       Int    @id @default(autoincrement())
-  source   Entry  @relation(fields: [sourceId], references: [id], name: "source")
+  source   Entry  @relation(fields: [sourceId], references: [id], name: "source", onDelete: Cascade, onUpdate: Cascade)
   sourceId String
   targetId String
   context  String

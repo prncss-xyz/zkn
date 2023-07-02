@@ -1,4 +1,4 @@
-export const space = [0, 5, 10, 20, 40];
+export const space = [0, 5, 10, 20, 40] as const;
 
 export const sizes = {
   screenMaxWidth: "min(100%, 1000px)",
@@ -13,13 +13,13 @@ export const sizes = {
   menuIcon: 30,
 };
 
-export const fontSizes = [];
+export const fontSizes = [] as const;
 
-export const borderRadii = [0, 3, 5];
+export const borderRadii = [0, 3, 5] as const;
 
-export const fontWeights = { bold: "bold" };
+export const fontWeights = { bold: 700 };
 
-export const borderWidths = [0, 1];
+export const borderWidths = [0, 1] as const;
 
 // this is used to set up theme vars; what is not defined in _dark defaults to values from _light
 // don't these values directly, use sprinkles or vars.colors from theme.css instead
@@ -34,7 +34,7 @@ export const _light = {
   active: "hsl(40, 60%, 50%)",
   foreground2: "hsl(150, 10%, 70%)",
   background: "hsl(150, 10%, 50%)",
-  error: "hsl(315, 100%, 50%)",
+  error: "pink",
 };
 
 export const _dark = {
@@ -45,5 +45,5 @@ export const _dark = {
   active: "hsl(40, 50%, 40%)",
   foreground2: "hsl(150, 10%, 17%)",
   background: "hsl(150, 10%, 10%)",
-  error: "hsl(315, 100%, 50%)",
+  error: "pink",
 };

@@ -4,10 +4,10 @@ import rehypeReact from "rehype-react";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
 import { Root } from "hast";
-import { getBacklinks, getIdToTitle, getTitle } from "@/lib/data/actions";
-import { Box } from "@/app/components/box";
+import { Box } from "@/components/box";
 import { backlink as backlinkClass } from "./backlink.css";
-import { Link } from "@/app/components/link";
+import { Link } from "@/components/link";
+import { getBacklinks, getIdToTitle, getTitle } from "@/server/actions";
 
 function transform() {
   return async function (tree: Root) {

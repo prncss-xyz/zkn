@@ -2,14 +2,14 @@
 
 import { Box } from "../box";
 import { Link } from "../link";
-import { IEntry } from "../../utils/search";
-import { INotebookConfig } from "@/lib/data/notebookConfig";
+import { IEntry } from "../../server/actions/search";
 import { processNotes } from "./processNotes";
 import { InputScalars } from "./scalar";
 import { InputTags } from "./tag";
 import { InputDirs } from "./dir";
 import { usePathname, useSearchParams } from "next/navigation";
 import { sprinkles } from "@/sprinkles.css";
+import { INotebookConfig } from "@/server/data/notebookConfig";
 
 function Kanban({ kanban }: { kanban: string }) {
   const searchParams = useSearchParams();

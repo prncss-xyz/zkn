@@ -1,5 +1,4 @@
-import { Box } from "../components/box";
-import { Nav } from "./nav";
+import { Box } from "@/components/box";
 
 export default async function Layout({
   children,

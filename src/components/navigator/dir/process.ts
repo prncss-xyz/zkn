@@ -1,5 +1,5 @@
-import { dirname, upDirs } from "@/app/utils/path";
-import { IEntry } from "@/app/utils/search";
+import { IEntry } from "@/server/actions/search";
+import { dirname, upDirs } from "@/utils/path";
 
 export function processDirs(sep: string) {
   // these scalars exists on every data

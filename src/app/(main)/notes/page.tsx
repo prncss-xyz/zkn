@@ -1,10 +1,10 @@
-import { Box } from "@/app/components/box";
-import { setup } from "@/lib/data/scanFiles";
+import { Box } from "@/components/box";
+import { setup } from "@/server/data/scanFiles";
 import { basename, sep } from "node:path";
-import { Link } from "@/app/components/link";
-import { Navigator } from "@/app/components/navigator";
-import { ISearch, getEntries } from "@/app/utils/search";
-import { getNotebookConfig } from "@/lib/data/notebookConfig";
+import { Link } from "@/components/link";
+import { Navigator } from "@/components/navigator";
+import { ISearch, getEntries } from "@/server/actions/search";
+import { getNotebookConfig } from "@/server/data/notebookConfig";
 
 interface IEntry {
   id: string;

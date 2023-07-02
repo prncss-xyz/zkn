@@ -2,10 +2,10 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { paramsToQuery, queryToParams } from "./query";
-import { toggle } from "@/app/utils/arrays";
 import Link from "next/link";
 import { Box } from "../../box";
 import { sprinkles } from "@/sprinkles.css";
+import { toggle } from "@/utils/arrays";
 
 function InputTag({ tag }: { tag: string }) {
   const pathname = usePathname();

@@ -1,4 +1,4 @@
-import { IEntry } from "@/app/utils/search";
+import { IEntry } from "@/server/actions/search";
 
 export function processScalars() {
   // these scalars exists on every data

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Inter as Font } from "next/font/google";
 import { theme } from "@/theme.css";
-import { Box } from "./components/box";
+import { Box } from "@/components/box";
 
 const font = Font({ subsets: ["latin"] });
 

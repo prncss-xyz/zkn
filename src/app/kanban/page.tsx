@@ -1,12 +1,12 @@
-import { Box } from "@/app/components/box";
-import { getPrefixLen } from "@/app/utils/prefixLen";
-import { getNotebookConfig } from "@/lib/data/notebookConfig";
-import { setup } from "@/lib/data/scanFiles";
-import { Link } from "../components/link";
-import { Navigator } from "../components/navigator";
+import { Box } from "@/components/box";
+import { getPrefixLen } from "@/utils/prefixLen";
+import { Navigator } from "@/components/navigator";
 import { sep } from "node:path";
-import { ISearch, getEntries } from "../utils/search";
-import { maxH } from "../(main)/components/maxH.css";
+import { ISearch, getEntries } from "@/server/actions/search";
+import { maxH } from "@/components/maxH.css";
+import { getNotebookConfig } from "@/server/data/notebookConfig";
+import { Link } from "@/components/link";
+import { setup } from "@/server/data/scanFiles";
 
 // wether to hide empty kanban columns
 const dense = true;

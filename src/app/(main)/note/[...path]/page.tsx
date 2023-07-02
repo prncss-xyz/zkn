@@ -1,14 +1,14 @@
-import { Box } from "@/app/components/box";
-import prisma from "@/lib/data/prisma";
-import { getProcessor } from "@/lib/data/processMD";
+import { Box } from "@/components/box";
+import prisma from "@/server/data/prisma";
+import { getProcessor } from "@/server/data/processMD";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
-import { getBacklinks, getContent, getIdToTitle } from "@/lib/data/actions";
+import { getBacklinks, getContent, getIdToTitle } from "@/server/actions";
 import { basename, extname, sep } from "node:path";
 import { Backlink } from "./backlink";
-import { setup } from "@/lib/data/scanFiles";
+import { setup } from "@/server/data/scanFiles";
 import { markdown } from "./page.css";
-import { Link } from "@/app/components/link";
+import { Link } from "@/components/link";
 
 function IdPath({ id }: { id: string }) {
   const segments = id.split(sep).slice(0, -1);

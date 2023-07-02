@@ -2,9 +2,9 @@ import { Entry, Link, Event } from "@prisma/client";
 import prisma from "./prisma";
 import { readFile, stat, watch } from "node:fs/promises";
 import path, { extname } from "node:path";
-import { getFiles } from "@/lib/files";
 import { analyzeMD } from "./parseMD";
 import { notebookDir } from "../notebookDir";
+import { getFiles } from "../files";
 
 export interface Data {
   entry: Entry;

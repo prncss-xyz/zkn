@@ -1,7 +1,7 @@
-import { IEntry } from "@/app/utils/search";
 import { processScalars } from "./scalar/process";
 import { processTags } from "./tag/process";
 import { processDirs } from "./dir/process";
+import { IEntry } from "@/server/actions/search";
 
 export function processNotes(
   queryKanban: string,

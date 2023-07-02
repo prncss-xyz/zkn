@@ -1,5 +1,5 @@
-import { Box } from "@/app/components/box";
-import { setup } from "@/lib/data/scanFiles";
+import { Box } from "@/components/box";
+import { setup } from "@/server/data/scanFiles";
 
 export default async function Page() {
   await setup();

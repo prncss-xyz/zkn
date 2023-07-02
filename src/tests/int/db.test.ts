@@ -1,5 +1,5 @@
-import prisma from "@/lib/data/prisma";
-import { scanFiles } from "@/lib/data/scanFiles";
+import prisma from "@/server/data/prisma";
+import { scanFiles } from "@/server/data/scanFiles";
 import { writeFile } from "fs/promises";
 import mock from "mock-fs";
 

@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import path from "path";
 import { notebookDir } from "../notebookDir";
 import fs from "node:fs/promises";
-import prisma from "./prisma";
+import prisma from "../data/prisma";
 
 export async function getContent(id: string) {
   const file = path.join(notebookDir, id);

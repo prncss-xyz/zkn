@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { sprinkles } from "@/sprinkles.css";
 import { hideLinks, overlayLayout } from "./menuBar.css";
-import { Box } from "../components/box";
-import { screenOverlay } from "../components/screenOverlay.css";
+import { Box } from "@/components/box";
+import { screenOverlay } from "@/components/screenOverlay.css";
 import { sizes } from "@/style";
-import { Link } from "../components/link";
+import { Link } from "@/components/link";
 
 export function MenuLink({
   children,

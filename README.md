@@ -1,5 +1,7 @@
 # zkn
 
+Testing suff, do not install yet!
+
 ## Getting Started
 
 First, run the development server:

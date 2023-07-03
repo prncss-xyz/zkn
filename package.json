@@ -1,5 +1,5 @@
 {
-  "name": "zkn",
+  "name": "@princesse-xyz/zkn",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -29,10 +29,8 @@
     "hast-util-to-html": "^8.0.4",
     "hast-util-to-text": "^3.1.2",
     "js-yaml": "^4.1.0",
-    "moderndash": "^3.7.2",
     "next": "13.4.7",
     "prisma": "^4.16.2",
-    "rambda": "^7.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
@@ -57,6 +55,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "rambda": "^7.5.0",
     "@playwright/experimental-ct-react": "^1.35.1",
     "@playwright/test": "^1.35.1",
     "@sinonjs/fake-timers": "^10.3.0",

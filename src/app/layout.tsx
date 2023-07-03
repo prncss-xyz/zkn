@@ -17,16 +17,16 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={clsx(font.className, theme)}>
-        <Box
-          mx={{ xs: 0, md: 20 }}
-          my={{ xs: 10, md: 20 }}
-          display="flex"
-          justifyContent="center"
-        >
-          {children}
-        </Box>
-      </body>
+      <Box
+        as="body"
+        className={clsx(font.className, theme)}
+        mx={{ xs: 0, md: 20 }}
+        my={{ xs: 10, md: 20 }}
+        display="flex"
+        justifyContent="center"
+      >
+        {children}
+      </Box>
     </html>
   );
 }

@@ -8,13 +8,14 @@ export default async function Layout({
   return (
     <>
       <Box
-        width="screenMaxWidth"
         display="flex"
         flexDirection="column"
+        alignItems="center"
         gap={20}
+        as="main"
+        width="100%"
       >
-        {/* <Nav /> */}
-        <Box as="main">{children}</Box>
+        {children}
       </Box>
     </>
   );

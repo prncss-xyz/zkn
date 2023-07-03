@@ -126,24 +126,10 @@ export default async function Layout({
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-      gap={20}
-      className={maxH}
-    >
-      <Box
-        width="screenMaxWidth"
-        display="flex"
-        flexDirection="column"
-        gap={20}
-      >
-        <Navigator entries={entries} config={config} sep={sep} />
-      </Box>
+    <>
+      <Navigator entries={entries} config={config} sep={sep} />
       {/* @ts-ignore */}
       <Kanban workflow={workflow} tags={tags} entries={entries} />
-    </Box>
+    </>
   );
 }

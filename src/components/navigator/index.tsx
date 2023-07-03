@@ -85,7 +85,12 @@ export function Navigator({
   const { enabledDirs, enabledTags, enabledKanbans, enabledScalars } =
     processNotes(useKanban(), config.kanban, entries);
   return (
-    <Box px={{ s: 5, md: 0 }} width="screenMaxWidth">
+    <Box
+      px={{ s: 5, md: 0 }}
+      width="screenMaxWidth"
+      display="flex"
+      flexDirection="column"
+    >
       <Box display="flex" flexDirection="column" gap={10}>
         <Box display="flex" flexDirection="row" gap={10}>
           <Notes />

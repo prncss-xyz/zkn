@@ -208,7 +208,12 @@ export default async function Page({
     );
   const { entry, idToTitle, content, backlinks } = res;
   return (
-    <Box display="flex" flexDirection="column" gap={10}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={10}
+      minWidth="screenMaxWidth"
+    >
       <IdPath id={entry.id} />
       <Box
         backgroundColor="foreground1"

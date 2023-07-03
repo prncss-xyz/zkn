@@ -16,6 +16,7 @@ function Notes({ entries }: { entries: IEntry[] }) {
     <Box
       display="flex"
       flexDirection="column"
+      width="screenMaxWidth"
       backgroundColor="foreground2"
       borderRadius={{ xs: 0, md: 5 }}
     >
@@ -48,9 +49,9 @@ export default async function Page({
   const entries = await getEntries(params);
   const config = await getNotebookConfig();
   return (
-    <Box display="flex" flexDirection="column" gap={20}>
+    <>
       <Navigator entries={entries} config={config} sep={sep} />
       <Notes entries={entries} />
-    </Box>
+    </>
   );
 }

@@ -8,6 +8,8 @@ import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { Link } from "@/components/link";
 import { setup } from "@/server/data/scanFiles";
 
+export const dynamic = "force-dynamic";
+
 // wether to hide empty kanban columns
 const dense = true;
 
@@ -112,7 +114,7 @@ async function Kanban({
   );
 }
 
-export default async function Layout({
+export default async function Page({
   searchParams,
 }: {
   searchParams: ISearch;

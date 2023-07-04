@@ -1,6 +1,8 @@
 import { Box } from "@/components/box";
 import { setup } from "@/server/data/scanFiles";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   await setup();
   return (

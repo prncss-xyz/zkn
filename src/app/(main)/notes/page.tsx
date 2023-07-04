@@ -6,6 +6,8 @@ import { Navigator } from "@/components/navigator";
 import { ISearch, getEntries } from "@/server/actions/search";
 import { getNotebookConfig } from "@/server/data/notebookConfig";
 
+export const dynamic = "force-dynamic";
+
 interface IEntry {
   id: string;
   title: string | null;

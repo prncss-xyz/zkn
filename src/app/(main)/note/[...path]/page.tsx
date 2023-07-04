@@ -10,6 +10,8 @@ import { setup } from "@/server/data/scanFiles";
 import { markdown } from "./page.css";
 import { Link } from "@/components/link";
 
+export const dynamic = "force-dynamic";
+
 function IdPath({ id }: { id: string }) {
   const segments = id.split(sep).slice(0, -1);
   return (

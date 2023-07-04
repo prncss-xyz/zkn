@@ -6,17 +6,15 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={20}
-        as="main"
-        width="100%"
-      >
-        {children}
-      </Box>
-    </>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={20}
+      as="main"
+      width="100%"
+    >
+      {children}
+    </Box>
   );
 }

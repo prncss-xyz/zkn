@@ -15,6 +15,7 @@ model Entry {
   tags      TagsOnEntries[]
   event     Event?
   links     Link[]          @relation("source")
+  backlinks Link[]          @relation("target")
 }
 
 model Tag {
@@ -43,6 +44,7 @@ model Link {
   id       Int    @id @default(autoincrement())
   source   Entry  @relation(fields: [sourceId], references: [id], name: "source", onDelete: Cascade, onUpdate: Cascade)
   sourceId String
+  target   Entry  @relation(fields: [targetId], references: [id], name: "target", onDelete: Cascade, onUpdate: Cascade)
   targetId String
   context  String
   rank     Int

@@ -2,11 +2,12 @@
 
 import { Box } from "../box";
 import { Link } from "../link";
-import { IEntry } from "../../server/actions/search";
+import { NotesEntry } from "@/app/(main)/(views)/search";
 import { processNotes } from "./processNotes";
-import { InputScalars } from "./scalar";
-import { InputTags } from "./tag";
-import { InputDirs } from "./dir";
+import { InputScalars } from "@/fields/scalars/navigator";
+import { InputTags } from "@/fields/tags/navigator";
+import { InputVirtualTags } from "@/fields/virtualTags/navigator";
+import { InputDirs } from "@/fields/dir/navigator";
 import { usePathname, useSearchParams } from "next/navigation";
 import { sprinkles } from "@/sprinkles.css";
 import { INotebookConfig } from "@/server/data/notebookConfig";
@@ -76,14 +77,11 @@ function useKanban() {
 export function Navigator({
   entries,
   config,
-  sep,
 }: {
-  entries: IEntry[];
+  entries: NotesEntry[];
   config: INotebookConfig;
-  sep: string;
 }) {
-  const { enabledDirs, enabledTags, enabledKanbans, enabledScalars } =
-    processNotes(useKanban(), config.kanban, entries);
+  const enabled = processNotes(useKanban(), config.kanban, entries);
   return (
     <Box
       px={{ s: 5, md: 0 }}
@@ -94,13 +92,14 @@ export function Navigator({
       <Box display="flex" flexDirection="column" gap={10}>
         <Box display="flex" flexDirection="row" gap={10}>
           <Notes />
-          <KanbanSelector enabledKanbans={enabledKanbans} />
+          <KanbanSelector enabledKanbans={enabled.kanbans} />
         </Box>
         <Box display="flex" flexDirection="column" gap={5}>
           <Clear />
-          <InputTags enabledTags={enabledTags} />
-          <InputDirs enabledDirs={enabledDirs} />
-          <InputScalars enabledScalars={enabledScalars} />
+          <InputVirtualTags enabledVirtualTags={enabled.virtualTags} />
+          <InputTags enabledTags={enabled.tags} />
+          <InputDirs enabledDirs={enabled.dirs} />
+          <InputScalars enabledScalars={enabled.scalars} />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />
       </Box>

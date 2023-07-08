@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { forwardRef } from "react";
 import { BoxProps } from "./box";
-import Link_, { LinkProps } from "next/link";
+import NextLink, { LinkProps } from "next/link";
 import { sprinkles } from "@/sprinkles.css";
 
 // a stylable version of next link
@@ -24,7 +24,7 @@ export const Link = forwardRef<
     ...extra
   } = props;
   return (
-    <Link_
+    <NextLink
       href={href}
       replace={replace}
       prefetch={prefetch}
@@ -37,7 +37,7 @@ export const Link = forwardRef<
       className={clsx(sprinkles(extra), className)}
     >
       {children}
-    </Link_>
+    </NextLink>
   );
 });
 

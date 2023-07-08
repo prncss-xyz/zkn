@@ -1,16 +1,18 @@
-import { processScalars } from "./scalar/process";
-import { processTags } from "./tag/process";
-import { processDirs } from "./dir/process";
-import { IEntry } from "@/server/actions/search";
+import { processScalars } from "@/fields/scalars/process";
+import { processTags } from "@/fields/tags/process";
+import { processVirtualTags } from "@/fields/virtualTags/process";
+import { processDirs } from "@/fields/dir/process";
+import { NotesEntry } from "@/app/(main)/(views)/search";
 
 export function processNotes(
   queryKanban: string,
   kanbanConfig: { [kanban: string]: string[] },
-  entries: IEntry[]
+  entries: NotesEntry[]
 ) {
   const [foldScalars, getEnabledScalars] = processScalars();
   const [foldDirs, getEnabledDirs] = processDirs();
   const [foldTags, getEnabledTags] = processTags();
+  const [foldVirtualTags, getEnabledVirtualTags] = processVirtualTags();
   for (const entry of entries) {
     if (
       queryKanban &&
@@ -21,15 +23,23 @@ export function processNotes(
     foldScalars(entry);
     foldTags(entry);
     foldDirs(entry);
+    foldVirtualTags(entry);
   }
-  const enabledDirs = getEnabledDirs().sort();
-  const enabledTags = getEnabledTags().sort();
-  const enabledScalars = getEnabledScalars().sort();
+  const dirs = getEnabledDirs().sort();
+  const tags = getEnabledTags().sort();
+  const scalars = getEnabledScalars().sort();
+  const virtualTags = getEnabledVirtualTags().sort();
 
   const kanbanSet = new Set<string>();
   for (const [label, tags] of Object.entries(kanbanConfig))
-    for (const tag of tags) if (enabledTags.includes(tag)) kanbanSet.add(label);
-  const enabledKanbans = Array.from(kanbanSet).sort();
+    for (const tag of tags) if (tags.includes(tag)) kanbanSet.add(label);
+  const kanbans = Array.from(kanbanSet).sort();
 
-  return { enabledDirs, enabledTags, enabledKanbans, enabledScalars };
+  return {
+    dirs,
+    tags,
+    virtualTags,
+    kanbans,
+    scalars,
+  };
 }

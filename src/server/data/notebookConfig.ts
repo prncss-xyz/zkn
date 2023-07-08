@@ -8,9 +8,7 @@ const conf = z.object({
   kanban: z.record(z.string(), z.array(z.string())),
 });
 
-export type INotebookConfig = Awaited<ReturnType<typeof getNotebookConfig>>;
-
-export async function getNotebookConfig() {
+async function getNotebookConfig_() {
   const file = path.join(notebookDir, ".notebook.yaml");
   let raw: string | null = null;
   try {
@@ -19,3 +17,11 @@ export async function getNotebookConfig() {
   const obj = raw ? load(raw) : {};
   return conf.parse(obj);
 }
+let config: ReturnType<typeof getNotebookConfig_>;
+
+export function getNotebookConfig() {
+  config ??= getNotebookConfig_();
+  return config;
+}
+
+export type INotebookConfig = Awaited<ReturnType<typeof getNotebookConfig>>;

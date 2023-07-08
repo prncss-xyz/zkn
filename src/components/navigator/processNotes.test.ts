@@ -4,6 +4,8 @@ const entry0 = {
   title: null,
   mtime: new Date(),
   event: null,
+  links: [],
+  backlinks: [],
 };
 
 describe("processNotes", () => {

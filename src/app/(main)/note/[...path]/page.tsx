@@ -9,6 +9,8 @@ import { NoteLinks } from "@/fields/link/note";
 import { NoteBacklinks } from "@/fields/backlink/note";
 import { NoteScalars } from "@/fields/scalars/note";
 import { Contents } from "./contents";
+import { Link } from "@/components/link";
+import { KanbanViews } from "@/fields/kanban/views";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,16 @@ async function getEntry(id: string) {
   return entry;
 }
 
+function Views({ note }: { note: NoteEntry }) {
+  return (
+    <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
+      <Link href="/notes">Notes</Link>
+      {/* @ts-ignore */}
+      <KanbanViews note={note} />
+    </Box>
+  );
+}
+
 export default async function Page({
   params: { path },
 }: {
@@ -46,6 +58,7 @@ export default async function Page({
     );
   return (
     <Box display="flex" flexDirection="column" gap={10} width="screenMaxWidth">
+      <Views note={entry} />
       <NoteDir note={entry} />
       <NoteTags note={entry} />
       <NoteVirtualTags note={entry} />

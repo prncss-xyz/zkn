@@ -27,7 +27,7 @@ export function NoteTags({ note }: { note: NoteEntry }) {
   const tags = note.tags.map((tag) => tag.tagId);
   if (!tags.length) return null;
   return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
+     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
       <Box fontWeight="bold">tags</Box>
       {tags.map((tag) => (
         <NoteTag key={tag} tag={tag} />

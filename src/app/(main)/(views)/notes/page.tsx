@@ -3,8 +3,7 @@ import { setup } from "@/server/data/scanFiles";
 import { basename } from "node:path";
 import { Link } from "@/components/link";
 import { Navigator } from "@/components/navigator";
-import { ISearch, getEntries } from "@/app/(main)/(views)/search";
-import { getNotebookConfig } from "@/server/data/notebookConfig";
+import { ISearch, getEntries } from "../search";
 
 export const dynamic = "force-dynamic";
 
@@ -50,10 +49,10 @@ export default async function Page({
   await setup();
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
-  const config = await getNotebookConfig();
   return (
     <>
-      <Navigator entries={entries} config={config} />
+      {/* @ts-ignore */}
+      <Navigator entries={entries} />
       <Notes entries={entries} />
     </>
   );

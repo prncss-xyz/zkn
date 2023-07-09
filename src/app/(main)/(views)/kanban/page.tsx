@@ -1,22 +1,15 @@
 import { Box } from "@/components/box";
 import { getPrefixLen } from "@/utils/prefixLen";
 import { Navigator } from "@/components/navigator";
-import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { Link } from "@/components/link";
 import { setup } from "@/server/data/scanFiles";
-import { ISearch, getEntries } from "../search";
+import { ISearch, NotesEntry, getEntries } from "../search";
+import { getTags } from "@/fields/kanban/utils";
 
 export const dynamic = "force-dynamic";
 
 // wether to hide empty kanban columns
 const dense = true;
-
-interface IEntry {
-  id: string;
-  title: string | null;
-  mtime: number;
-  tags: { tagId: string }[];
-}
 
 function Column({
   tag: tagId,
@@ -25,7 +18,7 @@ function Column({
 }: {
   tag: string;
   prefixLen: number;
-  entries: IEntry[];
+  entries: NotesEntry[];
 }) {
   const entries_ = entries.filter((entry) =>
     entry.tags.some(({ tagId: tagId_ }) => tagId_ === tagId)
@@ -67,12 +60,10 @@ function Column({
 
 async function Kanban({
   workflow,
-  tags,
   entries,
 }: {
   workflow: string;
-  tags: string[];
-  entries: IEntry[];
+  entries: NotesEntry[];
 }) {
   if (!workflow)
     return (
@@ -81,6 +72,7 @@ async function Kanban({
         <code>.notebook.yaml</code>
       </Box>
     );
+  const tags = await getTags(workflow);
   if (tags.length === 0)
     return (
       <Box px={{ s: 5, md: 0 }}>
@@ -117,18 +109,15 @@ export default async function Page({
   searchParams: ISearch;
 }) {
   await setup();
-  const config = await getNotebookConfig();
-  const kanban = config.kanban;
-  const workflows = Object.keys(kanban);
-  const workflow = searchParams.workflow ?? workflows[0] ?? "";
-  const tags = kanban[workflow] ?? [];
+  const workflow = searchParams.kanban ?? "";
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
   return (
     <>
-      <Navigator entries={entries} config={config} />
       {/* @ts-ignore */}
-      <Kanban workflow={workflow} tags={tags} entries={entries} />
+      <Navigator entries={entries} />
+      {/* @ts-ignore */}
+      <Kanban workflow={workflow} entries={entries} />
     </>
   );
 }

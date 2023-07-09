@@ -1,17 +1,17 @@
 const key = "kanban";
 
-export function paramsToQuery(params: URLSearchParams) {
+export function paramsToValueKanban(params: URLSearchParams) {
   return params.get(key) || "";
 }
 
-export function kanbanClear(params: URLSearchParams) {
-  const workflow = paramsToQuery(params);
-  return queryToParams(new URLSearchParams(), workflow);
+export function valueToQueryKanban(params: URLSearchParams) {
+  const kanban = paramsToValueKanban(params);
+  return queryToParams(new URLSearchParams(), kanban);
 }
 
-export function queryToParams(params: URLSearchParams, workflow: string) {
-  if (workflow) {
-    params.set(key, workflow);
+export function queryToParams(params: URLSearchParams, kanban: string) {
+  if (kanban) {
+    params.set(key, kanban);
   } else {
     params.delete(key);
   }

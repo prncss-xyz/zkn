@@ -5,7 +5,7 @@ import { load } from "js-yaml";
 import { z } from "zod";
 
 const conf = z.object({
-  kanban: z.record(z.string(), z.array(z.string())),
+  kanbans: z.record(z.string(), z.array(z.string())),
 });
 
 async function getNotebookConfig_() {

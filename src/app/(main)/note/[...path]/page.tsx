@@ -32,12 +32,12 @@ async function getEntry(id: string) {
   return entry;
 }
 
-function Views({ note }: { note: NoteEntry }) {
+function Views({ entry }: { entry: NoteEntry }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
       <Link href="/notes">Notes</Link>
       {/* @ts-ignore */}
-      <KanbanViews note={note} />
+      <KanbanViews entry={entry} />
     </Box>
   );
 }
@@ -58,10 +58,10 @@ export default async function Page({
     );
   return (
     <Box display="flex" flexDirection="column" gap={10} width="screenMaxWidth">
-      <Views note={entry} />
-      <NoteDir note={entry} />
-      <NoteTags note={entry} />
-      <NoteVirtualTags note={entry} />
+      <Views entry={entry} />
+      <NoteDir entry={entry} />
+      <NoteTags entry={entry} />
+      <NoteVirtualTags entry={entry} />
       <Box
         backgroundColor="foreground1"
         p={5}
@@ -69,13 +69,13 @@ export default async function Page({
         className={markdown}
       >
         {/* @ts-ignore */}
-        <Contents note={entry} />
+        <Contents entry={entry} />
       </Box>
-      <NoteScalars note={entry} />
+      <NoteScalars entry={entry} />
       {/* @ts-ignore */}
-      <NoteLinks note={entry} />
+      <NoteLinks entry={entry} />
       {/* @ts-ignore */}
-      <NoteBacklinks note={entry} />
+      <NoteBacklinks entry={entry} />
     </Box>
   );
 }

@@ -44,10 +44,10 @@ function MDLink({
   );
 }
 
-export async function Contents({ note }: { note: NoteEntry }) {
-  const content = await getContent(note.id);
+export async function Contents({ entry }: { entry: NoteEntry }) {
+  const content = await getContent(entry.id);
   if (!content) return null;
-  const idToTitle = await getIdToTitle(note.links.map((link) => link.targetId));
+  const idToTitle = await getIdToTitle(entry.links.map((link) => link.targetId));
   const processor = getProcessor(idToTitle).use(rehypeReact, {
     createElement,
     Fragment,

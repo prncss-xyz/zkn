@@ -1,7 +1,7 @@
 import { IState, defaultSort } from "./navigator/reducer";
 import { scalars, scalarOpts } from "./opts";
 
-export function queryToParams(params: URLSearchParams, state: IState) {
+export function valueToQueryScalars(params: URLSearchParams, state: IState) {
   for (const scalar of scalars) {
     const scalarState = state.scalars[scalar];
     if (scalarState.lte || scalarState.gte) params.delete(scalar);
@@ -37,7 +37,7 @@ function unparseSort({ scalar, asc }: { scalar: string; asc: boolean }) {
   return `${scalar}_${asc ? "asc" : "desc"}`;
 }
 
-export function paramsToQuery(params: URLSearchParams) {
+export function paramsToValueScalars(params: URLSearchParams) {
   const sort = parseSort(params.get("sort"));
   return {
     scalars: Object.fromEntries(

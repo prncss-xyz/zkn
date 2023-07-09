@@ -23,8 +23,8 @@ function NoteTag({ tag }: { tag: string }) {
   );
 }
 
-export function NoteTags({ note }: { note: NoteEntry }) {
-  const tags = note.tags.map((tag) => tag.tagId);
+export function NoteTags({ entry }: { entry: NoteEntry }) {
+  const tags = entry.tags.map((tag) => tag.tagId);
   if (!tags.length) return null;
   return (
      <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>

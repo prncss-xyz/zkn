@@ -1,4 +1,4 @@
-import { paramsToQuery } from "./query";
+import { paramsToValueScalars } from "./query";
 
 function condNum(str?: string) {
   if (!str) return undefined;
@@ -50,8 +50,8 @@ function whereDateRange({
     };
 }
 
-export function where(params: URLSearchParams) {
-  const { scalars } = paramsToQuery(params);
+export function whereScalars(params: URLSearchParams) {
+  const { scalars } = paramsToValueScalars(params);
   return {
     wordcount: whereNum(scalars.wordcount),
     mtime: whereDate(scalars.mtime),
@@ -62,7 +62,7 @@ export function where(params: URLSearchParams) {
 export function searchToOrderBy(params: URLSearchParams) {
   const {
     sort: { scalar, asc },
-  } = paramsToQuery(params);
+  } = paramsToValueScalars(params);
   if (scalar === "event" && asc === true)
     return {
       event: {

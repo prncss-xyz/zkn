@@ -45,12 +45,12 @@ function Event({ note }: { note: NoteEntry }) {
   return <Entry label="event">{toStringEvent(note.event)}</Entry>;
 }
 
-export function NoteScalars({ note }: { note: NoteEntry }) {
+export function NoteScalars({ entry }: { entry: NoteEntry }) {
   return (
     <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
-      <Mtime note={note} />
-      <Wordcount note={note} />
-      <Event note={note} />
+      <Mtime note={entry} />
+      <Wordcount note={entry} />
+      <Event note={entry} />
     </Box>
   );
 }

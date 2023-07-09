@@ -24,8 +24,8 @@ function NoteVirtualTag({ tag }: { tag: string }) {
   );
 }
 
-export function NoteVirtualTags({ note }: { note: NoteEntry }) {
-  const tags = virtualTags.filter((tag) => virtualTagsOpts[tag].test(note));
+export function NoteVirtualTags({ entry }: { entry: NoteEntry }) {
+  const tags = virtualTags.filter((tag) => virtualTagsOpts[tag].test(entry));
   if (!tags.length) return null;
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>

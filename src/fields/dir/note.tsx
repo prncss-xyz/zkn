@@ -5,8 +5,8 @@ import { basename } from "node:path";
 
 const sep = "/";
 
-export function NoteDir({ note }: { note: NoteEntry }) {
-  const id = note.id;
+export function NoteDir({ entry }: { entry: NoteEntry }) {
+  const id = entry.id;
   const segments = id.split(sep).slice(0, -1);
 
   return (

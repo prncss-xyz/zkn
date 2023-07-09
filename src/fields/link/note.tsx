@@ -19,9 +19,9 @@ export async function getLinkTitles(id: string) {
   });
 }
 
-export async function NoteLinks({ note }: { note: NoteEntry }) {
-  if (!note.links.length) return null;
-  const titles = await getLinkTitles(note.id);
+export async function NoteLinks({ entry }: { entry: NoteEntry }) {
+  if (!entry.links.length) return null;
+  const titles = await getLinkTitles(entry.id);
   return (
     <Box
       backgroundColor="foreground2"
@@ -30,10 +30,10 @@ export async function NoteLinks({ note }: { note: NoteEntry }) {
       flexDirection="column"
     >
       <Box as="h2" fontWeight="bold" p={5}>
-        <Link href={`/notes?link=${note.id}`}>Links</Link>
+        <Link href={`/notes?link=${entry.id}`}>Links</Link>
       </Box>
       <Box display="flex" flexDirection="column">
-        {note.links.map((link) => {
+        {entry.links.map((link) => {
           return (
             <Box
               key={link.targetId}
@@ -43,7 +43,7 @@ export async function NoteLinks({ note }: { note: NoteEntry }) {
               p={5}
             >
               <Link href={`/note/${link.targetId}`}>
-                {titles.find((e) => e?.id === note.id)?.title || link.targetId}
+                {titles.find((e) => e?.id === entry.id)?.title || link.targetId}
               </Link>
             </Box>
           );

@@ -1,10 +1,10 @@
 const name = "backlink";
 
-export function paramsToQuery(params: URLSearchParams) {
+export function paramsToValueBacklink(params: URLSearchParams) {
   return params.get(name) || "";
 }
 
-export function queryToParams(params: URLSearchParams, backlink: string) {
+export function valueToQueryBacklink(params: URLSearchParams, backlink: string) {
   if (backlink) {
     params.set(name, backlink);
   } else {

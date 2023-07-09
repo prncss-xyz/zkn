@@ -8,8 +8,8 @@ import { paramsToQuery, queryToParams } from "../kanban/query";
 function Kanban({ kanban }: { kanban: string }) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const workflow = paramsToQuery(params);
-  const active = workflow === kanban;
+  const activeKanban = paramsToQuery(params);
+  const active = activeKanban === kanban;
   const query = queryToParams(params, kanban);
   return (
     <Link

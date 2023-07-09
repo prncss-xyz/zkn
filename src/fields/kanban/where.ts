@@ -1,9 +1,13 @@
-import { paramsToQuery } from "./query";
+import { INotebookConfig } from "@/server/data/notebookConfig";
+import { paramsToValueKanban } from "./query";
 import { getTags } from "./utils";
 
-export async function where(params: URLSearchParams) {
-  const workflow = paramsToQuery(params);
-  const tags = await getTags(workflow);
+export function whereKanban(
+  notebookConfig: INotebookConfig,
+  params: URLSearchParams
+) {
+  const kanban = paramsToValueKanban(params);
+  const tags = getTags(notebookConfig, kanban);
   if (!tags.length) return {};
   return {
     OR: tags.map((tagId) => ({

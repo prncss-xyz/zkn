@@ -49,9 +49,9 @@ async function NoteBacklink({ link, title }: { link: ILink; title?: string }) {
   );
 }
 
-export async function NoteBacklinks({ note }: { note: NoteEntry }) {
-  if (!note.backlinks.length) return null;
-  const titles = await getBacklinksTitles(note.id);
+export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
+  if (!entry.backlinks.length) return null;
+  const titles = await getBacklinksTitles(entry.id);
   return (
     <Box
       backgroundColor="foreground2"
@@ -60,10 +60,10 @@ export async function NoteBacklinks({ note }: { note: NoteEntry }) {
       flexDirection="column"
     >
       <Box as="h2" fontWeight="bold" p={5}>
-        <Link href={`/notes?link=${note.id}`}>Backlinks</Link>
+        <Link href={`/notes?link=${entry.id}`}>Backlinks</Link>
       </Box>
       <Box display="flex" flexDirection="column">
-        {note.backlinks.map((link) => (
+        {entry.backlinks.map((link) => (
           // @ts-ignore
           <NoteBacklink
             key={link.sourceId}

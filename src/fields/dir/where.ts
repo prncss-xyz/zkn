@@ -1,9 +1,9 @@
-import { paramsToQuery } from "./query";
+import { paramsToValueDir } from "./query";
 
 const sep = "/";
 
-export function where(params: URLSearchParams) {
-  const dir = paramsToQuery(params);
+export function whereDir(params: URLSearchParams) {
+  const dir = paramsToValueDir(params);
   if (!dir) return {};
   return { id: { startsWith: dir + sep } };
 }

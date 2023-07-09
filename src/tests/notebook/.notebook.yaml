@@ -1,4 +1,4 @@
-kanban:
+kanbans:
   workflow:
     - w/backlog
     - w/active

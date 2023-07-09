@@ -5,6 +5,7 @@ import { Link } from "@/components/link";
 import { setup } from "@/server/data/scanFiles";
 import { ISearch, NotesEntry, getEntries } from "../search";
 import { getTags } from "@/fields/kanban/utils";
+import { getNotebookConfig } from "@/server/data/notebookConfig";
 
 export const dynamic = "force-dynamic";
 
@@ -59,24 +60,25 @@ function Column({
 }
 
 async function Kanban({
-  workflow,
+  kanban,
   entries,
 }: {
-  workflow: string;
+  kanban: string;
   entries: NotesEntry[];
 }) {
-  if (!workflow)
+  if (!kanban)
     return (
       <Box px={{ s: 5, md: 0 }}>
         A proper workflow needs to be configured in file{" "}
         <code>.notebook.yaml</code>
       </Box>
     );
-  const tags = await getTags(workflow);
+  const notebookConfig = await getNotebookConfig();
+  const tags = getTags(notebookConfig, kanban);
   if (tags.length === 0)
     return (
       <Box px={{ s: 5, md: 0 }}>
-        The workflow <i>{workflow}</i> does not exist or is empty.
+        The workflow <i>{kanban}</i> does not exist or is empty.
       </Box>
     );
   return (
@@ -109,7 +111,7 @@ export default async function Page({
   searchParams: ISearch;
 }) {
   await setup();
-  const workflow = searchParams.kanban ?? "";
+  const kanban = searchParams.kanban ?? "";
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
   return (
@@ -117,7 +119,7 @@ export default async function Page({
       {/* @ts-ignore */}
       <Navigator entries={entries} />
       {/* @ts-ignore */}
-      <Kanban workflow={workflow} entries={entries} />
+      <Kanban kanban={kanban} entries={entries} />
     </>
   );
 }

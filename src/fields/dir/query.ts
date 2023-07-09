@@ -1,10 +1,10 @@
 const key = "dir";
 
-export function paramsToQuery(params: URLSearchParams) {
+export function paramsToValueDir(params: URLSearchParams) {
   return params.get(key) || "";
 }
 
-export function queryToParams(params: URLSearchParams, dir: string) {
+export function valueToQueryDir(params: URLSearchParams, dir: string) {
   if (dir) {
     params.set(key, dir);
   } else {

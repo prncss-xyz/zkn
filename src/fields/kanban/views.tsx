@@ -4,20 +4,20 @@ import { queryToParams } from "../kanban//query";
 import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { getKanbans } from "./utils";
 
-export async function KanbanViews({ note }: { note: NoteEntry }) {
+export async function KanbanViews({ entry }: { entry: NoteEntry }) {
   const notebookConfig = await getNotebookConfig();
-  const kanbans = getKanbans(notebookConfig, note);
+  const kanbans = getKanbans(notebookConfig, entry);
   return (
     <>
-      {kanbans.map((workflow) => (
+      {kanbans.map((kanban) => (
         <Link
-          key={workflow}
+          key={kanban}
           href={{
             pathname: "/kanban",
-            query: queryToParams(new URLSearchParams(), workflow),
+            query: queryToParams(new URLSearchParams(), kanban),
           }}
         >
-          {workflow}
+          {kanban}
         </Link>
       ))}
     </>

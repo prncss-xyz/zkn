@@ -13,7 +13,7 @@ export function processDirs() {
         res.add(dir_);
       }
     }
-    return Array.from(res);
+    return Array.from(res).sort();
   }
   return [fold, result] as const;
 }

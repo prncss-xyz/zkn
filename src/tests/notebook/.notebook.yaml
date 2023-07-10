@@ -10,3 +10,7 @@ kanbans:
     - l/acquire
     - l/backlog
     - l/dispose
+reversed_tags:
+  - w/completed
+  - w/abandonned
+  - archived

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { paramsToQuery, queryToParams } from "./query";
+import { getVirtualTags, setVirtualTags } from "./query";
 import { Link } from "@/components/link";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
@@ -10,9 +10,10 @@ function InputVirtualTag({ tag }: { tag: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const tags = paramsToQuery(params);
+  const tags = getVirtualTags(params);
   const active = tags.includes(tag);
-  const query = queryToParams(params, toggle(tags, tag));
+  setVirtualTags(params, toggle(tags, tag));
+  const query = params.toString();
   return (
     <Link
       px={5}

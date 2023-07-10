@@ -4,6 +4,8 @@ import { basename } from "node:path";
 import { Link } from "@/components/link";
 import { Navigator } from "@/components/navigator";
 import { ISearch, getEntries } from "../search";
+import { getNotebookConfig } from "@/server/data/notebookConfig";
+import { processNotes } from "@/components/navigator/processNotes";
 
 export const dynamic = "force-dynamic";
 
@@ -49,11 +51,13 @@ export default async function Page({
   await setup();
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
+  const notebookConfig = await getNotebookConfig();
+  const processed = processNotes(notebookConfig, params, entries);
   return (
     <>
       {/* @ts-ignore */}
-      <Navigator entries={entries} />
-      <Notes entries={entries} />
+      <Navigator processed={processed} />
+      <Notes entries={processed.entries} />
     </>
   );
 }

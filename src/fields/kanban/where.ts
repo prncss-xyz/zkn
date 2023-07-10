@@ -1,12 +1,12 @@
 import { INotebookConfig } from "@/server/data/notebookConfig";
-import { paramsToValueKanban } from "./query";
+import { getKanban } from "./query";
 import { getTags } from "./utils";
 
 export function whereKanban(
   notebookConfig: INotebookConfig,
   params: URLSearchParams
 ) {
-  const kanban = paramsToValueKanban(params);
+  const kanban = getKanban(params);
   const tags = getTags(notebookConfig, kanban);
   if (!tags.length) return {};
   return {

@@ -1,16 +1,18 @@
 import { INotebookConfig } from "@/server/data/notebookConfig";
 import { CommonEntry } from "../virtualTags/opts";
-import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 
 export function getTags(notebookConfig: INotebookConfig, kanban: string) {
   return notebookConfig.kanbans[kanban] ?? [];
 }
 
-export function getKanbans(notebookConfig: INotebookConfig, note: NoteEntry) {
+export function setEntryKanban(
+  notebookConfig: INotebookConfig,
+  entry: CommonEntry
+) {
   const selected = new Set<string>();
   for (const [kanban, kanbanTags] of Object.entries(notebookConfig.kanbans)) {
     for (const kanbanTag of kanbanTags) {
-      for (const { tagId } of note.tags) {
+      for (const { tagId } of entry.tags) {
         if (tagId === kanbanTag) selected.add(kanban);
       }
     }
@@ -29,10 +31,7 @@ export function getTest(notebookConfig: INotebookConfig, kanban: string) {
   };
 }
 
-export function processKanban(
-  config: INotebookConfig,
-  { tags }: { tags: string[] }
-) {
+export function processKanban(config: INotebookConfig, tags: string[]) {
   const kanbanSet = new Set<string>();
   for (const [kanban, kanbanTags] of Object.entries(config.kanbans))
     for (const tag of kanbanTags) if (tags.includes(tag)) kanbanSet.add(kanban);

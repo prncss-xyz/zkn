@@ -10,7 +10,7 @@ export function processVirtualTags() {
     }
   }
   function result() {
-    return Array.from(acc);
+    return Array.from(acc).sort();
   }
   return [fold, result] as const;
 }

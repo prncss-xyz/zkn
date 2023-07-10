@@ -6,6 +6,7 @@ import { setup } from "@/server/data/scanFiles";
 import { ISearch, NotesEntry, getEntries } from "../search";
 import { getTags } from "@/fields/kanban/utils";
 import { getNotebookConfig } from "@/server/data/notebookConfig";
+import { processNotes } from "@/components/navigator/processNotes";
 
 export const dynamic = "force-dynamic";
 
@@ -114,12 +115,14 @@ export default async function Page({
   const kanban = searchParams.kanban ?? "";
   const params = new URLSearchParams(searchParams);
   const entries = await getEntries(params);
+  const notebookConfig = await getNotebookConfig();
+  const processed = processNotes(notebookConfig, params, entries);
   return (
     <>
       {/* @ts-ignore */}
-      <Navigator entries={entries} />
+      <Navigator processed={processed} />
       {/* @ts-ignore */}
-      <Kanban kanban={kanban} entries={entries} />
+      <Kanban kanban={kanban} entries={processed.entries} />
     </>
   );
 }

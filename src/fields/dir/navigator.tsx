@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { paramsToQuery, queryToParams } from "./query";
+import { getDir, setDir } from "./query";
 import { Box } from "@/components/box";
 import { Link } from "@/components/link";
 
@@ -9,8 +9,9 @@ function InputDir({ dir }: { dir: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const active = paramsToQuery(params) === dir;
-  const query = queryToParams(params, dir);
+  const active = getDir(params) === dir;
+  setDir(params, dir);
+  const query = params.toString();
   return (
     <Link
       color={active ? "active" : "link"}

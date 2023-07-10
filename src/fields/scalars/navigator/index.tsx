@@ -10,7 +10,7 @@ import {
   createContext,
 } from "react";
 import { checkbox, hideScrollbar } from "./index.css";
-import { paramsToQuery, queryToParams } from "../query";
+import { getScalars, setScalars } from "../query";
 import { Box } from "@/components/box";
 import { scalarOpts } from "../opts";
 import { Bound, IAction, IState, reducer } from "./reducer";
@@ -38,12 +38,14 @@ function usePushQueryString() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const query = paramsToQuery(params);
+  const query = getScalars(params);
   const push = useCallback(
     (state: IState) => {
       const params = new URLSearchParams(searchParams as any);
-      const url = pathname + queryToParams(params, state);
-      router.push(url);
+      setScalars(params, state);
+      let query = params.toString();
+      if (query !== "") query = "?" + query;
+      router.push(pathname + query);
     },
     [pathname, router, searchParams]
   );
@@ -68,11 +70,8 @@ function useScalarState() {
 
 function Provider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useScalarState();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams as any);
-  const key = queryToParams(params, paramsToQuery(params));
   return (
-    <Context.Provider key={key} value={[state, dispatch] as const}>
+    <Context.Provider value={[state, dispatch] as const}>
       {children}
     </Context.Provider>
   );
@@ -86,7 +85,7 @@ function useRouteState() {
 
 function InputScalar({ scalar }: { scalar: string }) {
   const [state, dispatch] = useRouteState();
-  const { label } = scalarOpts[scalar];
+  const { label, always } = scalarOpts[scalar];
   return (
     <Box display="flex" flexDirection="row" gap={20}>
       <Box fontWeight="bold" width="navLabelWidth" flexShrink={0}>
@@ -98,13 +97,15 @@ function InputScalar({ scalar }: { scalar: string }) {
       </Box>
       <Box
         width="navCheckboxWidth"
-        backgroundColor="foreground1"
         color="text"
         as="input"
         type="checkbox"
         checked={state.scalars[scalar].some}
         onChange={() => dispatch({ type: "TOGGLE_SOME", scalar })}
         className={checkbox}
+        borderStyle="all"
+        borderWidth={2}
+        borderColor={always ? "active" : "link"}
       />
       <InputBound scalar={scalar} bound="gte" />
       <InputBound scalar={scalar} bound="lte" />
@@ -116,8 +117,11 @@ function InputBound({ scalar, bound }: { scalar: string; bound: Bound }) {
   const [state, dispatch] = useRouteState();
   const scalarState = state.scalars[scalar];
   const { toNum } = scalarOpts[scalar];
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams as any);
+  const key = getScalars(params).scalars[scalar][bound];
   return (
-    <Box display="flex" flexDirection="row" gap={10}>
+    <Box key={key} display="flex" flexDirection="row" gap={10}>
       <Box as="label">{bound === "gte" ? "From" : "To"}</Box>
       <Box
         as="input"

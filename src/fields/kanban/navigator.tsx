@@ -3,14 +3,15 @@
 import { sprinkles } from "@/sprinkles.css";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { paramsToQuery, queryToParams } from "../kanban/query";
+import { getKanban, setKanban } from "../kanban/query";
 
 function Kanban({ kanban }: { kanban: string }) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const activeKanban = paramsToQuery(params);
+  const activeKanban = getKanban(params);
   const active = activeKanban === kanban;
-  const query = queryToParams(params, kanban);
+  setKanban(params, kanban);
+  const query = params.toString();
   return (
     <Link
       className={sprinkles({ color: active ? "active" : "link" })}

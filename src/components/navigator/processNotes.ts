@@ -6,23 +6,34 @@ import { NotesEntry } from "@/app/(main)/(views)/search";
 import { processKanban } from "@/fields/kanban/utils";
 import { INotebookConfig } from "@/server/data/notebookConfig";
 
-function processNotes_(entries: NotesEntry[]) {
+function processNotes_(
+  notebookConfig: INotebookConfig,
+  params: URLSearchParams,
+  entries: NotesEntry[]
+) {
+  const entriesOut: NotesEntry[] = [];
   const [foldScalars, getEnabledScalars] = processScalars();
   const [foldDirs, getEnabledDirs] = processDirs();
-  const [foldTags, getEnabledTags] = processTags();
+  const [foldTags, getEnabledTags, filterTags] = processTags(
+    notebookConfig,
+    params
+  );
   const [foldVirtualTags, getEnabledVirtualTags] = processVirtualTags();
   for (const entry of entries) {
+    if (!filterTags(entry)) continue;
+    entriesOut.push(entry);
     foldScalars(entry);
     foldTags(entry);
     foldDirs(entry);
     foldVirtualTags(entry);
   }
-  const dirs = getEnabledDirs().sort();
-  const tags = getEnabledTags().sort();
-  const scalars = getEnabledScalars().sort();
-  const virtualTags = getEnabledVirtualTags().sort();
+  const dirs = getEnabledDirs();
+  const tags = getEnabledTags();
+  const scalars = getEnabledScalars();
+  const virtualTags = getEnabledVirtualTags();
 
   return {
+    entries: entriesOut,
     dirs,
     tags,
     virtualTags,
@@ -32,8 +43,14 @@ function processNotes_(entries: NotesEntry[]) {
 
 export type ProcessNotesRaw = ReturnType<typeof processNotes_>;
 
-export function processNotes(config: INotebookConfig, entries: NotesEntry[]) {
-  const res = processNotes_(entries);
-  const kanbans = processKanban(config, res);
+export function processNotes(
+  notebookConfig: INotebookConfig,
+  params: URLSearchParams,
+  entries: NotesEntry[]
+) {
+  const res = processNotes_(notebookConfig, params, entries);
+  const kanbans = processKanban(notebookConfig, res.tags.direct);
   return { ...res, kanbans };
 }
+
+export type IProcessNotes = ReturnType<typeof processNotes>;

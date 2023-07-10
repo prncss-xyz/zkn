@@ -35,6 +35,7 @@ const unconditionalProperties = defineProperties({
     textAlign: ["center"],
     borderStyle: {
       top: "solid none none none",
+      all: "solid solid solid solid",
     },
   },
   shorthands: {},

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { paramsToQuery, queryToParams } from "./query";
+import { getTags, setTags } from "./query";
 import { Link } from "@/components/link";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
@@ -10,9 +10,10 @@ function InputTag({ tag }: { tag: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const tags = paramsToQuery(params);
+  const tags = getTags(params);
   const active = tags.includes(tag);
-  const query = queryToParams(params, toggle(tags, tag));
+  setTags(params, toggle(tags, tag));
+  const query = params.toString();
   return (
     <Link
       px={5}
@@ -28,11 +29,20 @@ function InputTag({ tag }: { tag: string }) {
   );
 }
 
-export function InputTags({ enabledTags }: { enabledTags: string[] }) {
+export function InputTags({
+  enabledTags: { direct, reverse },
+}: {
+  enabledTags: { direct: string[]; reverse: string[] };
+}) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
       <Box fontWeight="bold">tags</Box>
-      {enabledTags.map((tag) => (
+      {direct.map((tag) => (
+        <InputTag key={tag} tag={tag} />
+      ))}
+      {!!direct.length && !!reverse.length && "|"}
+
+      {reverse.map((tag) => (
         <InputTag key={tag} tag={tag} />
       ))}
     </Box>

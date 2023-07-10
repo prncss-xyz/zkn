@@ -1,7 +1,7 @@
-import { paramsToValueBacklink } from "./query";
+import { getBacklink } from "./query";
 
 export function whereBacklinks(params: URLSearchParams) {
-  const backlink = paramsToValueBacklink(params);
+  const backlink = getBacklink(params);
   if (!backlink) return {};
   return {
     links: {

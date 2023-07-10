@@ -1,12 +1,12 @@
 import { IState, defaultSort } from "./navigator/reducer";
 import { scalars, scalarOpts } from "./opts";
 
-export function valueToQueryScalars(params: URLSearchParams, state: IState) {
+export function setScalars(params: URLSearchParams, state: IState) {
   for (const scalar of scalars) {
     const scalarState = state.scalars[scalar];
     if (scalarState.lte || scalarState.gte) params.delete(scalar);
     else if (scalarState.some) params.set(scalar, "some");
-    else params.delete(scalar);  
+    else params.delete(scalar);
     if (scalarState.lte) params.set(scalar + "_lte", scalarState.lte);
     else params.delete(scalar + "_lte");
     if (scalarState.gte) params.set(scalar + "_gte", scalarState.gte);
@@ -18,9 +18,6 @@ export function valueToQueryScalars(params: URLSearchParams, state: IState) {
   )
     params.delete("sort");
   else params.set("sort", unparseSort(state.sort));
-  const queryString = params.toString();
-  const sep = queryString.length ? "?" : "";
-  return sep + queryString;
 }
 
 const dirs = ["asc", "desc"];
@@ -37,7 +34,7 @@ function unparseSort({ scalar, asc }: { scalar: string; asc: boolean }) {
   return `${scalar}_${asc ? "asc" : "desc"}`;
 }
 
-export function paramsToValueScalars(params: URLSearchParams) {
+export function getScalars(params: URLSearchParams) {
   const sort = parseSort(params.get("sort"));
   return {
     scalars: Object.fromEntries(

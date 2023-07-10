@@ -6,6 +6,7 @@ import { z } from "zod";
 
 const conf = z.object({
   kanbans: z.record(z.string(), z.array(z.string())),
+  reversed_tags: z.optional(z.array(z.string())),
 });
 
 async function getNotebookConfig_() {
@@ -15,7 +16,8 @@ async function getNotebookConfig_() {
     raw = await readFile(file, "utf8");
   } catch (err) {}
   const obj = raw ? load(raw) : {};
-  return conf.parse(obj);
+  const res = conf.parse(obj);
+  return { kanbans: res.kanbans ?? {}, reversedTags: res.reversed_tags ?? [] };
 }
 let config: ReturnType<typeof getNotebookConfig_>;
 

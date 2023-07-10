@@ -1,14 +1,15 @@
 import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 import { Box } from "@/components/box";
 import { Link } from "@/components/link";
-import { queryToParams } from "./query";
+import { setVirtualTags } from "./query";
 import { virtualTags, virtualTagsOpts } from "./opts";
 
 const pathname = "/notes";
 
 function NoteVirtualTag({ tag }: { tag: string }) {
   const params = new URLSearchParams();
-  const query = queryToParams(params, [tag]);
+  setVirtualTags(params, [tag]);
+  const query = params.toString();
   return (
     <Link
       px={5}

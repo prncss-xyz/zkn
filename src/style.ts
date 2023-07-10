@@ -19,7 +19,7 @@ export const borderRadii = [0, 3, 5] as const;
 
 export const fontWeights = { bold: 700 };
 
-export const borderWidths = [0, 1] as const;
+export const borderWidths = [0, 1, 2] as const;
 
 // this is used to set up theme vars; what is not defined in _dark defaults to values from _light
 // don't these values directly, use sprinkles or vars.colors from theme.css instead

@@ -22,7 +22,7 @@ export async function getEntries(params: URLSearchParams) {
   const where = {
     ...whereScalars(params),
     ...whereDir(params),
-    ...whereTags( params),
+    ...whereTags(notebookConfig, params),
     ...whereVirtualTags(params),
     ...whereBacklinks(params),
     ...whereKanban(notebookConfig, params),

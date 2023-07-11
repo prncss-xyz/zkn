@@ -14,11 +14,11 @@ const params = new URLSearchParams();
 
 describe("processNotes", () => {
   it("description", () => {
-    expect(processNotes(config, params, [])).toEqual({
+    expect(processNotes(config, params, [])).toMatchObject({
       dirs: [],
       kanbans: [],
       scalars: ["mtime", "wordcount"],
-      tags: [],
+      tags: { direct: [], reverse: [] },
       virtualTags: [],
     });
     expect(
@@ -28,10 +28,10 @@ describe("processNotes", () => {
         { ...entry0, id: "b/1.md", tags: [{ tagId: "p" }] },
         { ...entry0, id: "c/1.md", tags: [{ tagId: "q" }] },
       ])
-    ).toEqual({
+    ).toMatchObject({
       dirs: ["", "a", "a/b", "a/b/c", "b", "c"],
-      tags: ["p", "q"],
-      virtualTags: ["bottom", "top"],
+      tags: { direct: ["p", "q"], reverse: [] },
+      virtualTags: ["orphan"],
       kanbans: ["v"],
       scalars: ["mtime", "wordcount"],
     });

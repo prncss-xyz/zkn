@@ -5,7 +5,6 @@ import { markdown } from "./page.css";
 import { NoteDir } from "@/fields/dir/note";
 import { NoteTags } from "@/fields/tags/note";
 import { NoteVirtualTags } from "@/fields/virtualTags/note";
-import { NoteLinks } from "@/fields/link/note";
 import { NoteBacklinks } from "@/fields/backlink/note";
 import { NoteScalars } from "@/fields/scalars/note";
 import { Contents } from "./contents";
@@ -23,7 +22,6 @@ async function getEntry(id: string) {
       id: true,
       wordcount: true,
       links: true,
-      backlinks: true,
       tags: true,
       mtime: true,
       event: true,
@@ -72,8 +70,6 @@ export default async function Page({
         <Contents entry={entry} />
       </Box>
       <NoteScalars entry={entry} />
-      {/* @ts-ignore */}
-      <NoteLinks entry={entry} />
       {/* @ts-ignore */}
       <NoteBacklinks entry={entry} />
     </Box>

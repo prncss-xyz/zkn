@@ -14,8 +14,7 @@
     "test:int": "./scripts/run-int.sh",
     "test:int:ui": "./scripts/run-int.sh --ui",
     "test:e2e": "./scripts/run-e2e.sh",
-    "test:e2e:ui": "./scripts/run-e2e.sh --ui",
-    "prepare": "next build"
+    "test:e2e:ui": "./scripts/run-e2e.sh --ui"
   },
   "dependencies": {
     "@prisma/client": "4.16.2",

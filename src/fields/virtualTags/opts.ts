@@ -5,7 +5,7 @@ import { Common } from "@/utils/common";
 
 export type CommonEntry = Common<NotesEntry, NoteEntry>;
 
-export const virtualTags = ["top", "bottom"];
+export const virtualTags = ["orphan"];
 
 interface IVirtualTagOpts {
   test: (entry: CommonEntry) => boolean;
@@ -15,17 +15,7 @@ interface IVirtualTagOpts {
 export const virtualTagsOpts: {
   [name: string]: IVirtualTagOpts;
 } = {
-  bottom: {
-    test: (entry: CommonEntry) => !entry.backlinks.length,
-    where: {
-      backlinks: {
-        none: {
-          sourceId: {},
-        },
-      },
-    },
-  },
-  top: {
+  orphan: {
     test: (entry: CommonEntry) => !entry.links.length,
     where: {
       links: {

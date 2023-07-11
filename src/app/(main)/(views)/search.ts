@@ -5,7 +5,6 @@ import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { whereBacklinks } from "@/fields/backlink/where";
 import { whereDir } from "@/fields/dir/where";
 import { whereKanban } from "@/fields/kanban/where";
-import { whereLink } from "@/fields/link/where";
 import { whereTags } from "@/fields/tags/where";
 import { whereVirtualTags } from "@/fields/virtualTags/where";
 
@@ -25,7 +24,6 @@ export async function getEntries(params: URLSearchParams) {
     ...whereDir(params),
     ...whereTags( params),
     ...whereVirtualTags(params),
-    ...whereLink(params),
     ...whereBacklinks(params),
     ...whereKanban(notebookConfig, params),
   };
@@ -38,7 +36,6 @@ export async function getEntries(params: URLSearchParams) {
       tags: { select: { tagId: true } },
       event: true,
       links: { select: { id: true } },
-      backlinks: { select: { id: true } },
     },
     where,
     orderBy,

@@ -5,30 +5,24 @@ import prisma from "@/server/data/prisma";
 import { backlink } from "./index.css";
 import { getContents } from "./contents";
 
-async function getBacklinksTitles(id: string) {
-  return await prisma.entry.findMany({
-    select: {
-      id: true,
-      title: true,
-    },
-    where: {
-      links: {
-        some: {
-          targetId: id,
-        },
-      },
-    },
-  });
-}
-
 interface ILink {
-  sourceId: string;
+  source: {
+    id: string;
+    title: string | null;
+  };
   context: string;
   rank: number;
 }
 
-async function NoteBacklink({ link, title }: { link: ILink; title?: string }) {
-  const contents = await getContents(link.context);
+async function NoteBacklink({
+  link: {
+    source: { id, title },
+    context,
+  },
+}: {
+  link: ILink;
+}) {
+  const contents = await getContents(context);
   return (
     <Box
       borderStyle="top"
@@ -38,11 +32,8 @@ async function NoteBacklink({ link, title }: { link: ILink; title?: string }) {
       display="flex"
       flexDirection="column"
     >
-      <Link
-        fontFamily={title ? undefined : "monospace"}
-        href={`/note/${link.sourceId}`}
-      >
-        {title || link.sourceId}
+      <Link fontFamily={title ? undefined : "monospace"} href={`/note/${id}`}>
+        {title || id}
       </Link>
       <Box className={backlink}>{contents}</Box>
     </Box>
@@ -50,8 +41,21 @@ async function NoteBacklink({ link, title }: { link: ILink; title?: string }) {
 }
 
 export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
-  if (!entry.backlinks.length) return null;
-  const titles = await getBacklinksTitles(entry.id);
+  const backlinks = await prisma.link.findMany({
+    where: { targetId: entry.id },
+    select: {
+      context: true,
+      rank: true,
+      id: true,
+      source: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+  });
+  if (!backlinks.length) return null;
   return (
     <Box
       backgroundColor="foreground2"
@@ -63,15 +67,9 @@ export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
         <Link href={`/notes?link=${entry.id}`}>Backlinks</Link>
       </Box>
       <Box display="flex" flexDirection="column">
-        {entry.backlinks.map((link) => (
+        {backlinks.map((link) => (
           // @ts-ignore
-          <NoteBacklink
-            key={link.sourceId}
-            link={link}
-            title={
-              titles.find((e) => e.id === link.sourceId)?.title ?? undefined
-            }
-          />
+          <NoteBacklink key={link.id} link={link} />
         ))}
       </Box>
     </Box>

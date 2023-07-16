@@ -4,6 +4,8 @@ import { Link } from "@/components/link";
 import prisma from "@/server/data/prisma";
 import { backlink } from "./index.css";
 import { getContents } from "./contents";
+import { NavLink } from "@/components/navLink";
+import { setBacklink } from "../query";
 
 interface ILink {
   source: {
@@ -56,6 +58,9 @@ export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
     },
   });
   if (!backlinks.length) return null;
+  const params = new URLSearchParams();
+  setBacklink(params, entry.id);
+  const query = params.toString();
   return (
     <Box
       backgroundColor="foreground2"
@@ -64,7 +69,9 @@ export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
       flexDirection="column"
     >
       <Box as="h2" fontWeight="bold" p={5}>
-        <Link href={`/notes?link=${entry.id}`}>Backlinks</Link>
+        <NavLink type="label" href={{ pathname: "/notes", query }}>
+          Backlinks
+        </NavLink>
       </Box>
       <Box display="flex" flexDirection="column">
         {backlinks.map((link) => (

@@ -35,8 +35,9 @@ function Notes({ entries }: { entries: IEntry[] }) {
           display="flex"
           flexDirection="column"
           href={`note/${entry.id}`}
+          fontFamily={entry.title ? undefined : "monospace"}
         >
-          {entry.title ? entry.title : <code>{basename(entry.id)}</code>}
+          {entry.title || basename(entry.id)}
         </Link>
       ))}
     </Box>

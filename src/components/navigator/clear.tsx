@@ -1,12 +1,9 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { Link } from "../link";
-import {
-  getKanban,
-  setKanban,
-} from "@/fields/kanban/query";
+import { getKanban, setKanban } from "@/fields/kanban/query";
 import { getAll, setAll } from "@/fields/all/query";
+import { NavLink } from "../navLink";
 
 export function Clear({}: {}) {
   const pathname = usePathname();
@@ -18,10 +15,5 @@ export function Clear({}: {}) {
   setAll(paramsOut, all);
   setKanban(paramsOut, kanban);
   const query = paramsOut.toString();
-  const active = searchParams.toString() === query;
-  return (
-    <Link color={active ? "active" : "link"} href={{ pathname, query }}>
-      Clear filters
-    </Link>
-  );
+  return <NavLink href={{ pathname, query }}>Clear filters</NavLink>;
 }

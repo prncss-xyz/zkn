@@ -1,8 +1,8 @@
 import { NoteEntry } from "@/app/(main)/note/[...path]/page";
-import { Link } from "@/components/link";
 import { setKanban } from "../kanban//query";
 import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { setEntryKanban } from "./utils";
+import { NavLink } from "@/components/navLink";
 
 export async function KanbanViews({ entry }: { entry: NoteEntry }) {
   const notebookConfig = await getNotebookConfig();
@@ -14,7 +14,7 @@ export async function KanbanViews({ entry }: { entry: NoteEntry }) {
         setKanban(params, kanban);
         const query = params.toString();
         return (
-          <Link
+          <NavLink
             key={kanban}
             href={{
               pathname: "/kanban",
@@ -22,7 +22,7 @@ export async function KanbanViews({ entry }: { entry: NoteEntry }) {
             }}
           >
             {kanban}
-          </Link>
+          </NavLink>
         );
       })}
     </>

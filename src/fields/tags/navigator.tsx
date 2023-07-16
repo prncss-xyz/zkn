@@ -2,9 +2,9 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { getTags, setTags } from "./query";
-import { Link } from "@/components/link";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
+import { NavLink } from "@/components/navLink";
 
 function InputTag({ tag }: { tag: string }) {
   const pathname = usePathname();
@@ -15,17 +15,16 @@ function InputTag({ tag }: { tag: string }) {
   setTags(params, toggle(tags, tag));
   const query = params.toString();
   return (
-    <Link
-      px={5}
-      borderRadius={3}
-      backgroundColor={active ? "active" : "foreground2"}
+    <NavLink
+      active={active}
+      type="toggle"
       href={{
         pathname,
         query,
       }}
     >
       {tag}
-    </Link>
+    </NavLink>
   );
 }
 

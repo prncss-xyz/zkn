@@ -28,7 +28,7 @@ interface IEvent {
   end: Date;
 }
 
-function toStringEvent(event: IEvent) {
+function ContentEvent({ event }: { event: IEvent }) {
   const day = true; // TODO:
   const start = day
     ? event.start.toLocaleDateString()
@@ -37,12 +37,20 @@ function toStringEvent(event: IEvent) {
     return start;
   }
   const end = day ? event.end.toLocaleDateString() : event.end.toLocaleString();
-  return `${start} &mdash; ${end}`;
+  return (
+    <>
+      {start} &mdash; {end}
+    </>
+  );
 }
 
 function Event({ note }: { note: NoteEntry }) {
   if (!note.event) return null;
-  return <Entry label="event">{toStringEvent(note.event)}</Entry>;
+  return (
+    <Entry label="event">
+      <ContentEvent event={note.event} />
+    </Entry>
+  );
 }
 
 export function NoteScalars({ entry }: { entry: NoteEntry }) {

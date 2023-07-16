@@ -8,8 +8,8 @@ import { NoteVirtualTags } from "@/fields/virtualTags/note";
 import { NoteBacklinks } from "@/fields/backlink/note";
 import { NoteScalars } from "@/fields/scalars/note";
 import { Contents } from "./contents";
-import { Link } from "@/components/link";
 import { KanbanViews } from "@/fields/kanban/views";
+import { NavLink } from "@/components/navLink";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +33,9 @@ async function getEntry(id: string) {
 function Views({ entry }: { entry: NoteEntry }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-      <Link href="/notes">Notes</Link>
+      <NavLink type="label" href={{ pathname: "/notes" }}>
+        Notes
+      </NavLink>
       {/* @ts-ignore */}
       <KanbanViews entry={entry} />
     </Box>

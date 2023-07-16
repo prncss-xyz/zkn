@@ -52,8 +52,9 @@ function Column({
           p={5}
           display="flex"
           flexDirection="column"
+          fontFamily={entry.title ? undefined : "monospace"}
         >
-          {entry.title ? entry.title : <i>{entry.id}</i>}
+          {entry.title || entry.id}
         </Link>
       ))}
     </Box>

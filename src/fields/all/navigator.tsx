@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { Link } from "@/components/link";
 import { getAll, setAll } from "./query";
+import { NavLink } from "@/components/navLink";
 
 export function InputAll({}: {}) {
   const pathname = usePathname();
@@ -12,16 +12,14 @@ export function InputAll({}: {}) {
   setAll(params, !active);
   const query = params.toString();
   return (
-    <Link
-      px={5}
-      borderRadius={3}
-      backgroundColor={active ? "active" : "foreground2"}
+    <NavLink
+      type="toggle"
       href={{
         pathname,
         query,
       }}
     >
       All
-    </Link>
+    </NavLink>
   );
 }

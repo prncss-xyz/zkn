@@ -1,25 +1,20 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { getDir, setDir } from "./query";
+import { setDir } from "./query";
 import { Box } from "@/components/box";
-import { Link } from "@/components/link";
+import { NavLink } from "@/components/navLink";
 
 function InputDir({ dir }: { dir: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
-  const active = getDir(params) === dir;
   setDir(params, dir);
   const query = params.toString();
   return (
-    <Link
-      color={active ? "active" : "link"}
-      fontFamily="monospace"
-      href={{ pathname, query }}
-    >
+    <NavLink type="dir" href={{ pathname, query }}>
       {dir || "."}
-    </Link>
+    </NavLink>
   );
 }
 

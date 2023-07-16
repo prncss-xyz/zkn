@@ -19,4 +19,15 @@ tata [[b]] tata
 
 twitwij
 
+<mark>mark</mark>
+
+**bold**
+
+_italic_
+
+| aaesf                                | baefsef ajsfek   |
+| ------------------------------------ | ---------------- |
+| 1 awefjkl awefjkl ewjl ae;wfja ;fwel | 2                |
+| 1                                    | 2 sfj afejk afes |
+
 Here is another [[backlink]].

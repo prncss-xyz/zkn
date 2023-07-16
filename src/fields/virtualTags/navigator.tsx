@@ -2,9 +2,9 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { getVirtualTags, setVirtualTags } from "./query";
-import { Link } from "@/components/link";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
+import { NavLink } from "@/components/navLink";
 
 function InputVirtualTag({ tag }: { tag: string }) {
   const pathname = usePathname();
@@ -15,17 +15,16 @@ function InputVirtualTag({ tag }: { tag: string }) {
   setVirtualTags(params, toggle(tags, tag));
   const query = params.toString();
   return (
-    <Link
-      px={5}
-      borderRadius={3}
-      backgroundColor={active ? "active" : "foreground2"}
+    <NavLink
+      type="toggle"
+      active={active}
       href={{
         pathname,
         query,
       }}
     >
       {tag}
-    </Link>
+    </NavLink>
   );
 }
 

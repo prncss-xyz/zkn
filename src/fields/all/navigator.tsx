@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { getAll, setAll } from "./query";
-import { NavLink } from "@/components/navLink";
+import { ToggleLink } from "@/components/toggleLink";
 
 export function InputAll({}: {}) {
   const pathname = usePathname();
@@ -12,14 +12,14 @@ export function InputAll({}: {}) {
   setAll(params, !active);
   const query = params.toString();
   return (
-    <NavLink
-      type="toggle"
+    <ToggleLink
+      active={active}
       href={{
         pathname,
         query,
       }}
     >
       All
-    </NavLink>
+    </ToggleLink>
   );
 }

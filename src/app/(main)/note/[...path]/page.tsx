@@ -21,6 +21,9 @@ async function getEntry(id: string) {
     select: {
       id: true,
       wordcount: true,
+      due: true,
+      since: true,
+      until: true,
       links: true,
       tags: true,
       mtime: true,
@@ -33,7 +36,7 @@ async function getEntry(id: string) {
 function Views({ entry }: { entry: NoteEntry }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-      <NavLink type="label" href={{ pathname: "/notes" }}>
+      <NavLink href={{ pathname: "/notes" }}>
         Notes
       </NavLink>
       {/* @ts-ignore */}

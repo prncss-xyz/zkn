@@ -12,7 +12,7 @@ function InputDir({ dir }: { dir: string }) {
   setDir(params, dir);
   const query = params.toString();
   return (
-    <NavLink type="dir" href={{ pathname, query }}>
+    <NavLink fontFamily="monospace" href={{ pathname, query }}>
       {dir || "."}
     </NavLink>
   );

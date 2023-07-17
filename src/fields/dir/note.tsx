@@ -20,7 +20,7 @@ export function NoteDir({ entry }: { entry: NoteEntry }) {
           <>
             <NavLink
               key={i}
-              type="dir"
+              fontFamily="monospace"
               href={{
                 pathname: "/notes",
                 query,

@@ -17,6 +17,18 @@ export type Where = Exclude<
   undefined
 >["where"];
 
+export const noteEntry0: NotesEntry = {
+  id: "",
+  title: null,
+  mtime: new Date(),
+  event: null,
+  links: [],
+  due: null,
+  since: null,
+  until: null,
+  tags: [],
+};
+
 export async function getEntries(params: URLSearchParams) {
   const notebookConfig = await getNotebookConfig();
   const where = {
@@ -33,6 +45,9 @@ export async function getEntries(params: URLSearchParams) {
       id: true,
       title: true,
       mtime: true,
+      due: true,
+      since: true,
+      until: true,
       tags: { select: { tagId: true } },
       event: true,
       links: { select: { id: true } },

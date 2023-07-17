@@ -1,3 +1,4 @@
+import { scalarOpts } from "./opts";
 import { getScalars } from "./query";
 
 function condNum(str?: string) {
@@ -8,7 +9,8 @@ function condNum(str?: string) {
 }
 
 function whereNum({ gte, lte }: { gte?: string; lte?: string }) {
-  return { gte: condNum(gte), lte: condNum(lte) };
+  if (gte || lte) return { gte: condNum(gte), lte: condNum(lte) };
+  return {};
 }
 
 function condDate(str?: string) {
@@ -19,10 +21,25 @@ function condDate(str?: string) {
 }
 
 function whereDate({ gte, lte }: { gte?: string; lte?: string }) {
-  return { gte: condDate(gte), lte: condDate(lte) };
+  if (gte || lte) return { gte: condDate(gte), lte: condDate(lte) };
+  return {};
 }
 
-function whereDateRange({
+function whereDateOpt({
+  gte,
+  lte,
+  some,
+}: {
+  gte?: string;
+  lte?: string;
+  some?: boolean;
+}) {
+  if (gte || lte) return { gte: condDate(gte), lte: condDate(lte) };
+  if (some) return { not: null };
+  return {};
+}
+
+function whereDateRangeOpt({
   gte,
   lte,
   some,
@@ -46,8 +63,9 @@ function whereDateRange({
     };
   if (some)
     return {
-      start: {},
+      isNot: null,
     };
+  return {};
 }
 
 export function whereScalars(params: URLSearchParams) {
@@ -55,7 +73,10 @@ export function whereScalars(params: URLSearchParams) {
   return {
     wordcount: whereNum(scalars.wordcount),
     mtime: whereDate(scalars.mtime),
-    event: whereDateRange(scalars.event),
+    due: whereDateOpt(scalars.due),
+    since: whereDateOpt(scalars.since),
+    until: whereDateOpt(scalars.until),
+    event: whereDateRangeOpt(scalars.event),
   };
 }
 
@@ -63,19 +84,20 @@ export function searchToOrderBy(params: URLSearchParams) {
   const {
     sort: { scalar, asc },
   } = getScalars(params);
-  if (scalar === "event" && asc === true)
+  const { type } = scalarOpts[scalar];
+  if (type === "DATE_RANGE" && asc === true)
     return {
-      event: {
+      [scalar]: {
         start: "asc" as const,
       },
     };
   if (scalar === "event" && asc === false)
     return {
-      event: {
+      [scalar]: {
         end: "desc" as const,
       },
     };
   return {
-    [scalar]: asc ? "asc" as const : "desc" as const,
+    [scalar]: asc ? ("asc" as const) : ("desc" as const),
   };
 }

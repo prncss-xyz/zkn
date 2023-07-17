@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { getVirtualTags, setVirtualTags } from "./query";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
-import { NavLink } from "@/components/navLink";
+import { ToggleLink } from "@/components/toggleLink";
 
 function InputVirtualTag({ tag }: { tag: string }) {
   const pathname = usePathname();
@@ -15,8 +15,7 @@ function InputVirtualTag({ tag }: { tag: string }) {
   setVirtualTags(params, toggle(tags, tag));
   const query = params.toString();
   return (
-    <NavLink
-      type="toggle"
+    <ToggleLink
       active={active}
       href={{
         pathname,
@@ -24,19 +23,23 @@ function InputVirtualTag({ tag }: { tag: string }) {
       }}
     >
       {tag}
-    </NavLink>
+    </ToggleLink>
   );
 }
 
 export function InputVirtualTags({
-  enabledVirtualTags,
+  enabledVirtualTags: { direct, reverse },
 }: {
-  enabledVirtualTags: string[];
+  enabledVirtualTags: { direct: string[]; reverse: string[] };
 }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
       <Box fontWeight="bold">virtual tags</Box>
-      {enabledVirtualTags.map((tag) => (
+      {direct.map((tag) => (
+        <InputVirtualTag key={tag} tag={tag} />
+      ))}
+      {!!reverse.length && "|"}
+      {reverse.map((tag) => (
         <InputVirtualTag key={tag} tag={tag} />
       ))}
     </Box>

@@ -1,6 +1,7 @@
 import { Box } from "@/components/box";
 import { ReactNode } from "react";
 import { NoteEntry } from "@/app/(main)/note/[...path]/page";
+import { scalarOpts } from "./opts";
 
 function Entry({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -11,24 +12,31 @@ function Entry({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-function toStringDate(date: Date) {
-  return date.toLocaleDateString();
+function Scalar({
+  field,
+  value,
+}: {
+  field: string;
+  value: number | Date | DateRange | null;
+}) {
+  if (!value) return null;
+  const { label } = scalarOpts[field];
+  if (typeof value === "number") return <Entry label={label}>{value}</Entry>;
+  if (value instanceof Date)
+    return <Entry label={label}>{value.toLocaleDateString()}</Entry>;
+  return (
+    <Entry label={label}>
+      <ContentDateRange event={value} />
+    </Entry>
+  );
 }
 
-function Mtime({ note }: { note: NoteEntry }) {
-  return <Entry label="modified">{toStringDate(note.mtime)}</Entry>;
-}
-
-function Wordcount({ note }: { note: NoteEntry }) {
-  return <Entry label="wordcount">{note.wordcount}</Entry>;
-}
-
-interface IEvent {
+interface DateRange {
   start: Date;
   end: Date;
 }
 
-function ContentEvent({ event }: { event: IEvent }) {
+function ContentDateRange({ event }: { event: DateRange }) {
   const day = true; // TODO:
   const start = day
     ? event.start.toLocaleDateString()
@@ -44,21 +52,15 @@ function ContentEvent({ event }: { event: IEvent }) {
   );
 }
 
-function Event({ note }: { note: NoteEntry }) {
-  if (!note.event) return null;
-  return (
-    <Entry label="event">
-      <ContentEvent event={note.event} />
-    </Entry>
-  );
-}
-
 export function NoteScalars({ entry }: { entry: NoteEntry }) {
   return (
     <Box backgroundColor="foreground2" p={5} borderRadius={{ xs: 0, md: 5 }}>
-      <Mtime note={entry} />
-      <Wordcount note={entry} />
-      <Event note={entry} />
+      <Scalar field="mtime" value={entry.mtime} />
+      <Scalar field="wordcount" value={entry.wordcount} />
+      <Scalar field="event" value={entry.event} />
+      <Scalar field="due" value={entry.due} />
+      <Scalar field="since" value={entry.since} />
+      <Scalar field="until" value={entry.until} />
     </Box>
   );
 }

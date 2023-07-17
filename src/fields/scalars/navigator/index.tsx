@@ -12,7 +12,7 @@ import {
 import { checkbox, hideScrollbar } from "./index.css";
 import { getScalars, setScalars } from "../query";
 import { Box } from "@/components/box";
-import { scalarOpts } from "../opts";
+import { scalarOpts, toNum } from "../opts";
 import { Bound, IAction, IState, reducer } from "./reducer";
 
 export function InputScalars({ enabledScalars }: { enabledScalars: string[] }) {
@@ -116,7 +116,7 @@ function InputScalar({ scalar }: { scalar: string }) {
 function InputBound({ scalar, bound }: { scalar: string; bound: Bound }) {
   const [state, dispatch] = useRouteState();
   const scalarState = state.scalars[scalar];
-  const { toNum } = scalarOpts[scalar];
+  const { type } = scalarOpts[scalar];
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams as any);
   const key = getScalars(params).scalars[scalar][bound];
@@ -127,7 +127,7 @@ function InputBound({ scalar, bound }: { scalar: string; bound: Bound }) {
         as="input"
         width="navInputWidth"
         color={
-          scalarState[bound] && isNaN(toNum(scalarState[bound]))
+          scalarState[bound] && isNaN(toNum(type, scalarState[bound]))
             ? "error"
             : "text"
         }

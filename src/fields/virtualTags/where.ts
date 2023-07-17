@@ -6,7 +6,7 @@ export function whereVirtualTags(params: URLSearchParams) {
   const virtualTags = getVirtualTags(params);
   if (!virtualTags.length) return {};
   return virtualTags.reduce(
-    (acc: Where, tag) => ({ ...acc, ...(virtualTagsOpts[tag].where || {}) }),
+    (acc: Where, tag) => ({ ...acc, ...(virtualTagsOpts[tag].where() || {}) }),
     {}
   );
 }

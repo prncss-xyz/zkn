@@ -85,10 +85,12 @@ function spit() {
 
 const processor = getProcessor().use(spit);
 
-export async function analyzeMD(fileEntry: FileEntry, raw: string) {
+export type ParseMD = Awaited<ReturnType<typeof parseMD>>;
+
+export async function parseMD(fileEntry: FileEntry, raw: string) {
   const { data, content } = matter(raw);
   // in absence of preamble just pass fileEntry data
-  const fromPreamble = analyzePreamble(fileEntry, data || {});
+  const { preamble, entry } = analyzePreamble(fileEntry, data || {});
   const result = (await processor.process(content)).result as AnalyzeResult;
   const { title, wordcount, links: links_ } = result;
   const links = links_.map((link: any, rank: any) => ({
@@ -98,8 +100,18 @@ export async function analyzeMD(fileEntry: FileEntry, raw: string) {
     context: link.context,
   }));
   return {
-    ...fromPreamble,
-    entry: { ...fromPreamble.entry, title, wordcount },
-    links,
+    data: {
+      ...entry,
+      due: preamble.due,
+      since: preamble.since,
+      until: preamble.until,
+      title,
+      wordcount,
+    },
+    relations: {
+      event: preamble.event,
+      tags: preamble.tags,
+      links,
+    },
   };
 }

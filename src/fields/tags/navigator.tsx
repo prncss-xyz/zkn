@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { getTags, setTags } from "./query";
 import { Box } from "../../components/box";
 import { toggle } from "@/utils/arrays";
-import { NavLink } from "@/components/navLink";
+import { ToggleLink } from "@/components/toggleLink";
 
 function InputTag({ tag }: { tag: string }) {
   const pathname = usePathname();
@@ -15,16 +15,15 @@ function InputTag({ tag }: { tag: string }) {
   setTags(params, toggle(tags, tag));
   const query = params.toString();
   return (
-    <NavLink
+    <ToggleLink
       active={active}
-      type="toggle"
       href={{
         pathname,
         query,
       }}
     >
       {tag}
-    </NavLink>
+    </ToggleLink>
   );
 }
 
@@ -39,8 +38,7 @@ export function InputTags({
       {direct.map((tag) => (
         <InputTag key={tag} tag={tag} />
       ))}
-      {!!direct.length && !!reverse.length && "|"}
-
+      {!!reverse.length && "|"}
       {reverse.map((tag) => (
         <InputTag key={tag} tag={tag} />
       ))}

@@ -1,47 +1,23 @@
-import { Entry, Link, Event } from "@prisma/client";
 import prisma from "./prisma";
 import { readFile, stat, watch } from "node:fs/promises";
 import path, { extname } from "node:path/posix";
-import { analyzeMD } from "./parseMD";
+import { ParseMD, parseMD } from "./parseMD";
 import { notebookDir } from "../notebookDir";
 import { getFiles } from "../files";
 import { normalizePath } from "@/utils/path";
-
-export interface Data {
-  entry: Entry;
-  tags: string[];
-  links: Omit<Link, "id" | "sourceId">[];
-  event: Omit<Event, "id" | "entryId"> | null;
-}
 
 export interface FileEntry {
   id: string;
   mtime: Date;
 }
 
-const defaultEntry = {
-  title: null,
-  wordcount: 0,
-};
-
-const defaultData = {
-  tags: [] as Data["tags"],
-  links: [] as Data["links"],
-  event: null,
-};
-
-// this is a test helper
-export function mergeDefaults<T extends { entry: Partial<Entry> }>(data: T) {
-  return { ...defaultData, ...data, entry: { ...defaultEntry, ...data.entry } };
-}
-
-async function update(data: Data) {
+async function update({ data, relations }: ParseMD) {
   const op = {
-    ...data.entry,
-    event: data.event ? { create: data.event } : undefined,
-    links: { create: data.links },
+    ...data,
+    event: relations.event ? { create: relations.event } : undefined,
+    links: { create: relations.links },
     tags: {
-      create: data.tags.map((tag) => ({
+      create: relations.tags.map((tag) => ({
         tag: {
           connectOrCreate: {
             where: {
@@ -56,14 +32,14 @@ async function update(data: Data) {
     },
   };
   await prisma.$transaction([
-    prisma.event.deleteMany({ where: { entryId: data.entry.id } }),
-    prisma.link.deleteMany({ where: { sourceId: data.entry.id } }),
+    prisma.event.deleteMany({ where: { entryId: data.id } }),
+    prisma.link.deleteMany({ where: { sourceId: data.id } }),
     prisma.tagsOnEntries.deleteMany({
-      where: { entryId: data.entry.id },
+      where: { entryId: data.id },
     }),
     prisma.entry.upsert({
       where: {
-        id: data.entry.id,
+        id: data.id,
       },
       create: op,
       update: op,
@@ -92,11 +68,10 @@ async function scanFile(notebookDir: string, id: string, entry?: FileEntry) {
     return 0;
   }
   if (isSameDate(entry?.mtime, mtime)) return 0;
-  // if (entry && Math.abs(entry.mtime.getTime() - mtime) <= epsilon) return 0;
   const raw = await readFile(fullPath, "utf8");
-  let data: Awaited<ReturnType<typeof analyzeMD>>;
+  let data: Awaited<ReturnType<typeof parseMD>>;
   try {
-    data = await analyzeMD({ id, mtime }, raw);
+    data = await parseMD({ id, mtime }, raw);
   } catch (err) {
     if (entry) await remove(id);
     console.error(`error in file "${id}":`, err);

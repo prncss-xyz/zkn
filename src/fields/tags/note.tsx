@@ -1,7 +1,7 @@
 import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 import { Box } from "@/components/box";
 import { setTags } from "./query";
-import { NavLink } from "@/components/navLink";
+import { ToggleLink } from "@/components/toggleLink";
 
 const pathname = "/notes";
 
@@ -10,15 +10,14 @@ function NoteTag({ tag }: { tag: string }) {
   setTags(params, [tag]);
   const query = params.toString();
   return (
-    <NavLink
-      type="toggle"
+    <ToggleLink
       href={{
         pathname,
         query,
       }}
     >
       {tag}
-    </NavLink>
+    </ToggleLink>
   );
 }
 

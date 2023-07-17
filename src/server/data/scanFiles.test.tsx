@@ -61,6 +61,9 @@ function sampleUpdate(i: number) {
     },
     title: "title " + i,
     wordcount: 2,
+    since: null,
+    until: null,
+    due: null,
   };
   return {
     create: op,

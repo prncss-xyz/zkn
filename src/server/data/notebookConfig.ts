@@ -6,6 +6,9 @@ import { z } from "zod";
 
 const kanbansSchema = z.record(z.string(), z.array(z.string())).default({});
 const reversedTagsSchema = z.array(z.string()).default([]);
+const reversedVirtualTagsSchema = z
+  .array(z.string())
+  .default(["since", "until"]);
 
 async function loadConfig(): Promise<any> {
   const file = path.join(notebookDir, ".notebook.yaml");
@@ -27,6 +30,9 @@ async function getNotebookConfig_() {
   return {
     kanbans: kanbansSchema.parse(obj.kanbans),
     reversedTags: reversedTagsSchema.parse(obj.reversed_tags),
+    reversedVirtualTags: reversedVirtualTagsSchema.parse(
+      obj.reversed_virtual_tags
+    ),
   };
 }
 let config: ReturnType<typeof getNotebookConfig_>;

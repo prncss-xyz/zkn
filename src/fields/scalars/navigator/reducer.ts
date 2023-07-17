@@ -1,4 +1,4 @@
-import { scalarOpts } from "../opts";
+import { scalarOpts, toNum } from "../opts";
 
 export type Bound = "lte" | "gte";
 
@@ -75,9 +75,9 @@ interface IPushBound {
 
 function pushBound({ scalar, bound }: IPushBound, state: IState) {
   const erease: Bound = bound === "lte" ? "gte" : "lte";
-  const { toNum } = scalarOpts[scalar];
+  const { type } = scalarOpts[scalar];
   const scalarState = state.scalars[scalar];
-  if (toNum(scalarState.gte) > toNum(scalarState.lte))
+  if (toNum(type, scalarState.gte) > toNum(type, scalarState.lte))
     return {
       ...state,
       scalars: {

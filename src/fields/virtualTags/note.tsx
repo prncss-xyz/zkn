@@ -2,7 +2,7 @@ import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 import { Box } from "@/components/box";
 import { setVirtualTags } from "./query";
 import { virtualTags, virtualTagsOpts } from "./opts";
-import { NavLink } from "@/components/navLink";
+import { ToggleLink } from "@/components/toggleLink";
 
 const pathname = "/notes";
 
@@ -10,11 +10,7 @@ function NoteVirtualTag({ tag }: { tag: string }) {
   const params = new URLSearchParams();
   setVirtualTags(params, [tag]);
   const query = params.toString();
-  return (
-    <NavLink href={{ pathname, query }} type="toggle">
-      {tag}
-    </NavLink>
-  );
+  return <ToggleLink href={{ pathname, query }}>{tag}</ToggleLink>;
 }
 
 export function NoteVirtualTags({ entry }: { entry: NoteEntry }) {

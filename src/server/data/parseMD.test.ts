@@ -1,5 +1,5 @@
-import { FileEntry, mergeDefaults } from "./scanFiles";
-import { analyzeMD } from "./parseMD";
+import { FileEntry } from "./scanFiles";
+import { parseMD } from "./parseMD";
 
 const entry: FileEntry = {
   id: "",
@@ -8,7 +8,7 @@ const entry: FileEntry = {
 
 describe("analyzeMD", () => {
   it("should parse basic values", async () => {
-    const res = await analyzeMD(
+    const res = await parseMD(
       entry,
       `---
 tags: a
@@ -18,19 +18,19 @@ tags: a
 
 test`
     );
-    expect(res).toEqual(
-      mergeDefaults({
-        entry: {
-          ...entry,
-          title: "titre",
-          wordcount: 2,
-        },
+    expect(res).toMatchObject({
+      data: {
+        ...entry,
+        title: "titre",
+        wordcount: 2,
+      },
+      relations: {
         tags: ["a"],
-      })
-    );
+      },
+    });
   });
   it("should parse links", async () => {
-    const res = await analyzeMD(
+    const res = await parseMD(
       { mtime: new Date(1), id: "file.md" },
       `---
 ---
@@ -44,26 +44,31 @@ test`
     );
     expect(res).toMatchInlineSnapshot(`
       {
-        "entry": {
+        "data": {
+          "due": null,
           "id": "file.md",
           "mtime": 1970-01-01T00:00:00.001Z,
+          "since": null,
           "title": null,
+          "until": null,
           "wordcount": 6,
         },
-        "event": null,
-        "links": [
-          {
-            "context": "pre<a class=\\"internal\\" href=\\"link.md\\"></a>post",
-            "rank": 0,
-            "targetId": "link.md",
-          },
-          {
-            "context": "PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST",
-            "rank": 1,
-            "targetId": "LINK.md",
-          },
-        ],
-        "tags": [],
+        "relations": {
+          "event": null,
+          "links": [
+            {
+              "context": "pre<a class=\\"internal\\" href=\\"link.md\\"></a>post",
+              "rank": 0,
+              "targetId": "link.md",
+            },
+            {
+              "context": "PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST",
+              "rank": 1,
+              "targetId": "LINK.md",
+            },
+          ],
+          "tags": [],
+        },
       }
     `);
   });

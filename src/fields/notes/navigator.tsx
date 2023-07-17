@@ -9,7 +9,7 @@ export function InputNotes({}: {}) {
   params.delete("kanban");
   const query = params.toString();
   return (
-    <NavLink type="label" href={{ pathname: "/notes", query }}>
+    <NavLink href={{ pathname: "/notes", query }}>
       Notes
     </NavLink>
   );

@@ -69,7 +69,7 @@ export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
       flexDirection="column"
     >
       <Box as="h2" fontWeight="bold" p={5}>
-        <NavLink type="label" href={{ pathname: "/notes", query }}>
+        <NavLink href={{ pathname: "/notes", query }}>
           Backlinks
         </NavLink>
       </Box>

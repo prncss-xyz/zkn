@@ -61,13 +61,23 @@ function toArray(raw: unknown) {
 const dataSchema = z.object({
   tags: z.preprocess(toArray, z.array(z.string()).default([])),
   event: dateRange,
+  due: date,
+  since: date,
+  until: date,
 });
 
-export function analyzePreamble(fileEntry: FileEntry, raw: unknown) {
-  const data = dataSchema.parse(raw);
+export const defaultPreamble = {
+  tags: [] as string[],
+  event: null,
+  due: null,
+  since: null,
+  until: null,
+};
+
+export function analyzePreamble(entry: FileEntry, raw: unknown) {
+  const preamble = dataSchema.parse(raw);
   return {
-    entry: { ...fileEntry },
-    event: data.event,
-    tags: data.tags,
+    preamble,
+    entry,
   };
 }

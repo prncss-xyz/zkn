@@ -10,6 +10,9 @@ datasource db {
 model Entry {
   id        String          @id
   mtime     DateTime
+  due       DateTime?
+  since     DateTime?
+  until     DateTime?
   title     String?
   wordcount Int
   tags      TagsOnEntries[]

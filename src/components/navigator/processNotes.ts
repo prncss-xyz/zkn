@@ -18,9 +18,11 @@ function processNotes_(
     notebookConfig,
     params
   );
-  const [foldVirtualTags, getEnabledVirtualTags] = processVirtualTags();
+  const [foldVirtualTags, getEnabledVirtualTags, filterVirtualTags] =
+    processVirtualTags(notebookConfig, params);
   for (const entry of entries) {
     if (!filterTags(entry)) continue;
+    if (!filterVirtualTags(entry)) continue;
     entriesOut.push(entry);
     foldScalars(entry);
     foldTags(entry);

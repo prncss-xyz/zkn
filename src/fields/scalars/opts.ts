@@ -1,12 +1,14 @@
-export const scalars = ["wordcount", "mtime", "event"];
-
-const toNumDate = (str: string) => new Date(str).getTime();
-
+type Type = "NUMBER" | "DATE" | "DATE_RANGE";
 
 interface IScalarOpts {
   label: string;
-  toNum: (str: string) => number;
+  type: Type;
   always: boolean;
+}
+
+export function toNum(type: Type, str: string) {
+  if (type === "NUMBER") return Number(str);
+  return new Date(str).getTime();
 }
 
 export const scalarOpts: {
@@ -15,16 +17,33 @@ export const scalarOpts: {
   wordcount: {
     always: true,
     label: "Wordcount",
-    toNum: Number,
+    type: "NUMBER",
   },
   mtime: {
     always: true,
     label: "Modified",
-    toNum: toNumDate,
+    type: "DATE",
   },
   event: {
     always: false,
     label: "Event",
-    toNum: toNumDate,
+    type: "DATE_RANGE",
+  },
+  due: {
+    always: false,
+    label: "Due",
+    type: "DATE",
+  },
+  since: {
+    always: false,
+    label: "Since",
+    type: "DATE",
+  },
+  until: {
+    always: false,
+    label: "Until",
+    type: "DATE",
   },
 };
+
+export const scalars = Object.keys(scalarOpts);

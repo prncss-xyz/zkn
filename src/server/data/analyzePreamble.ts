@@ -1,5 +1,6 @@
 import { boolean, z } from "zod";
 import { FileEntry } from "./scanFiles";
+import { resolve, relative, dirname } from "node:path/posix";
 
 const hourMs = 60 * 60 * 1000;
 const dayMs = 24 * hourMs;
@@ -64,6 +65,7 @@ const dataSchema = z.object({
   due: date,
   since: date,
   until: date,
+  asset: z.nullable(z.string()).default(null),
 });
 
 export const defaultPreamble = {
@@ -72,10 +74,14 @@ export const defaultPreamble = {
   due: null,
   since: null,
   until: null,
+  asset: null,
 };
 
 export function analyzePreamble(entry: FileEntry, raw: unknown) {
   const preamble = dataSchema.parse(raw);
+  if (preamble.asset) {
+    preamble.asset = relative(".", resolve(dirname(entry.id), preamble.asset));
+  }
   return {
     preamble,
     entry,

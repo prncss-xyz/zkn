@@ -1,3 +1,4 @@
+import { Where } from "@/app/(main)/(views)/search";
 import { scalarOpts } from "./opts";
 import { getScalars } from "./query";
 
@@ -68,7 +69,7 @@ function whereDateRangeOpt({
   return {};
 }
 
-export function whereScalars(params: URLSearchParams) {
+export function whereScalars(params: URLSearchParams): Where {
   const { scalars } = getScalars(params);
   return {
     wordcount: whereNum(scalars.wordcount),

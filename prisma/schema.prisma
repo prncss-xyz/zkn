@@ -14,6 +14,8 @@ model Entry {
   since     DateTime?
   until     DateTime?
   title     String?
+  asset     String?
+  assetType String?
   wordcount Int
   tags      TagsOnEntries[]
   event     Event?

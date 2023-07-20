@@ -9,6 +9,7 @@ import matter from "gray-matter";
 import { analyzePreamble } from "./analyzePreamble";
 import { getProcessor } from "./processMD";
 import { normalizePath } from "@/utils/path";
+import mime from "mime";
 
 interface RawLink {
   context: string;
@@ -87,10 +88,18 @@ const processor = getProcessor().use(spit);
 
 export type ParseMD = Awaited<ReturnType<typeof parseMD>>;
 
+export function getTypeFromPath(asset: string) {
+  const mimetype = mime.getType(asset);
+  if (!mimetype) return "";
+  const [type] = mimetype.split("/");
+  return type;
+}
+
 export async function parseMD(fileEntry: FileEntry, raw: string) {
   const { data, content } = matter(raw);
   // in absence of preamble just pass fileEntry data
   const { preamble, entry } = analyzePreamble(fileEntry, data || {});
+  const assetType = preamble.asset ? getTypeFromPath(preamble.asset) : null;
   const result = (await processor.process(content)).result as AnalyzeResult;
   const { title, wordcount, links: links_ } = result;
   const links = links_.map((link: any, rank: any) => ({
@@ -105,6 +114,8 @@ export async function parseMD(fileEntry: FileEntry, raw: string) {
       due: preamble.due,
       since: preamble.since,
       until: preamble.until,
+      asset: preamble.asset,
+      assetType,
       title,
       wordcount,
     },

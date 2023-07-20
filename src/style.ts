@@ -1,6 +1,8 @@
 export const space = [0, 5, 10, 20, 40] as const;
 
 export const sizes = {
+  galleryImage: 150,
+  noteAssetHeight: 300,
   screenMaxWidth: "min(100%, 1000px)",
   kanbanWidth: 200,
   labelWidth: 120,

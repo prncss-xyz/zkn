@@ -5,6 +5,7 @@ import { processDirs } from "@/fields/dir/process";
 import { NotesEntry } from "@/app/(main)/(views)/search";
 import { processKanban } from "@/fields/kanban/utils";
 import { INotebookConfig } from "@/server/data/notebookConfig";
+import { processAsset } from "@/fields/asset/process";
 
 function processNotes_(
   notebookConfig: INotebookConfig,
@@ -20,19 +21,24 @@ function processNotes_(
   );
   const [foldVirtualTags, getEnabledVirtualTags, filterVirtualTags] =
     processVirtualTags(notebookConfig, params);
+  const [foldAssets, getEnabledAssets] = processAsset();
   for (const entry of entries) {
-    if (!filterTags(entry)) continue;
-    if (!filterVirtualTags(entry)) continue;
+    let skip = false;
+    skip ||= !filterTags(entry);
+    skip ||= !filterVirtualTags(entry);
+    if (skip) continue;
     entriesOut.push(entry);
     foldScalars(entry);
     foldTags(entry);
     foldDirs(entry);
     foldVirtualTags(entry);
+    foldAssets(entry);
   }
   const dirs = getEnabledDirs();
   const tags = getEnabledTags();
   const scalars = getEnabledScalars();
   const virtualTags = getEnabledVirtualTags();
+  const asset = getEnabledAssets();
 
   return {
     entries: entriesOut,
@@ -40,6 +46,7 @@ function processNotes_(
     tags,
     virtualTags,
     scalars,
+    asset,
   };
 }
 

@@ -45,6 +45,8 @@ test`
     expect(res).toMatchInlineSnapshot(`
       {
         "data": {
+          "asset": null,
+          "assetType": null,
           "due": null,
           "id": "file.md",
           "mtime": 1970-01-01T00:00:00.001Z,

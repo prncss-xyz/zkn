@@ -1,6 +1,5 @@
 import { Box } from "@/components/box";
 import { setup } from "@/server/data/scanFiles";
-import { basename } from "node:path";
 import { Link } from "@/components/link";
 import { Navigator } from "@/components/navigator";
 import { ISearch, getEntries } from "../search";
@@ -12,23 +11,28 @@ export const dynamic = "force-dynamic";
 interface IEntry {
   id: string;
   title: string | null;
+  asset: string | null;
+  assetType: string | null;
 }
 
 function Note({ entry }: { entry: IEntry }) {
+  if (!entry.asset) return null;
+  if (!(entry.assetType === "image")) return null;
   return (
     <Link
-      key={entry.id}
       p={5}
       borderStyle="top"
       borderWidth={1}
       borderColor="background"
-      // this makes the whole width of the box clickable
-      display="flex"
-      flexDirection="column"
       href={`note/${entry.id}`}
-      fontFamily={entry.title ? undefined : "monospace"}
+      width="galleryImage"
+      height="galleryImage"
     >
-      {entry.title || basename(entry.id)}
+      <img
+        src={`/API/asset/${entry.asset}`}
+        alt={entry.title || "asset"}
+        style={{ objectFit: "contain" }}
+      />
     </Link>
   );
 }
@@ -37,10 +41,10 @@ function Notes({ entries }: { entries: IEntry[] }) {
   return (
     <Box
       display="flex"
-      flexDirection="column"
+      flexDirection="row"
+      flexWrap="wrap"
       width="screenMaxWidth"
-      backgroundColor="foreground2"
-      borderRadius={{ xs: 0, md: 5 }}
+      gap={5}
     >
       {entries.map((entry) => (
         <Note key={entry.id} entry={entry} />

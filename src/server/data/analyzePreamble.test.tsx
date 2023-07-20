@@ -7,6 +7,15 @@ const entry: FileEntry = {
 };
 
 describe("analyzeData", async () => {
+  it("should give correct path to asset", () => {
+    expect(
+      analyzePreamble({ ...entry, id: "p/q/r/tata.md" }, { asset: "toto" })
+    ).toMatchObject({
+      preamble: {
+        asset: "p/q/r/toto",
+      },
+    });
+  });
   it("should parse with default values", async () => {
     expect(analyzePreamble(entry, {})).toMatchObject({ entry });
   });

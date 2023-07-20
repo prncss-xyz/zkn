@@ -120,9 +120,7 @@ export default async function Page({
   const processed = processNotes(notebookConfig, params, entries);
   return (
     <>
-      {/* @ts-ignore */}
       <Navigator processed={processed} />
-      {/* @ts-ignore */}
       <Kanban kanban={kanban} entries={processed.entries} />
     </>
   );

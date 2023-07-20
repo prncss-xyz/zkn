@@ -69,13 +69,10 @@ export async function NoteBacklinks({ entry }: { entry: NoteEntry }) {
       flexDirection="column"
     >
       <Box as="h2" fontWeight="bold" p={5}>
-        <NavLink href={{ pathname: "/notes", query }}>
-          Backlinks
-        </NavLink>
+        <NavLink href={{ pathname: "/notes", query }}>Backlinks</NavLink>
       </Box>
       <Box display="flex" flexDirection="column">
         {backlinks.map((link) => (
-          // @ts-ignore
           <NoteBacklink key={link.id} link={link} />
         ))}
       </Box>

@@ -1,7 +1,8 @@
 ---
 tags: tagA
+asset: cat.jpg
 ---
 
-# Tatak
+# Cat
 
 Toc toc

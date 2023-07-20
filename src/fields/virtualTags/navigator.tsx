@@ -34,7 +34,7 @@ export function InputVirtualTags({
 }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-      <Box fontWeight="bold">virtual tags</Box>
+      <Box fontWeight="bold">Virtual tags</Box>
       {direct.map((tag) => (
         <InputVirtualTag key={tag} tag={tag} />
       ))}

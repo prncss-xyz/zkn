@@ -34,7 +34,7 @@ export function InputTags({
 }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-      <Box fontWeight="bold">tags</Box>
+      <Box fontWeight="bold">Tags</Box>
       {direct.map((tag) => (
         <InputTag key={tag} tag={tag} />
       ))}

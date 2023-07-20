@@ -10,6 +10,7 @@ import { NoteScalars } from "@/fields/scalars/note";
 import { Contents } from "./contents";
 import { KanbanViews } from "@/fields/kanban/views";
 import { NavLink } from "@/components/navLink";
+import { NoteAsset } from "@/fields/asset/note";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,8 @@ async function getEntry(id: string) {
       tags: true,
       mtime: true,
       event: true,
+      asset: true,
+      assetType: true,
     },
   });
   return entry;
@@ -36,11 +39,21 @@ async function getEntry(id: string) {
 function Views({ entry }: { entry: NoteEntry }) {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
-      <NavLink href={{ pathname: "/notes" }}>
-        Notes
-      </NavLink>
-      {/* @ts-ignore */}
+      <NavLink href={{ pathname: "/notes" }}>Notes</NavLink>
       <KanbanViews entry={entry} />
+    </Box>
+  );
+}
+
+function NoteMarkdown({ entry }: { entry: NoteEntry }) {
+  return (
+    <Box
+      backgroundColor="foreground1"
+      p={5}
+      borderRadius={{ xs: 0, md: 5 }}
+      className={markdown}
+    >
+      <Contents entry={entry} />
     </Box>
   );
 }
@@ -65,17 +78,9 @@ export default async function Page({
       <NoteDir entry={entry} />
       <NoteTags entry={entry} />
       <NoteVirtualTags entry={entry} />
-      <Box
-        backgroundColor="foreground1"
-        p={5}
-        borderRadius={{ xs: 0, md: 5 }}
-        className={markdown}
-      >
-        {/* @ts-ignore */}
-        <Contents entry={entry} />
-      </Box>
+      <NoteAsset entry={entry} />
+      <NoteMarkdown entry={entry} />
       <NoteScalars entry={entry} />
-      {/* @ts-ignore */}
       <NoteBacklinks entry={entry} />
     </Box>
   );

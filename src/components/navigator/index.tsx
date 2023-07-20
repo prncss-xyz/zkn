@@ -8,6 +8,7 @@ import { InputKanban } from "@/fields/kanban/navigator";
 import { Clear } from "./clear";
 import { InputNotes } from "@/fields/notes/navigator";
 import { InputAll } from "@/fields/all/navigator";
+import { InputAssets, InputGallery } from "@/fields/asset/navigator";
 
 export async function Navigator({ processed }: { processed: IProcessNotes }) {
   return (
@@ -21,6 +22,7 @@ export async function Navigator({ processed }: { processed: IProcessNotes }) {
         <Box display="flex" flexDirection="row" gap={10}>
           <InputNotes />
           <InputKanban enabledKanbans={processed.kanbans} />
+          <InputGallery enabledAssets={processed.asset} />
           <InputAll />
         </Box>
         <Box display="flex" flexDirection="column" gap={5}>
@@ -28,6 +30,7 @@ export async function Navigator({ processed }: { processed: IProcessNotes }) {
           <InputVirtualTags enabledVirtualTags={processed.virtualTags} />
           <InputTags enabledTags={processed.tags} />
           <InputDirs enabledDirs={processed.dirs} />
+          <InputAssets enabledAssets={processed.asset} />
           <InputScalars enabledScalars={processed.scalars} />
         </Box>
         <Box borderColor="foreground2" borderWidth={1} borderStyle="top" />

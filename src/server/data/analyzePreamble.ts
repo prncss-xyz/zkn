@@ -1,6 +1,7 @@
 import { boolean, z } from "zod";
 import { FileEntry } from "./scanFiles";
 import { resolve, relative, dirname } from "node:path/posix";
+import { upTags } from "./upTags";
 
 const hourMs = 60 * 60 * 1000;
 const dayMs = 24 * hourMs;
@@ -79,6 +80,7 @@ export const defaultPreamble = {
 
 export function analyzePreamble(entry: FileEntry, raw: unknown) {
   const preamble = dataSchema.parse(raw);
+  preamble.tags = upTags(preamble.tags);
   if (preamble.asset) {
     preamble.asset = relative(".", resolve(dirname(entry.id), preamble.asset));
   }

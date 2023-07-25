@@ -19,7 +19,7 @@ describe("dirname", () => {
 
 describe("normalizePath", () => {
   it("should normalize slash in pathnames", () => {
-    expect(normalizePath("to/to/to")).toBe("to/to/to");
-    expect(normalizePath("to\\to\\to")).toBe("to/to/to");
+    expect(normalizePath("to/ta/tu")).toBe("to/ta/tu");
+    expect(normalizePath("to\\ta\\tu")).toBe("to/ta/tu");
   });
 });

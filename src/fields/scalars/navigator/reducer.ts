@@ -1,11 +1,6 @@
-import { scalarOpts, toNum } from "../opts";
+import { defaultSort, scalarOpts, toNum } from "../opts";
 
 export type Bound = "lte" | "gte";
-
-export const defaultSort = {
-  scalar: "mtime",
-  asc: true,
-};
 
 export interface IState {
   sort: {

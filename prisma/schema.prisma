@@ -20,6 +20,7 @@ model Entry {
   tags      TagsOnEntries[]
   event     Event?
   links     Link[]          @relation("source")
+  frecency  DateTime
 }
 
 model Tag {

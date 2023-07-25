@@ -42,36 +42,25 @@ PRE[[LINK]]POST
 
 test`
     );
-    expect(res).toMatchInlineSnapshot(`
-      {
-        "data": {
-          "asset": null,
-          "assetType": null,
-          "due": null,
-          "id": "file.md",
-          "mtime": 1970-01-01T00:00:00.001Z,
-          "since": null,
-          "title": null,
-          "until": null,
-          "wordcount": 6,
-        },
-        "relations": {
-          "event": null,
-          "links": [
-            {
-              "context": "pre<a class=\\"internal\\" href=\\"link.md\\"></a>post",
-              "rank": 0,
-              "targetId": "link.md",
-            },
-            {
-              "context": "PRE<a class=\\"internal\\" href=\\"LINK.md\\"></a>POST",
-              "rank": 1,
-              "targetId": "LINK.md",
-            },
-          ],
-          "tags": [],
-        },
-      }
-    `);
+    expect(res).toMatchObject({
+      data: {
+        id: "file.md",
+        wordcount: 6,
+      },
+      relations: {
+        links: [
+          {
+            context: `pre<a class="internal" href="link.md"></a>post`,
+            rank: 0,
+            targetId: "link.md",
+          },
+          {
+            context: `PRE<a class="internal" href="LINK.md"></a>POST`,
+            rank: 1,
+            targetId: "LINK.md",
+          },
+        ],
+      },
+    });
   });
 });

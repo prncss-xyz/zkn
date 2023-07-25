@@ -10,6 +10,7 @@ import { analyzePreamble } from "./analyzePreamble";
 import { getProcessor } from "./processMD";
 import { normalizePath } from "@/utils/path";
 import mime from "mime";
+import { initFrecency } from "./frecency";
 
 interface RawLink {
   context: string;
@@ -118,6 +119,7 @@ export async function parseMD(fileEntry: FileEntry, raw: string) {
       assetType,
       title,
       wordcount,
+      frecency: initFrecency(),
     },
     relations: {
       event: preamble.event,

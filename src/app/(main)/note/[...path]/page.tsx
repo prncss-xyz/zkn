@@ -11,6 +11,7 @@ import { Contents } from "./contents";
 import { KanbanViews } from "@/fields/kanban/views";
 import { NavLink } from "@/components/navLink";
 import { NoteAsset } from "@/fields/asset/note";
+import { updateFrecency } from "@/server/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,7 @@ async function getEntry(id: string) {
       event: true,
       asset: true,
       assetType: true,
+      frecency: true,
     },
   });
   return entry;
@@ -72,6 +74,7 @@ export default async function Page({
         The node with filename <code>{id}</code> do not exist.
       </Box>
     );
+  updateFrecency(entry);
   return (
     <Box display="flex" flexDirection="column" gap={10} width="screenMaxWidth">
       <Views entry={entry} />

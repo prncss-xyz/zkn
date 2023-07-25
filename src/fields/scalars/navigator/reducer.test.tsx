@@ -1,5 +1,5 @@
-import { scalars } from "../opts";
-import { IState, defaultSort, reducer } from "./reducer";
+import { defaultSort, scalars } from "../opts";
+import { IState, reducer } from "./reducer";
 import R from "rambda";
 
 const scalar0 = { lte: "", gte: "", some: false };

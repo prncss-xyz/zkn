@@ -2,10 +2,12 @@ import { vi } from "vitest";
 import mock from "mock-fs";
 import prisma from "./__mocks__/prisma";
 import { scanFiles } from "./scanFiles";
+import { noteEntry0 } from "@/app/(main)/(views)/search";
 
 describe("scanFiles", () => {
   beforeEach(() => {
     vi.mock("./prisma");
+    vi.mock("./frecency");
     mock({
       notes: {
         "1.md": sampleFile(1),
@@ -26,6 +28,7 @@ describe("scanFiles", () => {
       sampleEntry(4, 1),
       sampleEntry(5, 1),
     ]);
+    vi.mock("");
     await scanFiles("./notes");
     expect(prisma.entry.upsert).toHaveBeenCalledWith(sampleUpdate(2));
     expect(prisma.entry.upsert).toHaveBeenCalledWith(sampleUpdate(3));
@@ -50,6 +53,7 @@ function sampleEntry(i: number, mtime: number) {
 function sampleUpdate(i: number) {
   const id = i + ".md";
   const op = {
+    ...noteEntry0,
     id,
     links: {
       create: [],

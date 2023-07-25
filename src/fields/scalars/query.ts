@@ -1,5 +1,5 @@
-import { IState, defaultSort } from "./navigator/reducer";
-import { scalars, scalarOpts } from "./opts";
+import { IState } from "./navigator/reducer";
+import { scalars, scalarOpts, defaultSort } from "./opts";
 
 export function setScalars(params: URLSearchParams, state: IState) {
   for (const scalar of scalars) {

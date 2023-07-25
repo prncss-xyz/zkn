@@ -85,7 +85,7 @@ function useRouteState() {
 
 function InputScalar({ scalar }: { scalar: string }) {
   const [state, dispatch] = useRouteState();
-  const { label, always } = scalarOpts[scalar];
+  const { label, always, select } = scalarOpts[scalar];
   return (
     <Box display="flex" flexDirection="row" gap={20}>
       <Box fontWeight="bold" width="navLabelWidth" flexShrink={0}>
@@ -95,20 +95,26 @@ function InputScalar({ scalar }: { scalar: string }) {
         <SelectSort scalar={scalar} asc={true} />
         <SelectSort scalar={scalar} asc={false} />
       </Box>
-      <Box
-        width="navCheckboxWidth"
-        color="text"
-        as="input"
-        type="checkbox"
-        checked={state.scalars[scalar].some}
-        onChange={() => dispatch({ type: "TOGGLE_SOME", scalar })}
-        className={checkbox}
-        borderStyle="all"
-        borderWidth={2}
-        borderColor={always ? "active" : "link"}
-      />
-      <InputBound scalar={scalar} bound="gte" />
-      <InputBound scalar={scalar} bound="lte" />
+      {(select || !always) && (
+        <Box
+          width="navCheckboxWidth"
+          color="text"
+          as="input"
+          type="checkbox"
+          checked={state.scalars[scalar].some}
+          onChange={() => dispatch({ type: "TOGGLE_SOME", scalar })}
+          className={checkbox}
+          borderStyle="all"
+          borderWidth={2}
+          borderColor={always ? "active" : "link"}
+        />
+      )}
+      {select && (
+        <>
+          <InputBound scalar={scalar} bound="gte" />
+          <InputBound scalar={scalar} bound="lte" />
+        </>
+      )}
     </Box>
   );
 }

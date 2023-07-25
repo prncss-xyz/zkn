@@ -22,7 +22,7 @@ export type Where = Exclude<
 export const noteEntry0: NotesEntry = {
   id: "",
   title: null,
-  mtime: new Date(),
+  mtime: new Date(0),
   event: null,
   links: [],
   due: null,
@@ -31,6 +31,7 @@ export const noteEntry0: NotesEntry = {
   asset: null,
   assetType: null,
   tags: [],
+  frecency: new Date(0),
 };
 
 export async function getEntries(params: URLSearchParams) {
@@ -58,6 +59,7 @@ export async function getEntries(params: URLSearchParams) {
       links: { select: { id: true } },
       asset: true,
       assetType: true,
+      frecency: true,
     },
     where,
     orderBy,

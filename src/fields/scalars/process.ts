@@ -10,7 +10,7 @@ export function processScalars() {
     if (entry.until) acc.add("until");
   }
   function result() {
-    return ["mtime", "wordcount", ...Array.from(acc).sort()];
+    return ["frecency", "mtime", "wordcount", ...Array.from(acc).sort()];
   }
   return [fold, result] as const;
 }

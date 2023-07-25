@@ -10,7 +10,7 @@ describe("processNotes", () => {
     expect(processNotes(config, params, [])).toMatchObject({
       dirs: [],
       kanbans: [],
-      scalars: ["mtime", "wordcount"],
+      scalars: ["frecency", "mtime", "wordcount"],
       tags: { direct: [], reverse: [] },
       virtualTags: { direct: [], reverse: [] },
     });
@@ -30,7 +30,7 @@ describe("processNotes", () => {
       tags: { direct: ["p", "q"], reverse: [] },
       virtualTags: { direct: ["orphan"] },
       kanbans: ["v"],
-      scalars: ["mtime", "wordcount"],
+      scalars: ["frecency", "mtime", "wordcount"],
     });
   });
 });

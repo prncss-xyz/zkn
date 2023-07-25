@@ -1,6 +1,8 @@
 "use server";
 
+import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 import prisma from "../data/prisma";
+import { incFrecency } from "../data/frecency";
 
 export async function getTitle(link: string) {
   const res = await prisma.entry.findUnique({
@@ -23,4 +25,19 @@ export async function getIdToTitle(links: string[]) {
       })
     )
   );
+}
+
+const idToLastUpdated = new Map<string, number>();
+const updateThreshold = 1000 * 3600;
+
+export async function updateFrecency({ id, frecency }: NoteEntry) {
+  const lastUpdated = idToLastUpdated.get(id);
+  const now = Date.now();
+  if (!lastUpdated || now - lastUpdated > updateThreshold) {
+    await prisma.entry.update({
+      where: { id },
+      data: { frecency: incFrecency(frecency, 1) },
+    });
+  }
+  idToLastUpdated.set(id, now);
 }

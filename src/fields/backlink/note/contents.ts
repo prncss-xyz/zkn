@@ -30,7 +30,7 @@ async function getIdToTitle(links: string[]) {
   );
 }
 
-function transform() {
+export function transform() {
   return async function (tree: Root) {
     const links: string[] = [];
     visit(tree, "element", (node) => {

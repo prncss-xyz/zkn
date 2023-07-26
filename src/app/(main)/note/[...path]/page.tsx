@@ -12,6 +12,7 @@ import { KanbanViews } from "@/fields/kanban/views";
 import { NavLink } from "@/components/navLink";
 import { NoteAsset } from "@/fields/asset/note";
 import { updateFrecency } from "@/server/actions";
+import { AssetViews } from "@/fields/asset/views";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,7 @@ function Views({ entry }: { entry: NoteEntry }) {
     <Box display="flex" flexDirection="row" flexWrap="wrap" gap={10}>
       <NavLink href={{ pathname: "/notes" }}>Notes</NavLink>
       <KanbanViews entry={entry} />
+      <AssetViews entry={entry} />
     </Box>
   );
 }

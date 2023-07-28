@@ -13,6 +13,8 @@ import { NavLink } from "@/components/navLink";
 import { NoteAsset } from "@/fields/asset/note";
 import { updateFrecency } from "@/server/actions";
 import { AssetViews } from "@/fields/asset/views";
+import { DeleteNote, EditNote } from "@/components/actions";
+import { overlayLayout } from "@/components/overlayLayout.css";
 
 export const dynamic = "force-dynamic";
 
@@ -51,13 +53,27 @@ function Views({ entry }: { entry: NoteEntry }) {
 
 function NoteMarkdown({ entry }: { entry: NoteEntry }) {
   return (
-    <Box
-      backgroundColor="foreground1"
-      p={5}
-      borderRadius={{ xs: 0, md: 5 }}
-      className={markdown}
-    >
-      <Contents entry={entry} />
+    <Box>
+      <Box className={overlayLayout}>
+        <Box
+          p={5}
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-end"
+          gap={5}
+        >
+          <EditNote entry={entry} />
+          <DeleteNote entry={entry} />
+        </Box>
+      </Box>
+      <Box
+        backgroundColor="foreground1"
+        p={5}
+        borderRadius={{ xs: 0, md: 5 }}
+        className={markdown}
+      >
+        <Contents entry={entry} />
+      </Box>
     </Box>
   );
 }
@@ -72,8 +88,13 @@ export default async function Page({
   const entry = await getEntry(id);
   if (!entry)
     return (
-      <Box>
-        The node with filename <code>{id}</code> do not exist.
+      <Box display="flex" flexDirection="column" gap={10}>
+        <Box>
+          The note with filename <code>{id}</code> do not exist.
+        </Box>
+        <Box display="flex" flexDirection="row" justifyContent="center">
+          <EditNote entry={{ id }} />
+        </Box>
       </Box>
     );
   updateFrecency(entry);

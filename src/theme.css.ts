@@ -38,9 +38,14 @@ globalStyle("body", {
   color: vars.colors.text,
 });
 
-globalStyle("a", {
+globalStyle("a, button", {
   color: vars.colors.link,
   fontWeight: "bold",
+  cursor: "pointer",
+});
+
+globalStyle("a:hover, button:hover", {
+  color: vars.colors.active,
 });
 
 export const theme = style({

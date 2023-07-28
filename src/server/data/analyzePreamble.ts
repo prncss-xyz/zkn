@@ -61,7 +61,7 @@ function toArray(raw: unknown) {
 }
 
 const dataSchema = z.object({
-  tags: z.preprocess(toArray, z.array(z.string()).default([])),
+  tags: z.preprocess(toArray, z.array(z.string())),
   event: dateRange,
   due: date,
   since: date,

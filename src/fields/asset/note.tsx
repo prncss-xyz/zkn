@@ -3,6 +3,7 @@ import { Box } from "@/components/box";
 import { Link } from "@/components/link";
 import { setAsset } from "./query";
 import { sprinkles } from "@/sprinkles.css";
+import { OpenAsset } from "@/components/actions";
 
 export function NoteAsset({ entry }: { entry: NoteEntry }) {
   if (entry.asset === null) return null;
@@ -25,6 +26,7 @@ export function NoteAsset({ entry }: { entry: NoteEntry }) {
         <Link href={{ pathname: src }} fontFamily="monospace">
           {entry.asset}
         </Link>
+        <OpenAsset entry={entry} />
       </Box>
       {entry.assetType === "image" && (
         <Box height="noteAssetHeight">

@@ -5,6 +5,7 @@ import { Navigator } from "@/components/navigator";
 import { ISearch, getEntries } from "../search";
 import { getNotebookConfig } from "@/server/data/notebookConfig";
 import { processNotes } from "@/components/navigator/processNotes";
+import { OpenGallery } from "@/components/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -67,8 +68,9 @@ export default async function Page({
     <>
       <Navigator processed={processed} />
       <Box display="flex" flexDirection="column" width="screenMaxWidth" gap={5}>
-        <Box display="flex" flexDirection="row">
-          <Box>{processed.entries.length} notes</Box>
+        <Box display="flex" flexDirection="row" gap={5}>
+          <Box>{processed.entries.length} images</Box>
+          <OpenGallery entries={entries} />
         </Box>
         <Notes entries={processed.entries} />
       </Box>

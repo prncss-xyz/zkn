@@ -1,4 +1,4 @@
-export const space = [0, 5, 10, 20, 40] as const;
+export const space = [0, 2, 5, 10, 20, 40] as const;
 
 export const sizes = {
   galleryImage: 150,

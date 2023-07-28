@@ -5,30 +5,7 @@ import { visit } from "unist-util-visit";
 import { Root } from "hast";
 import { normalizePath } from "@/utils/path";
 import { createElement, Fragment } from "react";
-import prisma from "@/server/data/prisma";
-
-async function getTitle(link: string) {
-  const res = await prisma.entry.findUnique({
-    where: { id: link },
-    select: {
-      title: true,
-    },
-  });
-  const title = res?.title ?? link;
-  const status = res ? (res.title ? "untitled" : "plain") : "broken";
-  return { title, status };
-}
-
-async function getIdToTitle(links: string[]) {
-  return Object.fromEntries(
-    await Promise.all(
-      links.map(async (link) => {
-        const res = await getTitle(link);
-        return [link, res] as const;
-      })
-    )
-  );
-}
+import { getIdToTitle } from "@/server/actions";
 
 export function transform() {
   return async function (tree: Root) {

@@ -1,7 +1,7 @@
 import { Box } from "@/components/box";
 import prisma from "@/server/data/prisma";
 import { setup } from "@/server/data/scanFiles";
-import { markdown } from "./page.css";
+import { markdown } from "./markdown.css";
 import { NoteDir } from "@/fields/dir/note";
 import { NoteTags } from "@/fields/tags/note";
 import { NoteVirtualTags } from "@/fields/virtualTags/note";

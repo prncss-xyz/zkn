@@ -2,12 +2,6 @@
 
 import { Button } from "@/components/button";
 import { deleteNote, editNote, openAsset, openGallery } from "@/server/actions";
-import {
-  deleteNoteTemplate,
-  editNoteTemplate,
-  openAssetTemplate,
-  openGalleryTemplate,
-} from "@/server/actions/templates";
 import { LuEdit, LuDelete, LuArrowUpSquare } from "react-icons/lu";
 
 interface Entry {

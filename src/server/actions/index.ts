@@ -1,6 +1,5 @@
 "use server";
 
-import os from "os";
 import { notebookDir } from "@/server/notebookDir";
 import { NoteEntry } from "@/app/(main)/note/[...path]/page";
 import prisma from "../data/prisma";
@@ -25,17 +24,6 @@ export async function getTitle(link: string) {
   const title = res?.title ?? link;
   const status = res ? (res.title ? "untitled" : "plain") : "broken";
   return { title, status };
-}
-
-export async function getIdToTitle(links: string[]) {
-  return Object.fromEntries(
-    await Promise.all(
-      links.map(async (link) => {
-        const res = await getTitle(link);
-        return [link, res] as const;
-      }),
-    ),
-  );
 }
 
 const idToLastUpdated = new Map<string, number>();
@@ -92,4 +80,15 @@ export async function openGallery(ids: string[]) {
 export async function openAsset(asset: string) {
   const template = openAssetTemplate();
   execFile(template, asset);
+}
+
+export async function getIdToTitle(links: string[]) {
+  return Object.fromEntries(
+    await Promise.all(
+      links.map(async (link) => {
+        const res = await getTitle(link);
+        return [link, res] as const;
+      }),
+    ),
+  );
 }

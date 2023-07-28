@@ -3,13 +3,16 @@ import { getProcessor } from "@/server/data/processMD";
 import { getContent } from "@/app/(main)/note/[...path]/contents";
 import rehypeStringify from "rehype-stringify";
 import rehypeFormat from "rehype-format";
-import { transform } from "@/fields/backlink/note/contents";
 import rehypeDocument from "rehype-document";
 import prisma from "@/server/data/prisma";
+import { visit } from "unist-util-visit";
+import { Root } from "hast";
+import { normalizePath } from "@/utils/path";
+import { getIdToTitle } from "@/server/actions";
 
 export async function GET(
   _: Request,
-  { params: { path } }: { params: { path: string[] } }
+  { params: { path } }: { params: { path: string[] } },
 ) {
   await setup();
   try {
@@ -19,12 +22,15 @@ export async function GET(
     if (!content) throw new Error("File not found");
     const res = await prisma.entry.findUnique({
       where: { id },
-      select: { title: true },
+      select: { title: true, links: { select: { targetId: true } } },
     });
-    const title = res?.title || undefined;
-    const processor = getProcessor()
+    if (!res) throw new Error("no data");
+    const title = res.title || undefined;
+    const idToTitle = await getIdToTitle(
+      res.links.map(({ targetId }) => targetId),
+    );
+    const processor = getProcessor({ idToTitle, live: false })
       .use(rehypeDocument, { title })
-      .use(transform)
       .use(rehypeStringify)
       .use(rehypeFormat);
     const processed = await processor.process(content);

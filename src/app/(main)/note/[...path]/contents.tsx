@@ -1,14 +1,15 @@
 import { getProcessor } from "@/server/data/processMD";
+import { LuExternalLink, LuLink } from "react-icons/lu";
 import { createElement, Fragment, ReactNode } from "react";
 import rehypeReact from "rehype-react";
 import { getIdToTitle } from "@/server/actions";
 import { Link } from "@/components/link";
 import { NoteEntry } from "./page";
-export const dynamic = "force-dynamic";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { notebookDir } from "@/server/notebookDir";
 import matter from "gray-matter";
+import { luExternalLink, luLink } from "./contents.css";
 
 export async function getContent(id: string) {
   const file = path.join(notebookDir, id);
@@ -34,11 +35,13 @@ function MDLink({
   if (href?.startsWith("/"))
     return (
       <Link href={href} className={className}>
+        <LuLink className={luLink} />
         {children}
       </Link>
     );
   return (
-    <a href={href} className={className}>
+    <a href={href} className={className} target="_blank">
+      <LuExternalLink className={luExternalLink} />
       {children}
     </a>
   );
@@ -47,8 +50,10 @@ function MDLink({
 export async function Contents({ entry }: { entry: NoteEntry }) {
   const content = await getContent(entry.id);
   if (!content) return null;
-  const idToTitle = await getIdToTitle(entry.links.map((link) => link.targetId));
-  const processor = getProcessor(idToTitle).use(rehypeReact, {
+  const idToTitle = await getIdToTitle(
+    entry.links.map((link) => link.targetId),
+  );
+  const processor = getProcessor({ idToTitle, live: true }).use(rehypeReact, {
     createElement,
     Fragment,
     components: {

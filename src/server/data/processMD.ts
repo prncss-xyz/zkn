@@ -19,13 +19,18 @@ type IdToTitle = {
   [k: string]: { title: string } | { untitled: true } | { broken: true };
 };
 
-function transform(idToTitle: IdToTitle) {
+interface ITransform {
+  idToTitle: IdToTitle;
+  live: boolean;
+}
+
+function transform({ idToTitle, live }: ITransform) {
   return async function (tree: any) {
     visit(tree, "wikiLink", (node: any) => {
       node.data.hProperties.className = "internal";
       let id = node.data.alias;
       if (!extname(id)) id += extension;
-      node.data.hProperties.href = id;
+      node.data.hProperties.href = live ? `/note/${id}` : "";
       const res = idToTitle?.[id];
       if (res) {
         const className =
@@ -41,12 +46,12 @@ function transform(idToTitle: IdToTitle) {
 }
 
 // we need to export this function instead of raw constant for processor to work both on client and server
-export function getProcessor(idToTitle?: any) {
+export function getProcessor(transformOpts: ITransform) {
   return (
     // @ts-ignore
     unified()
       .use(remarkParse)
-      .use(transform, idToTitle)
+      .use(transform, transformOpts)
       .use(wikiLink)
       .use(breaks)
       .use(emoji)

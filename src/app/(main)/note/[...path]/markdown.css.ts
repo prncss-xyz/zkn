@@ -58,11 +58,6 @@ globalStyle(`${markdown} p`, {
   marginBottom: "1em",
 });
 
-globalStyle(`${markdown} a`, {
-  color: vars.colors.link,
-  fontWeight: "bold",
-});
-
 globalStyle(`${markdown} small`, {
   fontSize: "80%",
 });
